@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fragment.Options"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/menuoptions"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+
+
+    <android.support.design.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="DCR ENTRY"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="5sp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeStepGranularity="1sp"
+        android:id="@+id/dcr"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        app:cornerRadius="8dp"
+        android:textColor="@color/textcolorwhite"
+        app:rippleColor="@color/colorPrimaryDark"/>
+
+
+    <android.support.design.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="UPLOAD VISITING CARD"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="5sp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeStepGranularity="1sp"
+        android:id="@+id/uploadcard"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        app:cornerRadius="8dp"
+        android:textColor="@color/textcolorwhite"
+        app:rippleColor="@color/colorPrimaryDark"/>
+
+
+
+    <android.support.design.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="MONTHLY TOUR PROGRAM"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="5sp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeStepGranularity="1sp"
+        android:id="@+id/mtp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        app:cornerRadius="8dp"
+        android:textColor="@color/textcolorwhite"
+        app:rippleColor="@color/colorPrimaryDark"/>
+
+    <android.support.design.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Visit Plan Summary"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="5sp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeStepGranularity="1sp"
+        android:id="@+id/vps"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        app:cornerRadius="8dp"
+        android:textColor="@color/textcolorwhite"
+        app:rippleColor="@color/colorPrimaryDark"/>
+
+    <android.support.design.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="E-Learning"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="5sp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeStepGranularity="1sp"
+        android:id="@+id/elearn"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        app:cornerRadius="8dp"
+        android:textColor="@color/textcolorwhite"
+        app:rippleColor="@color/colorPrimaryDark"/>
+
+
+    <android.support.design.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Report"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="5sp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeStepGranularity="1sp"
+        android:id="@+id/report"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        app:cornerRadius="8dp"
+        android:textColor="@color/textcolorwhite"
+        app:rippleColor="@color/colorPrimaryDark"/>
+
+
+    <android.support.design.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="RCPA"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="5sp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeStepGranularity="1sp"
+        android:id="@+id/mgrrcpa"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        app:cornerRadius="8dp"
+        android:textColor="@color/textcolorwhite"
+        app:rippleColor="@color/colorPrimaryDark"/>                  <!--added by Aniket 14/09/2019-->
+
+        <android.support.design.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="PATIENT PROFILE"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="5sp"
+            android:autoSizeMaxTextSize="18sp"
+            android:autoSizeStepGranularity="1sp"
+            android:id="@+id/patientpr"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            app:cornerRadius="8dp"
+            android:textColor="@color/textcolorwhite"
+            app:rippleColor="@color/colorPrimaryDark"/>                <!--added by Aniket 13/11/2019-->
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/chemistpr"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:autoSizeMaxTextSize="18sp"
+            android:autoSizeMinTextSize="5sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:text="RETAIL REACHOUT"
+            app:cornerRadius="8dp"
+            android:textColor="@color/textcolorwhite"
+            app:rippleColor="@color/colorPrimaryDark"/>                 <!--added by Aniket 14/11/2019-->
+</LinearLayout>
