@@ -1,6 +1,7 @@
 package com.eis.dailycallregister.Api;
 
 
+import com.eis.dailycallregister.Activity.HoMtpPatchSelection;
 import com.eis.dailycallregister.Pojo.AreaJntWrkRes;
 import com.eis.dailycallregister.Pojo.ChemistDoctorNameRes;
 import com.eis.dailycallregister.Pojo.ChemistListAWRes;
@@ -26,6 +27,25 @@ import com.eis.dailycallregister.Pojo.GetRCPABrandListRes;
 import com.eis.dailycallregister.Pojo.GetRCPACompProdLstRes;
 import com.eis.dailycallregister.Pojo.GetRCPAPulseChemist;
 import com.eis.dailycallregister.Pojo.GetRetailerAlertCnt;
+import com.eis.dailycallregister.Pojo.HOChemistListResponse;
+import com.eis.dailycallregister.Pojo.HODCRProductResponse;
+import com.eis.dailycallregister.Pojo.HODcrDateResponse;
+import com.eis.dailycallregister.Pojo.HODcrdChemListResponse;
+import com.eis.dailycallregister.Pojo.HODcrdDocDetResponse;
+import com.eis.dailycallregister.Pojo.HODcrdHubListResponse;
+import com.eis.dailycallregister.Pojo.HODcrdWDListResponse;
+import com.eis.dailycallregister.Pojo.HODoctorListResponse;
+import com.eis.dailycallregister.Pojo.HOExpenseDefaultDataRes;
+import com.eis.dailycallregister.Pojo.HOFrmToTownsDetRes;
+import com.eis.dailycallregister.Pojo.HOHubListResponse;
+import com.eis.dailycallregister.Pojo.HOLevelListResponse;
+import com.eis.dailycallregister.Pojo.HONonFieldWorkListRes;
+import com.eis.dailycallregister.Pojo.HOWDListResponse;
+import com.eis.dailycallregister.Pojo.HoDcrdDrListResponse;
+import com.eis.dailycallregister.Pojo.HoMtpMgrListResponse;
+import com.eis.dailycallregister.Pojo.HoMtpPatchListResponse;
+import com.eis.dailycallregister.Pojo.HoMtpPsrListResponse;
+import com.eis.dailycallregister.Pojo.HoMtpResponse;
 import com.eis.dailycallregister.Pojo.IsDCRCorrectRes;
 import com.eis.dailycallregister.Pojo.LoginResponse;
 import com.eis.dailycallregister.Pojo.MgrRCPARes;
@@ -812,4 +832,341 @@ public interface Api {
             @Field("DBPrefix") String dbprefix
     );
 
+@FormUrlEncoded
+    @POST("hoCurrMthMtp.php")
+    Call<HoMtpResponse> getCurrMthHoMtp(
+            @Field("ecode") String ecode,
+            @Field("date") String date,
+            @Field("DBPrefix") String dbprefix
+    );
+
+@FormUrlEncoded
+    @POST("hoMtpMgrList.php")
+    Call<HoMtpMgrListResponse> getMgrListForHoMtp(
+            @Field("ecode") String ecode,
+            @Field("date") String date,
+            @Field("DBPrefix") String dbprefix
+    );
+
+@FormUrlEncoded
+    @POST("hoMtpPsrList.php")
+    Call<HoMtpPsrListResponse> getHoMtpPsrList(
+            @Field("emp") String emp,
+            @Field("DBPrefix") String dbprefix,
+            @Field("date") String date
+
+    );
+
+@FormUrlEncoded
+    @POST("hoMtpPsrPatchList.php")
+    Call<HoMtpPatchListResponse> getPsrPatchForHoMtp(
+            @Field("emp") String emp,
+            @Field("mrnetid") String mrnetid,
+            @Field("DBPrefix") String dbprefix
+
+    );
+
+@FormUrlEncoded
+    @POST("hoMtpAdd.php")
+    Call<DefaultResponse> addHoMtp(
+        @Field("wdate") String wdate,
+        @Field("emp") String emp,
+        @Field("mrnetid") String mrnetid,
+        @Field("addedby") String addedby,
+        @Field("logEmp") String logEmp,
+        @Field("tcpIdJsonArray") String tcpIdJsonArray,
+        @Field("DBPrefix") String dbprefix
+    );
+
+    //to check weather user is resigned or not
+    @FormUrlEncoded
+    @POST("changeHODCRDate.php")
+    Call<DefaultResponse> changeHODCRDate(
+            @Field("empcode") String empcode,
+            @Field("newdcrdate") String newdcrdate,
+            @Field("dcrno") String dcrno,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    //to get Hodcrdate and also checks weather it is greater than current date or not
+    @FormUrlEncoded
+    @POST("checkhodcrdate.php") // Added on 09-03-2020 by Patanjali
+    Call<HODcrDateResponse> getHoDcrdate(
+            @Field("empcode") String ecode,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    //to check HO MTP. It checks weather the MTP is filled or not of current date and also check MTP of next month on 24 of each month
+    @FormUrlEncoded
+    @POST("checkcurmthhomtp.php")  // Added on 09-03-2020 by Patanjali
+    Call<DefaultResponse> checkHOMTP(
+            @Field("empcode") String ecode,
+            @Field("dcrmth") String dcrmth,
+            @Field("dcryr") String dcryr,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+    //to check dcr is blocked or not
+    @FormUrlEncoded
+    @POST("hodcrblockcheck.php") // added on 09-03-2020 by Patanjali
+    Call<DefaultResponse> HODCRBlockCheck(
+            @Field("empcode") String ecode,
+            @Field("dcrdate") String dcrdate,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+    //to get HO holiday in between last confirm dcr and current dcrdate
+    @FormUrlEncoded
+    @POST("gethoholdcrdates.php") // added on 09-03-2020 by Patanjali
+    Call<DefaultResponse> getHOHolidayDcrdates(
+            @Field("empcode") String ecode,
+            @Field("dcrdate") String dcrdate,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    //By patanjali
+    @FormUrlEncoded
+    @POST("holevelList.php") //Added on 08-03-2020 By Patanjali
+    Call<HOLevelListResponse> getHOLevelList(
+            @Field("dcrdate") String dcrdate,
+            @Field("dcrmth") String dcrmth,
+            @Field("dcryr") String dcryr,
+            @Field("netid") String netid,
+            @Field("hname") String hname,
+            @Field("lvl") String lvl,
+            @Field("lvl5") String lvl5,
+            @Field("lvl4") String lvl4,
+            @Field("lvl3") String lvl3,
+            @Field("lvl2") String lvl2,
+            @Field("lvl1") String lvl1,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("gethodoctordatalist.php") // HO Doctor List added by Patanjali
+    Call<HODoctorListResponse> getHODoctorDataList(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("tcpid") String tcpid,
+            @Field("dcrdate") String dcrdate,
+            @Field("dcrmth") String dcrmth,
+            @Field("dcryr") String dcryr,
+            @Field("srchopt") String srchopt,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("gethodcrddoc.php") // added By Patanjali on 10/03/2020
+    Call<HoDcrdDrListResponse> getHODCRDDrs(
+            @Field("dcrno") String dcrno,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("hodcrproductlist.php") // added on 15/03/2020 by Patanjali
+    Call<HODCRProductResponse> HODCRProdApi(
+            @Field("serial") String serial,
+            @Field("netid") String netid,
+            @Field("dcrno") String dcrno,
+            @Field("d1d2") String d1d2,
+            @Field("ecode") String ecode,
+            @Field("financialyear") String financialyear,
+            @Field("dcrdate") String dcrdate,
+            @Field("mth") String mth,
+            @Field("yr") String yr,
+            @Field("cntcd") String cntcd,
+            @Field("logmth") String logmth,
+            @Field("logyr") String logyr,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+    @FormUrlEncoded
+    @POST("HODCRGift.php") // added on 15/03/2020 by Patanjali
+    Call<DCRGiftListRes> HODCRGiftApi(
+            @Field("serial") String serial,
+            @Field("netid") String netid,
+            @Field("dcrno") String dcrno,
+            @Field("d1d2") String d1d2,
+            @Field("ecode") String ecode,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+    @FormUrlEncoded
+    @POST("getHODocDCRRemark.php") // added on 15/03/2020 by Patanjali
+    Call<DefaultResponse> getHODocDcrRemark(
+            @Field("dcrno") String dcrno,
+            @Field("serial") String serial,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+    @FormUrlEncoded
+    @POST("updateHODocDcrRemark.php") // added on 15/03/2020 by Patanjali
+    Call<DefaultResponse> saveHODocDcrRemark(
+            @Field("dcrno") String dcrno,
+            @Field("serial") String serial,
+            @Field("remark") String remark,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("getHODocDcrDetail.php") // added on 16/03/2020 by Patanjali
+    Call<HODcrdDocDetResponse> getHODocDcrDetail(
+            @Field("dcrno") String dcrno,
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+
+    @FormUrlEncoded
+    @POST("gethochemistdatalist.php") // added by Patanjali on 16-03-2020
+    Call<HOChemistListResponse> getHOChemistDataList(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("tcpid") String tcpid,
+            @Field("dcrdate") String dcrdate,
+            @Field("dcrmth") String dcrmth,
+            @Field("dcryr") String dcryr,
+            @Field("srchopt") String srchopt,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+    @FormUrlEncoded
+    @POST("gethodcrdchem.php") // added on 16/03/2020 By Patanjali
+    Call<HODcrdChemListResponse> getHODCRDChem(
+            @Field("dcrno") String dcrno,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+    @FormUrlEncoded
+    @POST("getHOChemPOBEntry.php") // added on 16/03/2020 by Patanjali
+    Call<DefaultResponse> getHOChemPOBEntry(
+            @Field("dcrno") String dcrno,
+            @Field("serial") String serial,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+    @FormUrlEncoded
+    @POST("updateHOChemDcrPOBEntry.php") // added on 16/03/2020 by Patanjali
+    Call<DefaultResponse> saveHOChemDcrPOBEntry(
+            @Field("dcrno") String dcrno,
+            @Field("serial") String serial,
+            @Field("cntcd") String cntcd,
+            @Field("pob") String pob,
+            @Field("rcpa") String rcpa,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("gethohubdatalist.php") // added by Patanjali on 16-03-2020
+    Call<HOHubListResponse> getHOHubDataList(
+            @Field("ecode") String ecode,
+            @Field("statecode") String statecode,
+            @Field("srchopt") String srchopt,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("gethodcrdhub.php") // added on 16/03/2020 By Patanjali
+    Call<HODcrdHubListResponse> getHODCRDHub(
+            @Field("dcrno") String dcrno,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+
+    @FormUrlEncoded
+    @POST("gethowddatalist.php") // added by Patanjali on 17-03-2020
+    Call<HOWDListResponse> getHOWDDataList(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("tcpid") String tcpid,
+            @Field("dcrdate") String dcrdate,
+            @Field("dcrmth") String dcrmth,
+            @Field("dcryr") String dcryr,
+            @Field("srchopt") String srchopt,
+            @Field("d1d2") String d1d2,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("gethodcrdwd.php") // added on 17/03/2020 By Patanjali
+    Call<HODcrdWDListResponse> getHODCRDWD(
+            @Field("dcrno") String dcrno,
+            @Field("d1d2") String d1d2,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("getHONonFieldWorkList.php")// added on 18/03/2020 By Patanjali
+    Call<HONonFieldWorkListRes> getHONonFieldWorkList(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("dcrno") String dcrno,
+            @Field("dcrmth") String dcrmth,
+            @Field("dcryr") String dcryr,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("deleteHONonFieldWrk.php") // added on 18/03/2020 By Patanjali
+    Call<DefaultResponse> deleteHONonFieldWrkEntry(
+            @Field("dcrno") String dcrno,
+            @Field("serial") String serial,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+    @FormUrlEncoded
+    @POST("hoExpenseData.php") // added on 16/03/2020 by Patanjali
+    Call<HOExpenseDefaultDataRes> getHOExpenseData(
+            @Field("dcrno") String dcrno,
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("dcrdate") String dcrdate,
+            @Field("dcrmth") String dcrmth,
+            @Field("dcryr") String dcryr,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("hoExpenseDataByTown.php") // added on 16/03/2020 by Patanjali
+    Call<HOFrmToTownsDetRes> getHOExpenseDataByTown(
+            @Field("dcrno") String dcrno,
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("dcrdate") String dcrdate,
+            @Field("dcrmth") String dcrmth,
+            @Field("dcryr") String dcryr,
+            @Field("towns") String towns,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    //prithvi - audio msg - 07/04/2020 : start
+
+    @FormUrlEncoded
+    @POST("audioMsgViewDet.php")
+    Call<DefaultResponse> getAudioMsgViewDet(
+            @Field("ecode") String ecode,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("saveAudioViewDetls.php")
+    Call<DefaultResponse> saveAudioViewDetls(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("audioPopupShow") int audioPopupShow,
+            @Field("DBPrefix") String DBPrefix
+    );
 }

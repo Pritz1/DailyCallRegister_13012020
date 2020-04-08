@@ -34,6 +34,15 @@ public class MenuaccessItem{
 	@SerializedName("patientProfile")
 	private String patientProfile;
 
+	@SerializedName("hodcr") //patanjali
+	private String hodcr;
+
+	@SerializedName("homtp")
+	private String hoMtp;
+
+	@SerializedName("audioMsg")
+	private String audioMsg;
+
 	public void setDcr(String dcr){
 		this.dcr = dcr;
 	}
@@ -113,6 +122,30 @@ public class MenuaccessItem{
 	public String getPatientProfile(){
 		return patientProfile;
 	}
+	
+		public String getHodcr() {
+		return hodcr;
+	}
+
+	public void setHodcr(String hodcr) {
+		this.hodcr = hodcr;
+	}
+
+	public String getHoMtp() {
+		return hoMtp;
+	}
+
+	public void setHoMtp(String hoMtp) {
+		this.hoMtp = hoMtp;
+	}
+
+	public String getAudioMsg() {
+		return audioMsg;
+	}
+
+	public void setAudioMsg(String audioMsg) {
+		this.audioMsg = audioMsg;
+	}
 
 	@Override
  	public String toString(){
@@ -128,6 +161,7 @@ public class MenuaccessItem{
 			",uploadVisitingCard = '" + uploadVisitingCard + '\'' + 
 			",mgrRcpa = '" + mgrRcpa + '\'' + 
 			",patientProfile = '" + patientProfile + '\'' + 
+			",audioMsg = '" + audioMsg + '\'' +
 			"}";
 		}
 }

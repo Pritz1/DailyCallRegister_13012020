@@ -2,6 +2,7 @@ package com.eis.dailycallregister.Activity;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.eis.dailycallregister.Fragment.DCREntry;
 import com.eis.dailycallregister.Fragment.Elearning;
+import com.eis.dailycallregister.Fragment.HODCREntry;
 import com.eis.dailycallregister.Fragment.Help;
 import com.eis.dailycallregister.Fragment.MTPConfirmation;
 import com.eis.dailycallregister.Fragment.Options;
@@ -129,7 +131,9 @@ public class HomeActivity extends AppCompatActivity
 
         if (getintentval.equalsIgnoreCase("dcr")) {
             displaySelectedScreen(R.id.nav_dcr);
-        } else if (getintentval.equalsIgnoreCase("visitingcard")) {
+        }else if (getintentval.equalsIgnoreCase("hodcr")) { //added by Patanjali 0103092019
+            displaySelectedScreen(R.id.nav_hodcr);
+        }  else if (getintentval.equalsIgnoreCase("visitingcard")) {
             displaySelectedScreen(R.id.nav_file_upload);
         } else if (getintentval.equalsIgnoreCase("home")) {
             displaySelectedScreen(R.id.nav_home);
@@ -147,6 +151,10 @@ public class HomeActivity extends AppCompatActivity
             displaySelectedScreen(R.id.nav_patientpr);                  //added by Aniket 13/11/2019
         }else if (getintentval.equalsIgnoreCase("chemistpr")){
             displaySelectedScreen(R.id.nav_chemistpr);                  //added by Aniket 14/11/2019
+        }else if (getintentval.equalsIgnoreCase("homtp")){
+            displaySelectedScreen(R.id.nav_hoMtp);                  //added by Prithvi 16/03/2020
+        }else if (getintentval.equalsIgnoreCase("audioMsg")){
+            displaySelectedScreen(R.id.nav_audioMsg);                  //added by Prithvi 16/03/2020
         }else{
             displaySelectedScreen(R.id.nav_home);
         }
@@ -231,6 +239,17 @@ public class HomeActivity extends AppCompatActivity
                     new Global().afmNotAllowed(HomeActivity.this);
                 }
                 break;
+            case R.id.nav_hodcr:
+                if (Integer.parseInt(Global.emplevel) >= 7 ) {
+                    //if(empacc.contains(Global.ecode)) {
+                    fragment = new HODCREntry();
+                    /*}else{
+                        new Global().notAllowed(HomeActivity.this);
+                    }*/
+                } else {
+                    new Global().afmNotAllowed(HomeActivity.this);
+                }
+                break;
             case R.id.nav_file_upload:
                 if(Global.emplevel.equalsIgnoreCase("1")) {
                     fragment = new UploadVisitingCard();
@@ -303,6 +322,25 @@ public class HomeActivity extends AppCompatActivity
                 //new Global().notAllowed(HomeActivity.this);
                 fragment = new Help();
                 break;
+
+            case R.id.nav_hoMtp:
+                if (Global.emplevel!=null && Integer.parseInt(Global.emplevel)>=7  ) {
+                    getintentval = "home";
+                    Intent intent = new Intent(HomeActivity.this, HOMtpActivity.class);
+                    Bundle bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                    startActivity(intent, bndlanimation);
+                }else{
+                    new Global().alert(HomeActivity.this,"You Are Not Allowed To Access This","NO ACCESS");           //added by aniket  26/11/2019
+                }
+                break;
+
+            case R.id.nav_audioMsg:
+                    getintentval = "home";
+                    Intent intent = new Intent(HomeActivity.this, PlayAudio.class);
+                    Bundle bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                    startActivity(intent, bndlanimation);
+                break;
+
             case R.id.nav_logout:
                 logoutAlert();
                 break;
@@ -359,7 +397,7 @@ public class HomeActivity extends AppCompatActivity
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
         builder.setCancelable(true);
         builder.setTitle("Alert ?");
-        builder.setMessage("Which month of MTP you wants to view ?");
+        builder.setMessage("Which month of MTP you want to view ?");
         builder.setPositiveButton("NEXT", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

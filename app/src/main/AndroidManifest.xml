@@ -21,6 +21,34 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Activity.PlayAudio"></activity>
+        <activity android:name=".Activity.HOExpenseData"></activity>
+        <activity
+            android:name=".Activity.HODoctorsData"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HOChemistsData"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HOWDData"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HOHubData"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HONonFieldWork"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HOHubDCRRemarkEntry"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HOWDDCRRemarkEntry"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.HoMtpPatchSelection" />
+        <activity android:name=".Activity.HoMtpSelectedPsr" />
+        <activity android:name=".Activity.HoMtpPSRSelection" />
+        <activity android:name=".Activity.HoMtpMgrList" />
+        <activity android:name=".Activity.HOMtpActivity" />
         <activity android:name=".Activity.AddOtherChemist"></activity>
         <activity android:name=".Activity.PatientList" />
         <activity android:name=".Activity.UploadSelFie" />
@@ -65,6 +93,21 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.DocDCRGift"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HODocDCRProduct"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HODocDCRGift"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HODocDCRRemarksEntry"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HOChemDCRPOBEntry"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.HODocDCRDetail"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.UploadActivity"

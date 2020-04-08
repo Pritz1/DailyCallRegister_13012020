@@ -4,19 +4,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.button.MaterialButton;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.eis.dailycallregister.Pojo.MenuaccessItem;
-import com.eis.dailycallregister.Pojo.PropsItem;
 import com.eis.dailycallregister.R;
 
 import java.util.ArrayList;
@@ -48,6 +43,21 @@ public class Global {
     public static int misscallpopup = 0;
     public static String whichmth = null;
     public static String FinancialStartDate= null;			//added by aniket 14/09/2019
+    public static String psr= null;			//added by Patanjali 09/03/2020
+    public static String wrkwith= null;			//added by Patanjali 10/03/2020
+    public static String level5= null;			//added by Patanjali 10/03/2020
+    public static String level5Name= null;			//added by Patanjali 10/03/2020
+    public static String level4= null;			//added by Patanjali 10/03/2020
+    public static String level4Name= null;			//added by Patanjali 10/03/2020
+    public static String level3= null;			//added by Patanjali 10/03/2020
+    public static String level3Name= null;			//added by Patanjali 10/03/2020
+    public static String level2= null;			//added by Patanjali 10/03/2020
+    public static String level2Name= null;			//added by Patanjali 10/03/2020
+    public static String level1= null;			//added by Patanjali 10/03/2020
+    public static String level1Name= null;			//added by Patanjali 10/03/2020
+    public static String townName= null;			//added by Patanjali 10/03/2020
+    public static String townTownId= null;			//added by Patanjali 10/03/2020
+    public static int audioPopupShow = 0; //added by prithvi to show audio popup omly once - 07/04/2020
 
 
     public static List<MenuaccessItem> menuaccessItemsGlobal = new ArrayList<>();			//added by aniket 30/11/2019
@@ -78,6 +88,14 @@ public class Global {
             whichmth = null;
             menuaccessItemsGlobal.clear();
             isfirst = true;
+            psr = null;
+            wrkwith = null;
+            level5 = null;
+            level4 = null;
+            level3 = null;
+            level2 = null;
+            level1 = null;
+            audioPopupShow = 0;
         } else if (mode.equalsIgnoreCase("DCR")) {
             dcrdate = null;
             dcrdateday = null;

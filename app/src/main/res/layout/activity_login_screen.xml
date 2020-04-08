@@ -58,7 +58,7 @@
                     android:drawablePadding="15dp"
                     android:drawableTint="@color/colorPrimary"
                     android:hint="Employee Code"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:paddingLeft="14dp"
                     android:paddingTop="12dp"
                     android:paddingRight="12dp"

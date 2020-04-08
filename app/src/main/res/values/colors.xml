@@ -8,6 +8,8 @@
     <color name="colorBghalfwhite">#F1F1F1</color>
     <color name="textcolorwhite">#FFFFFF</color>
     <color name="textcolorblack">#000000</color>
+    <color name="textcolorbggrey">#F6F4F4</color>
+    <color name="textcolorlightgrey">#CBCBCB</color>
     <color name="textcolorgray">#818181</color>
     <color name="textcolordarkgray">#555555</color>
     <color name="junglegreen">#008671</color>
