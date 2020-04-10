@@ -1169,4 +1169,24 @@ public interface Api {
             @Field("audioPopupShow") int audioPopupShow,
             @Field("DBPrefix") String DBPrefix
     );
+    //prithvi - audio msg - 07/04/2020 : end
+
+    //prithvi - audio msg - 10/04/2020 : start
+
+    @FormUrlEncoded
+    @POST("imgMsgViewDet.php")
+    Call<DefaultResponse> getImgMsgViewDet(
+            @Field("ecode") String ecode,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("imgMsgViewSave.php")
+    Call<DefaultResponse> saveImgViewDetls(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("audioPopupShow") int audioPopupShow,
+            @Field("DBPrefix") String DBPrefix
+    );
+    //prithvi - audio msg - 10/04/2020 : end
 }

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        android:id="@+id/top">
 
         <item
             android:id="@+id/nav_home"
@@ -58,10 +59,25 @@
             android:title="HO Monthly Tour Program "
             android:visible="false"/>   <!--added by Prithvi 13/03/2019-->
 
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/temp">
+
         <item
             android:id="@+id/nav_audioMsg"
             android:icon="@drawable/ic_queue_music_black_24dp"
-            android:title="Audio Message From MD" />   <!--added by Prithvi 06/04/2020-->
+            android:title="Audio Message From MD"/>   <!--added by Prithvi 06/04/2020-->
+
+        <item
+            android:id="@+id/nav_imgMsg"
+            android:icon="@drawable/ic_thumb_up_black_24dp"
+            android:title="We Salute Your Sensitivity"/>   <!--added by Prithvi 06/04/2020-->
+
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/bottom">
 
         <item
             android:id="@+id/nav_help"

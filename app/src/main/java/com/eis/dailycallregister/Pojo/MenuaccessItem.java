@@ -43,6 +43,9 @@ public class MenuaccessItem{
 	@SerializedName("audioMsg")
 	private String audioMsg;
 
+	@SerializedName("imgMsg")
+	private String imgMsg;
+
 	public void setDcr(String dcr){
 		this.dcr = dcr;
 	}
@@ -147,6 +150,14 @@ public class MenuaccessItem{
 		this.audioMsg = audioMsg;
 	}
 
+	public String getImgMsg() {
+		return imgMsg;
+	}
+
+	public void setImgMsg(String imgMsg) {
+		this.imgMsg = imgMsg;
+	}
+
 	@Override
  	public String toString(){
 		return 
@@ -162,6 +173,7 @@ public class MenuaccessItem{
 			",mgrRcpa = '" + mgrRcpa + '\'' + 
 			",patientProfile = '" + patientProfile + '\'' + 
 			",audioMsg = '" + audioMsg + '\'' +
+			",imgMsg = '" + imgMsg + '\'' +
 			"}";
 		}
 }

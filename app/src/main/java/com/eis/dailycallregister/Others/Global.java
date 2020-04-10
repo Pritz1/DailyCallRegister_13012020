@@ -58,6 +58,7 @@ public class Global {
     public static String townName= null;			//added by Patanjali 10/03/2020
     public static String townTownId= null;			//added by Patanjali 10/03/2020
     public static int audioPopupShow = 0; //added by prithvi to show audio popup omly once - 07/04/2020
+    public static int imgPopupShow = 0; //added by prithvi to show audio popup omly once - 07/04/2020
 
 
     public static List<MenuaccessItem> menuaccessItemsGlobal = new ArrayList<>();			//added by aniket 30/11/2019
@@ -96,6 +97,7 @@ public class Global {
             level2 = null;
             level1 = null;
             audioPopupShow = 0;
+            imgPopupShow = 0;
         } else if (mode.equalsIgnoreCase("DCR")) {
             dcrdate = null;
             dcrdateday = null;

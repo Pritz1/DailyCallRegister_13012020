@@ -2,11 +2,15 @@ package com.eis.dailycallregister.Activity;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.button.MaterialButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -20,8 +24,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.eis.dailycallregister.Api.RetrofitClient;
 import com.eis.dailycallregister.Fragment.DCREntry;
 import com.eis.dailycallregister.Fragment.Elearning;
 import com.eis.dailycallregister.Fragment.HODCREntry;
@@ -32,9 +42,18 @@ import com.eis.dailycallregister.Fragment.ReportFragment;
 import com.eis.dailycallregister.Fragment.UploadVisitingCard;
 import com.eis.dailycallregister.Fragment.VisitPlanDocLst;
 import com.eis.dailycallregister.Others.Global;
+import com.eis.dailycallregister.Pojo.DefaultResponse;
+import com.eis.dailycallregister.Pojo.MenuaccessItem;
 import com.eis.dailycallregister.R;
 import com.eis.dailycallregister.Fragment.MgrRcpaFragment;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.eis.dailycallregister.Others.Global.menuaccessItemsGlobal;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,8 +61,10 @@ public class HomeActivity extends AppCompatActivity
     TextView ename, hqname, wdate;
     String whichmth = "";
     String getintentval="";
+    ClipData.Item imgMsg;
    // ArrayList<String> empacc = new ArrayList<>();
-
+    public static List<MenuaccessItem> menuaccessItems = new ArrayList<>();
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +80,7 @@ public class HomeActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         ename = headerView.findViewById(R.id.name);
         hqname = headerView.findViewById(R.id.hqname);
@@ -68,6 +89,7 @@ public class HomeActivity extends AppCompatActivity
         ename.setText(Global.ename);
         hqname.setText("HQ : " + Global.hname);
         wdate.setText("WRK DATE : " + Global.date);
+
        /* empacc.clear();
         //CD
         empacc.add("02680");
@@ -129,6 +151,16 @@ public class HomeActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
+        menuaccessItems = menuaccessItemsGlobal;
+        int size= 0;
+        if(menuaccessItems!=null)
+            size = menuaccessItems.size();
+
+        if(size>0 && (menuaccessItems.get(0).getAudioMsg().equalsIgnoreCase("N")
+        || menuaccessItems.get(0).getImgMsg().equalsIgnoreCase("N"))){
+                navigationView.getMenu().setGroupVisible(R.id.temp,false);
+        }
+
         if (getintentval.equalsIgnoreCase("dcr")) {
             displaySelectedScreen(R.id.nav_dcr);
         }else if (getintentval.equalsIgnoreCase("hodcr")) { //added by Patanjali 0103092019
@@ -155,6 +187,8 @@ public class HomeActivity extends AppCompatActivity
             displaySelectedScreen(R.id.nav_hoMtp);                  //added by Prithvi 16/03/2020
         }else if (getintentval.equalsIgnoreCase("audioMsg")){
             displaySelectedScreen(R.id.nav_audioMsg);                  //added by Prithvi 16/03/2020
+        }else if (getintentval.equalsIgnoreCase("imgMsg")){
+            displaySelectedScreen(R.id.nav_imgMsg);                  //added by Prithvi 16/03/2020
         }else{
             displaySelectedScreen(R.id.nav_home);
         }
@@ -339,6 +373,13 @@ public class HomeActivity extends AppCompatActivity
                     Intent intent = new Intent(HomeActivity.this, PlayAudio.class);
                     Bundle bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
                     startActivity(intent, bndlanimation);
+                break;
+
+            case R.id.nav_imgMsg:
+                getintentval = "home";
+                intent = new Intent(HomeActivity.this, ShowImage.class);
+                bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                startActivity(intent, bndlanimation);
                 break;
 
             case R.id.nav_logout:
