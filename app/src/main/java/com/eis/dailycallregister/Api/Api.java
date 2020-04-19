@@ -1,7 +1,6 @@
 package com.eis.dailycallregister.Api;
 
 
-import com.eis.dailycallregister.Activity.HoMtpPatchSelection;
 import com.eis.dailycallregister.Pojo.AreaJntWrkRes;
 import com.eis.dailycallregister.Pojo.ChemistDoctorNameRes;
 import com.eis.dailycallregister.Pojo.ChemistListAWRes;
@@ -18,7 +17,6 @@ import com.eis.dailycallregister.Pojo.DoctorListAWRes;
 import com.eis.dailycallregister.Pojo.EditMtpFormResponse;
 import com.eis.dailycallregister.Pojo.EleaningMainRes;
 import com.eis.dailycallregister.Pojo.EpidermPopUpRes;
-import com.eis.dailycallregister.Pojo.ErrorBooleanResponce;
 import com.eis.dailycallregister.Pojo.FetchExpdtRes;
 import com.eis.dailycallregister.Pojo.GetDCRSummaryMainRes;
 import com.eis.dailycallregister.Pojo.GetDcrDateRes;
@@ -62,6 +60,8 @@ import com.eis.dailycallregister.Pojo.RedicnePopUpRes;
 import com.eis.dailycallregister.Pojo.RetailerAndOptions;
 import com.eis.dailycallregister.Pojo.SampleAndGiftReceiptRes;
 import com.eis.dailycallregister.Pojo.SetChemistkeyPerRes;
+import com.eis.dailycallregister.Pojo.SpclDcrDcrdChLstRes;
+import com.eis.dailycallregister.Pojo.SpclDcrdDrListRes;
 import com.eis.dailycallregister.Pojo.VstCardDrLstRes;
 import com.eis.dailycallregister.Pojo.VstPlnDocLstRes;
 import com.eis.dailycallregister.Pojo.VstPlnSumRes;
@@ -1189,4 +1189,158 @@ public interface Api {
             @Field("DBPrefix") String DBPrefix
     );
     //prithvi - audio msg - 10/04/2020 : end
+
+    //prithvi - Special DCR 16/04/2020 : Start
+
+    @FormUrlEncoded
+    @POST("spclDcrAreaList.php")
+    Call<AreaJntWrkRes> getSpclDcrAreaList(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("hname") String hname,
+            @Field("cdate") String cdate,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("spclDcrDoctorList.php")
+    Call<DoctorListAWRes> getSpclDcrDrList(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("tcpid") String tcpid,
+            @Field("cdate") String cdate,
+            @Field("sel") String sel,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("spcldcrgetdcrddoc.php")
+    Call<SpclDcrdDrListRes> spclDcrGetDcrdDoc(
+            @Field("dcrno") String dcrno,
+            @Field("DBPrefix") String DBPrefix,
+            @Field("netid") String netid,
+            @Field("emp") String emp,
+            @Field("cdate") String cdate
+    );
+
+    @FormUrlEncoded
+    @POST("spcldcrgetdcrdchem.php")
+    Call<SpclDcrDcrdChLstRes> spclDcrGetDcrdChem(
+            @Field("dcrno") String dcrno,
+            @Field("DBPrefix") String DBPrefix,
+            @Field("netid") String netid,
+            @Field("emp") String emp,
+            @Field("cdate") String cdate
+    );
+
+    @FormUrlEncoded
+    @POST("spcldcrdelrecord.php")
+    Call<DefaultResponse> deleteDrChfromSpclDcr(
+            @Field("emp") String emp,
+            @Field("netid") String netid,
+            @Field("dcrno") String dcrno,
+            @Field("cdate") String cdate,
+            @Field("cntcd") String cntcd,
+            @Field("custflg") String custFlg,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("spcldcrgetremark.php")
+    Call<DefaultResponse> getRemarkForSpclDcr(
+            @Field("dcrno") String dcrno,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("custflg") String custflg,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("spcldcrupdateremark.php")
+    Call<DefaultResponse> saveRemarkForSpclDcr(
+            @Field("dcrno") String dcrno,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("custflg") String custflg,
+            @Field("remark") String remark,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("spclDcrSavePracDet.php")
+    Call<DefaultResponse> savePracticeDet(
+            @Field("dcrno") String dcrno,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("custflg") String custflg,
+            @Field("sel") String sel,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("spclDcrGetDcrNo.php")
+    Call<GetDcrDateRes> getSpclDcrno(
+            @Field("cdate") String cdate,
+            @Field("emp") String emp,
+            @Field("netid") String netid,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("spclDcrGetPracDet.php")
+    Call<DefaultResponse> getPracticeDet(
+            @Field("dcrno") String cdate,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("custflg") String custflg,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("spclDcrUpdtDrPhn.php")
+    Call<DefaultResponse> updatePhnNoOfDr(
+            @Field("dcrno") String dcrno,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("custflg") String custflg,
+            @Field("phnno") String phnno,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+@FormUrlEncoded
+    @POST("spclDcrChemList.php")
+    Call<ChemistListAWRes> getSpclDcrChemList(
+        @Field("ecode") String ecode,
+        @Field("netid") String netid,
+        @Field("tcpid") String tcpid,
+        @Field("cdate") String cdate,
+        @Field("sel") String sel,
+        @Field("DBPrefix") String DBPrefix
+    );
+
+@FormUrlEncoded
+    @POST("spclDcrSubmit.php")
+    Call<DefaultResponse> submitSpclDcr(
+        @Field("cdate") String cdate,
+        @Field("ecode") String ecode,
+        @Field("netid") String netid,
+        @Field("tcpid") String tcpid,
+        @Field("dcrno") String dcrno,
+        @Field("DBPrefix") String DBPrefix
+    );
+
+@FormUrlEncoded
+    @POST("spclDcrSavePob.php")
+    Call<DefaultResponse> savePob(
+        @Field("dcrno") String dcrno,
+        @Field("netid") String netid,
+        @Field("ecode") String ecode,
+        @Field("cntcd") String cntcd,
+        @Field("custflg") String custflg,
+        @Field("pob") String pobTxt,
+        @Field("cdate") String cdate,
+        @Field("DBPrefix") String DBPrefix
+    );
+    //prithvi - Special DCR 16/04/2020 : End
+
 }

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.SpclDcrEntry"
+    android:id="@+id/llt">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <android.support.design.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:id="@+id/carddcrdate"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:ellipsize="end"
+                    android:paddingTop="@dimen/nav_header_vertical_spacing"
+                    android:singleLine="true"
+                    android:text="DATE : 26-03-2019"
+                    android:textColor="@color/textcolorgray"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
+                    android:enabled="false"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+        </android.support.design.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:ellipsize="end"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:singleLine="true"
+            android:text="MENU"
+            android:textColor="@color/textcolorgray"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
+            android:enabled="false"
+            android:textAlignment="center"
+            android:textSize="20sp"/>
+
+        <android.support.design.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:id="@+id/docEntry"
+            android:text="Doctor Calls"
+            android:textSize="18sp"
+            />
+
+        <android.support.design.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:id="@+id/chemEntry"
+            android:text="Chemist Calls"
+            android:textSize="18sp"
+            />
+
+
+
+        <android.support.design.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:padding="20dp"
+            android:id="@+id/btnConfirm"
+            android:text="SUBMIT TODAY'S REPORT"
+            app:backgroundTint="@color/textcolorred"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+</LinearLayout>

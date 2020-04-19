@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/outerll"
+    android:orientation="vertical"
+    tools:context=".Activity.SpclDcrPracticeDet">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#424242"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_margin="20dp"
+        android:textAlignment="center"
+        android:id="@+id/prCustname"/>
+
+        <android.support.design.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Is Doctor Practicing ?  "
+                    android:textColor="#424242"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_margin="20dp"
+                    android:id="@+id/quesTxt"/>
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:id="@+id/rdgrp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:id="@+id/yes"
+                        android:text="YES"
+                        android:layout_weight="1"/>
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:id="@+id/no"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="NO" />
+                </RadioGroup>
+                <android.support.design.button.MaterialButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/submitBtn"
+                    android:text="Submit"
+                    android:layout_margin="20dp"
+                    />
+            </LinearLayout>
+        </android.support.design.card.MaterialCardView>
+
+    </LinearLayout>

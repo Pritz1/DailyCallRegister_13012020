@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/sv"
+    android:layout_height="match_parent"
+    tools:context=".Activity.SpclDcrDoctorsData">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Select Area :"
+                    android:textColor="#424242"
+                    android:textSize="18sp"/>
+                <android.support.v7.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/areaspinn"
+                    android:spinnerMode="dialog"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+        </android.support.design.card.MaterialCardView>
+
+        <android.support.design.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Search Criteria : "
+                    android:textColor="#424242"
+                    android:textSize="18sp"/>
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/rdgrp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:id="@+id/aw"
+                        android:text="Area Wise"
+                        android:layout_weight="1"/>
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/all"
+                        android:enabled="true"
+                        android:text="All"
+                        android:layout_weight="1"/>
+
+                </RadioGroup>
+
+                <android.support.design.button.MaterialButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/btnDocSrch"
+                    android:text="Select Doctors"
+                    />
+            </LinearLayout>
+        </android.support.design.card.MaterialCardView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/doctorsListRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

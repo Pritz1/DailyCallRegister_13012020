@@ -74,7 +74,7 @@ import retrofit2.Response;
 public class DCREntry extends Fragment {
 
     View view;
-    ViewDialog progressDialoge,progressDialoge2,progressDialoge3; //Added BBy Bhushan 11/09/2019 -> progressDialoge2,progressDialoge3
+    ViewDialog progressDialoge,progressDialoge2,progressDialoge3; //Added By Bhushan 11/09/2019 -> progressDialoge2,progressDialoge3
     ScrollView sv;
     public MaterialCardView m1, m2, m3;
     public CardView dd, cd, ed, nond;

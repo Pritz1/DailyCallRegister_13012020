@@ -1,57 +1,40 @@
 package com.eis.dailycallregister.Activity;
 
-import android.app.Activity;
 import android.app.ActivityOptions;
-import android.app.Dialog;
 import android.content.ClipData;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.button.MaterialButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.text.Html;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.LinearLayout;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.eis.dailycallregister.Api.RetrofitClient;
 import com.eis.dailycallregister.Fragment.DCREntry;
 import com.eis.dailycallregister.Fragment.Elearning;
 import com.eis.dailycallregister.Fragment.HODCREntry;
 import com.eis.dailycallregister.Fragment.Help;
 import com.eis.dailycallregister.Fragment.MTPConfirmation;
+import com.eis.dailycallregister.Fragment.MgrRcpaFragment;
 import com.eis.dailycallregister.Fragment.Options;
 import com.eis.dailycallregister.Fragment.ReportFragment;
 import com.eis.dailycallregister.Fragment.UploadVisitingCard;
 import com.eis.dailycallregister.Fragment.VisitPlanDocLst;
 import com.eis.dailycallregister.Others.Global;
-import com.eis.dailycallregister.Pojo.DefaultResponse;
 import com.eis.dailycallregister.Pojo.MenuaccessItem;
 import com.eis.dailycallregister.R;
-import com.eis.dailycallregister.Fragment.MgrRcpaFragment;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static com.eis.dailycallregister.Others.Global.menuaccessItemsGlobal;
 
@@ -189,6 +172,8 @@ public class HomeActivity extends AppCompatActivity
             displaySelectedScreen(R.id.nav_audioMsg);                  //added by Prithvi 16/03/2020
         }else if (getintentval.equalsIgnoreCase("imgMsg")){
             displaySelectedScreen(R.id.nav_imgMsg);                  //added by Prithvi 16/03/2020
+        }else if (getintentval.equalsIgnoreCase("spclDcr")){
+            displaySelectedScreen(R.id.nav_spclRep);                  //added by Prithvi 16/03/2020
         }else{
             displaySelectedScreen(R.id.nav_home);
         }
@@ -378,6 +363,13 @@ public class HomeActivity extends AppCompatActivity
             case R.id.nav_imgMsg:
                 getintentval = "home";
                 intent = new Intent(HomeActivity.this, ShowImage.class);
+                bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                startActivity(intent, bndlanimation);
+                break;
+
+           case R.id.nav_spclRep:
+                getintentval = "home";
+                intent = new Intent(HomeActivity.this, SpclDcrEntry.class);
                 bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
                 startActivity(intent, bndlanimation);
                 break;

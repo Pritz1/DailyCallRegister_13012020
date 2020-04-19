@@ -60,6 +60,8 @@ public class DocinawItem{
 		return cNTCD;
 	}
 
+
+
 	@Override
  	public String toString(){
 		return 

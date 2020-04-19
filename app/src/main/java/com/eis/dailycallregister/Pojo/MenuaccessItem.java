@@ -46,6 +46,9 @@ public class MenuaccessItem{
 	@SerializedName("imgMsg")
 	private String imgMsg;
 
+	@SerializedName("spclDcr") //during lockdown
+	private String spclRep;
+
 	public void setDcr(String dcr){
 		this.dcr = dcr;
 	}
@@ -158,6 +161,14 @@ public class MenuaccessItem{
 		this.imgMsg = imgMsg;
 	}
 
+	public String getSpclRep() {
+		return spclRep;
+	}
+
+	public void setSpclRep(String spclRep) {
+		this.spclRep = spclRep;
+	}
+
 	@Override
  	public String toString(){
 		return 
@@ -174,6 +185,7 @@ public class MenuaccessItem{
 			",patientProfile = '" + patientProfile + '\'' + 
 			",audioMsg = '" + audioMsg + '\'' +
 			",imgMsg = '" + imgMsg + '\'' +
+			",spclRep = '" + spclRep + '\'' +
 			"}";
 		}
 }

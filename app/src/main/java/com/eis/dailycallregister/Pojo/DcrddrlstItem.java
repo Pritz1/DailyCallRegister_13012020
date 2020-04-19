@@ -91,39 +91,39 @@ public class DcrddrlstItem{
 	@SerializedName("ww4")
 	private String ww4;
 
-    public String getWw1() {
-        return ww1;
-    }
+	public String getWw1() {
+		return ww1;
+	}
 
-    public void setWw1(String ww1) {
-        this.ww1 = ww1;
-    }
+	public void setWw1(String ww1) {
+		this.ww1 = ww1;
+	}
 
-    public String getWw2() {
-        return ww2;
-    }
+	public String getWw2() {
+		return ww2;
+	}
 
-    public void setWw2(String ww2) {
-        this.ww2 = ww2;
-    }
+	public void setWw2(String ww2) {
+		this.ww2 = ww2;
+	}
 
-    public String getWw3() {
-        return ww3;
-    }
+	public String getWw3() {
+		return ww3;
+	}
 
-    public void setWw3(String ww3) {
-        this.ww3 = ww3;
-    }
+	public void setWw3(String ww3) {
+		this.ww3 = ww3;
+	}
 
-    public String getWw4() {
-        return ww4;
-    }
+	public String getWw4() {
+		return ww4;
+	}
 
-    public void setWw4(String ww4) {
-        this.ww4 = ww4;
-    }
+	public void setWw4(String ww4) {
+		this.ww4 = ww4;
+	}
 
-    public void setDrcd(String drcd){
+	public void setDrcd(String drcd){
 		this.drcd = drcd;
 	}
 
@@ -324,34 +324,34 @@ public class DcrddrlstItem{
 	}
 
 	@Override
- 	public String toString(){
-		return 
-			"DcrddrlstItem{" + 
-			"drcd = '" + drcd + '\'' + 
-			",wwith2 = '" + wwith2 + '\'' + 
-			",wwith3 = '" + wwith3 + '\'' + 
-			",wwith4 = '" + wwith4 + '\'' + 
-			",drname = '" + drname + '\'' + 
-			",cUSTFLG = '" + cUSTFLG + '\'' + 
-			",dCRNo = '" + dCRNo + '\'' + 
-			",cntCD = '" + cntCD + '\'' + 
-			",vISITTIME = '" + vISITTIME + '\'' + 
-			",drConverted = '" + drConverted + '\'' + 
-			",drRemark = '" + drRemark + '\'' + 
-			",wNetID = '" + wNetID + '\'' + 
-			",sTATUS = '" + sTATUS + '\'' + 
-			",completecall = '" + completecall + '\'' + 
-			",catcd = '" + catcd + '\'' + 
-			",fmtcpid = '" + fmtcpid + '\'' + 
-			",sURVEYDONE = '" + sURVEYDONE + '\'' + 
-			",class = '" + jsonMemberClass + '\'' + 
-			",pOB = '" + pOB + '\'' + 
-			",tCPID = '" + tCPID + '\'' + 
-			",degree = '" + degree + '\'' + 
-			",drtype = '" + drtype + '\'' + 
-			",novisit = '" + novisit + '\'' + 
-			",wWITH = '" + wWITH + '\'' + 
-			",serial = '" + serial + '\'' + 
-			"}";
-		}
+	public String toString(){
+		return
+				"DcrddrlstItem{" +
+						"drcd = '" + drcd + '\'' +
+						",wwith2 = '" + wwith2 + '\'' +
+						",wwith3 = '" + wwith3 + '\'' +
+						",wwith4 = '" + wwith4 + '\'' +
+						",drname = '" + drname + '\'' +
+						",cUSTFLG = '" + cUSTFLG + '\'' +
+						",dCRNo = '" + dCRNo + '\'' +
+						",cntCD = '" + cntCD + '\'' +
+						",vISITTIME = '" + vISITTIME + '\'' +
+						",drConverted = '" + drConverted + '\'' +
+						",drRemark = '" + drRemark + '\'' +
+						",wNetID = '" + wNetID + '\'' +
+						",sTATUS = '" + sTATUS + '\'' +
+						",completecall = '" + completecall + '\'' +
+						",catcd = '" + catcd + '\'' +
+						",fmtcpid = '" + fmtcpid + '\'' +
+						",sURVEYDONE = '" + sURVEYDONE + '\'' +
+						",class = '" + jsonMemberClass + '\'' +
+						",pOB = '" + pOB + '\'' +
+						",tCPID = '" + tCPID + '\'' +
+						",degree = '" + degree + '\'' +
+						",drtype = '" + drtype + '\'' +
+						",novisit = '" + novisit + '\'' +
+						",wWITH = '" + wWITH + '\'' +
+						",serial = '" + serial + '\'' +
+						"}";
+	}
 }

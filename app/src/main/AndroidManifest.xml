@@ -21,9 +21,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.ShowImage"></activity>
-        <activity android:name=".Activity.PlayAudio"></activity>
-        <activity android:name=".Activity.HOExpenseData"></activity>
+        <activity android:name=".Activity.SpclDcrChemPob"></activity>
+        <activity android:name=".Activity.SpclDcrChemData"></activity>
+        <activity android:name=".Activity.SpclDcrEditPhoneNo"></activity>
+        <activity android:name=".Activity.SpclDcrRemarks"></activity>
+        <activity android:name=".Activity.SpclDcrPracticeDet"></activity>
+        <activity android:name=".Activity.SpclDcrDoctorsData"></activity>
+        <activity android:name=".Activity.SpclDcrEntry" />
+        <activity android:name=".Activity.ShowImage" />
+        <activity android:name=".Activity.PlayAudio" />
+        <activity android:name=".Activity.HOExpenseData" />
         <activity
             android:name=".Activity.HODoctorsData"
             android:screenOrientation="portrait" />
@@ -50,7 +57,7 @@
         <activity android:name=".Activity.HoMtpPSRSelection" />
         <activity android:name=".Activity.HoMtpMgrList" />
         <activity android:name=".Activity.HOMtpActivity" />
-        <activity android:name=".Activity.AddOtherChemist"></activity>
+        <activity android:name=".Activity.AddOtherChemist" />
         <activity android:name=".Activity.PatientList" />
         <activity android:name=".Activity.UploadSelFie" />
         <activity
@@ -58,8 +65,7 @@
             android:theme="@style/AppSearchView" />
         <activity android:name=".Activity.CapNUpSelfie" />
         <activity android:name=".Activity.ChemistDetails" />
-        <activity android:name=".Activity.ChemistProfileList"
-            />
+        <activity android:name=".Activity.ChemistProfileList" />
         <activity
             android:name=".Activity.PatientProfile"
             android:screenOrientation="portrait" />

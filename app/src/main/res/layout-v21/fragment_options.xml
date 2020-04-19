@@ -32,6 +32,22 @@
         app:rippleColor="@color/textcolorwhite"/>
 
 
+        <android.support.design.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="HO DCR ENTRY"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="5sp"
+            android:autoSizeMaxTextSize="18sp"
+            android:autoSizeStepGranularity="1sp"
+            android:id="@+id/hodcr"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            app:cornerRadius="8dp"
+            android:textColor="@color/textcolorwhite"
+            app:rippleColor="@color/colorPrimaryDark"/>
+
     <android.support.design.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -157,6 +173,40 @@
             app:cornerRadius="8dp"
             app:rippleColor="@color/colorPrimary"
            />                <!--added by Aniket 14/11/2019-->
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/homtp"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:autoSizeMaxTextSize="18sp"
+            android:autoSizeMinTextSize="5sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:text="HO MTP"
+            android:textColor="@color/textcolorwhite"
+            app:cornerRadius="8dp"
+            app:rippleColor="@color/colorPrimary"
+           />             <!--added by Prithvi 16/03/2020-->
+
+         <android.support.design.button.MaterialButton
+            android:id="@+id/spclRep"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:autoSizeMaxTextSize="18sp"
+            android:autoSizeMinTextSize="5sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:text="Special Call Report"
+            android:textColor="@color/textcolorwhite"
+            app:cornerRadius="8dp"
+            app:rippleColor="@color/colorPrimary"
+           />                <!--added by Prithvi 15/04/2020-->
 
     </LinearLayout>
 </ScrollView>

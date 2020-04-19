@@ -18,7 +18,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +63,8 @@ import static com.eis.dailycallregister.Others.Global.menuaccessItemsGlobal;
 
 public class Options extends Fragment {
 
-    MaterialButton dcr, mtp, uploadcard, vps, elearn, report, mgrrcpa, patientpr, chemistpr, hodcr, homtp;//report --> added by aniket 21/09/19 --> dcrrcpa
+    MaterialButton dcr, mtp, uploadcard, vps, elearn,
+            report, mgrrcpa, patientpr, chemistpr, hodcr, homtp, spclDcr;//report --> added by aniket 21/09/19 --> dcrrcpa
     ViewDialog progressDialoge;
     List<MisscalldrsItem> misscall = new ArrayList<>();
     LinearLayout menuoptions;
@@ -73,7 +73,6 @@ public class Options extends Fragment {
     View view;
     String checkmtp = "";
     public static List<MenuaccessItem> menuaccessItems = new ArrayList<>();
-
     public List<RetailerscntItem> retailerscnt = new ArrayList<>();
 
     @Override
@@ -102,7 +101,7 @@ public class Options extends Fragment {
         chemistpr = view.findViewById(R.id.chemistpr); //added by aniket
         hodcr = view.findViewById(R.id.hodcr); //patanjali
         homtp = view.findViewById(R.id.homtp);
-
+        spclDcr = view.findViewById(R.id.spclRep);
 
         /*empacc.clear();
         //CD
@@ -231,6 +230,12 @@ public class Options extends Fragment {
                 homtp.setVisibility(View.VISIBLE);
             } else {
                 homtp.setVisibility(View.GONE);
+            }
+
+            if (menuaccessItems.get(0).getSpclRep().equalsIgnoreCase("Y")) {
+                spclDcr.setVisibility(View.VISIBLE);
+            } else {
+                spclDcr.setVisibility(View.GONE);
             }
 
 
@@ -410,6 +415,21 @@ public class Options extends Fragment {
             }
         });
 
+        spclDcr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                intent.putExtra("ecode", Global.ecode);
+                intent.putExtra("date", Global.date);
+                intent.putExtra("dbprefix", Global.dbprefix);
+                intent.putExtra("openfrag", "spclDcr");
+                Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                startActivity(intent, bndlanimation);
+                getActivity().finish();
+
+            }
+        });
+
 
         mtp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -472,11 +492,20 @@ public class Options extends Fragment {
             getRetailerAlert();
         }
 
-        //call audio activity here, must appear after retaileralert;
+        //call image activity here, must appear after retaileralert;
+        if (menuaccessItems.get(0).getImgMsg().equalsIgnoreCase("Y")
+                && Global.imgPopupShow == 0
+                && ((menuaccessItems.get(0).getRetailerAlert().equalsIgnoreCase("Y") && !Global.isfirst)
+                || (menuaccessItems.get(0).getRetailerAlert().equalsIgnoreCase("N")))) {
+
+            showImgMsgDialog();
+        }
+
+//call audio activity here, must appear after image alert;
         if (menuaccessItems.get(0).getAudioMsg().equalsIgnoreCase("Y")
                 && Global.audioPopupShow == 0
-        && ((menuaccessItems.get(0).getRetailerAlert().equalsIgnoreCase("Y") && !Global.isfirst)
-                || (menuaccessItems.get(0).getRetailerAlert().equalsIgnoreCase("N")))) {
+                && ((menuaccessItems.get(0).getAudioMsg().equalsIgnoreCase("Y") && !Global.isfirst)
+                || (menuaccessItems.get(0).getAudioMsg().equalsIgnoreCase("N")))) {
 
             showAudioMsgDialog();
         }
@@ -738,7 +767,8 @@ public class Options extends Fragment {
                         @Override
                         public void onClick(View v) {
                             dialog.dismiss();
-                            showAudioMsgDialog();
+                            //showAudioMsgDialog();
+                            showImgMsgDialog();
                         }
                     });
 
@@ -763,105 +793,106 @@ public class Options extends Fragment {
                 //Log.d("onFailure", "onFailure");
                 progressDialoge.dismiss();
                 Toast.makeText(getActivity(), "Failed to get Retailer Reachout Status!", Toast.LENGTH_SHORT).show();
-                showAudioMsgDialog();
+                //showAudioMsgDialog();
+                showImgMsgDialog();
             }
         });
 
     }
-private void showAudioMsgDialog(){
-    progressDialoge.show();
-    Log.d("Global.ecode",Global.ecode);
-    Log.d("Global.dbprefix",Global.dbprefix);
+    private void showAudioMsgDialog(){
+        progressDialoge.show();
+        //Log.d("Global.ecode",Global.ecode);
+        //Log.d("Global.dbprefix",Global.dbprefix);
 
-    Call<DefaultResponse> call = RetrofitClient.getInstance()
-            .getApi().getAudioMsgViewDet(Global.ecode, Global.dbprefix);
-    call.enqueue(new Callback<DefaultResponse>() {
-        @Override
-        public void onResponse(Call<DefaultResponse> call,
-                               Response<DefaultResponse> response) {
-            DefaultResponse res = response.body();
+        Call<DefaultResponse> call = RetrofitClient.getInstance()
+                .getApi().getAudioMsgViewDet(Global.ecode, Global.dbprefix);
+        call.enqueue(new Callback<DefaultResponse>() {
+            @Override
+            public void onResponse(Call<DefaultResponse> call,
+                                   Response<DefaultResponse> response) {
+                DefaultResponse res = response.body();
 
-            if (res.getErrormsg() != null && (res.getErrormsg().equalsIgnoreCase("0")
-                    || res.getErrormsg().equalsIgnoreCase("1"))) {
+                if (res.getErrormsg() != null && (res.getErrormsg().equalsIgnoreCase("0")
+                        || res.getErrormsg().equalsIgnoreCase("1"))) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setCancelable(true);
-                LayoutInflater factory = LayoutInflater.from(getActivity());
-                final View view = factory.inflate(R.layout.audio_img_for_alert, null);
-                builder.setView(view);
-                // builder.setMessage("Listen to what our MD Mr. Partha Paul has to say in challenging times as such");
-                builder.setPositiveButton(Html.fromHtml("<b>Listen<b>"), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getActivity(), HomeActivity.class);
-                        intent.putExtra("ecode", Global.ecode);
-                        intent.putExtra("date", Global.date);
-                        intent.putExtra("dbprefix", Global.dbprefix);
-                        intent.putExtra("openfrag", "audioMsg");
-                        Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
-                        startActivity(intent, bndlanimation);
-                        getActivity().finish();
-                    }
-                });
-                builder.setNegativeButton(Html.fromHtml("<b>Skip<b>"), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callForMissCalls();
-                        //do nothing
-                    }
-                });
-                AlertDialog dialog2 = builder.create();
-                dialog2.show();
-                Global.audioPopupShow = 1;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setCancelable(true);
+                    LayoutInflater factory = LayoutInflater.from(getActivity());
+                    final View view = factory.inflate(R.layout.audio_img_for_alert, null);
+                    builder.setView(view);
+                    // builder.setMessage("Listen to what our MD Mr. Partha Paul has to say in challenging times as such");
+                    builder.setPositiveButton(Html.fromHtml("<b>Listen<b>"), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(getActivity(), HomeActivity.class);
+                            intent.putExtra("ecode", Global.ecode);
+                            intent.putExtra("date", Global.date);
+                            intent.putExtra("dbprefix", Global.dbprefix);
+                            intent.putExtra("openfrag", "audioMsg");
+                            Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                            startActivity(intent, bndlanimation);
+                            getActivity().finish();
+                        }
+                    });
+                    builder.setNegativeButton(Html.fromHtml("<b>Skip<b>"), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            callForMissCalls();
+                            //do nothing
+                        }
+                    });
+                    AlertDialog dialog2 = builder.create();
+                    dialog2.show();
+                    Global.audioPopupShow = 1;
+                    progressDialoge.dismiss();
+                }else if(res.getErrormsg() != null && res.getErrormsg().equalsIgnoreCase("2")){
+                    progressDialoge.dismiss();
+                    Global.audioPopupShow = 2;
+                    callForMissCalls();
+                }
+                else {
+                    progressDialoge.dismiss();
+                    Snackbar.make(menuoptions, "Some Problem Occurred While Getting Audio Msg Details !", Snackbar.LENGTH_LONG).show();
+                    callForMissCalls();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 progressDialoge.dismiss();
-            }else if(res.getErrormsg() != null && res.getErrormsg().equalsIgnoreCase("2")){
-                progressDialoge.dismiss();
-                Global.audioPopupShow = 2;
+                Snackbar.make(menuoptions, "Failed to Get Audio Msg Details !", Snackbar.LENGTH_LONG).show();
                 callForMissCalls();
             }
-            else {
-                progressDialoge.dismiss();
-                Snackbar.make(menuoptions, "Some Problem Occurred While Getting Audio Msg Details !", Snackbar.LENGTH_LONG).show();
-                callForMissCalls();
-            }
-        }
-
-        @Override
-        public void onFailure(Call<DefaultResponse> call, Throwable t) {
-            progressDialoge.dismiss();
-            Snackbar.make(menuoptions, "Failed to Get Audio Msg Details !", Snackbar.LENGTH_LONG).show();
-            callForMissCalls();
-        }
-    });
-}
-
-private void callForMissCalls(){
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-    String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-    //String datex = new SimpleDateFormat("yyyy-MM-15", Locale.getDefault()).format(new Date());
-    String datex = new SimpleDateFormat("yyyy-MM-15", Locale.getDefault()).format(new Date());
-    Calendar calendar1 = Calendar.getInstance();
-    Calendar calendar2 = Calendar.getInstance();
-
-    Date date1 = null;
-    Date date2 = null;
-    try {
-        date1 = dateFormat.parse(datex);
-        date2 = dateFormat.parse(date);
-    } catch (ParseException e) {
-        e.printStackTrace();
+        });
     }
 
+    private void callForMissCalls(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        //String datex = new SimpleDateFormat("yyyy-MM-15", Locale.getDefault()).format(new Date());
+        String datex = new SimpleDateFormat("yyyy-MM-15", Locale.getDefault()).format(new Date());
+        Calendar calendar1 = Calendar.getInstance();
+        Calendar calendar2 = Calendar.getInstance();
 
-    calendar1.setTime(date1);
-    calendar2.setTime(date2);
-    //Toast.makeText(getActivity(),datex +"///"+ date , Toast.LENGTH_LONG).show();
-    if (calendar2.compareTo(calendar1) < 0) {
-        checkmtp = "N";
-        //Toast.makeText(getActivity(), "Do not show", Toast.LENGTH_LONG).show();
-    } else {
-        checkmtp = "Y";
-        //Toast.makeText(getActivity(), "show MTP", Toast.LENGTH_LONG).show();
+        Date date1 = null;
+        Date date2 = null;
+        try {
+            date1 = dateFormat.parse(datex);
+            date2 = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        calendar1.setTime(date1);
+        calendar2.setTime(date2);
+        //Toast.makeText(getActivity(),datex +"///"+ date , Toast.LENGTH_LONG).show();
+        if (calendar2.compareTo(calendar1) < 0) {
+            checkmtp = "N";
+            //Toast.makeText(getActivity(), "Do not show", Toast.LENGTH_LONG).show();
+        } else {
+            checkmtp = "Y";
+            //Toast.makeText(getActivity(), "show MTP", Toast.LENGTH_LONG).show();
                 /*AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(true);
                 builder.setMessage("Next month MTP is ready to view.");
@@ -887,12 +918,101 @@ private void callForMissCalls(){
                 });
                 AlertDialog dialog2 = builder.create();
                 dialog2.show();*/
+        }
+
+        if (Global.emplevel.equalsIgnoreCase("1")) {
+            getMissCalls();
+        }
     }
 
-    if (Global.emplevel.equalsIgnoreCase("1")) {
-        getMissCalls();
+    private void showImgMsgDialog(){
+
+        progressDialoge.show();
+        Call<DefaultResponse> call = RetrofitClient.getInstance()
+                .getApi().getImgMsgViewDet(Global.ecode, Global.dbprefix);
+        call.enqueue(new Callback<DefaultResponse>() {
+            @Override
+            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                DefaultResponse res = response.body();
+
+                if (res.getErrormsg() != null && (res.getErrormsg().equalsIgnoreCase("0")
+                        || res.getErrormsg().equalsIgnoreCase("1"))) {
+
+                    progressDialoge.dismiss();
+
+                    final Dialog dialog = new Dialog(getActivity());
+                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setCancelable(false);
+                    dialog.setContentView(R.layout.image_alert);
+
+                    MaterialButton bPositive = dialog.findViewById(R.id.closebtn);
+                    final LinearLayout llOuter = dialog.findViewById(R.id.llOuter);
+
+                    bPositive.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            showAudioMsgDialog();
+                        }
+                    });
+
+
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(dialog.getWindow().getAttributes());
+                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                    dialog.show();
+                    dialog.getWindow().setAttributes(lp);
+                    Global.imgPopupShow = 1;
+                    saveRecord();
+                }else if(res.getErrormsg() != null && res.getErrormsg().equalsIgnoreCase("2")){
+                    progressDialoge.dismiss();
+                    Global.imgPopupShow = 2;
+                    showAudioMsgDialog();
+                }
+                else {
+                    progressDialoge.dismiss();
+                    Snackbar.make(menuoptions, "Some Problem Occurred While Getting Poster Viewed Details !", Snackbar.LENGTH_LONG).show();
+                    showAudioMsgDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                //Log.d("onFailure", "onFailure");
+                progressDialoge.dismiss();
+                Toast.makeText(getActivity(), "Failed to get Retailer Reachout Status!", Toast.LENGTH_SHORT).show();
+                showAudioMsgDialog();
+            }
+        });
     }
-}
+
+    private void saveRecord(){
+        progressDialoge.show();
+
+        retrofit2.Call<DefaultResponse> call1 = RetrofitClient
+                .getInstance().getApi().saveImgViewDetls(Global.ecode, Global.netid,Global.audioPopupShow, Global.dbprefix);
+        call1.enqueue(new Callback<DefaultResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<DefaultResponse> call1, Response<DefaultResponse> response) {
+                DefaultResponse res = response.body();
+                progressDialoge.dismiss();
+                if(res.isError()){
+                    Toast.makeText(getActivity(), "ERROR", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<DefaultResponse> call1, Throwable t) {
+                progressDialoge.dismiss();
+                Toast.makeText(getActivity(), "ERROR", Toast.LENGTH_SHORT).show();
+                showAudioMsgDialog();
+            }
+        });
+
+    }
 
 }
 
