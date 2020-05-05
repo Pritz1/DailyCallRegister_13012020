@@ -29,7 +29,7 @@
         android:padding="10dp"
         android:singleLine="true"
         android:ellipsize="marquee"
-        android:text="ABC of Life during Corona - Partha Paul, Palsons Derma(5th April 2020)"
+        android:text="Message to Palsons Derma Family - Partha Paul (5th May 2020)"
         android:textSize="20sp"
         android:textStyle="italic"
         android:marqueeRepeatLimit="marquee_forever"

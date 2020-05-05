@@ -7,14 +7,16 @@
     android:weightSum="3"
     android:id="@+id/llOuter">
 
-        <ImageView
-            android:id="@+id/dialog_imageview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="2dp"
-            android:padding="5dp"
-            android:src="@drawable/poster"
-            android:layout_weight="2"/>
+    <ImageView
+        android:id="@+id/dialog_imageview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_weight="2"
+        android:padding="5dp"
+        android:src="@drawable/neolayr_e" />
 
         <android.support.design.button.MaterialButton
             android:layout_width="150dp"
@@ -27,6 +29,7 @@
             android:id="@+id/closebtn"
             android:textStyle="bold"
             android:layout_weight="1"
+            android:backgroundTint="#a680aa"
             android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

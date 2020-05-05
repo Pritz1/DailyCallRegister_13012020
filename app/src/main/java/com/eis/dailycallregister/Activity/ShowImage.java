@@ -1,23 +1,13 @@
 package com.eis.dailycallregister.Activity;
 
-import android.content.res.ColorStateList;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.eis.dailycallregister.Api.RetrofitClient;
 import com.eis.dailycallregister.Others.Global;
@@ -29,6 +19,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/*
+* poster 1 -> SaluteYourSensitivity -> img name in workspace : poster
+* Poster 2 -> NEOLAYR-e (30/04/2020)-> img name in workspace : neolayr_e
+* */
+
 public class ShowImage extends AppCompatActivity {
 
     private ViewDialog progressDialoge;
@@ -39,7 +34,7 @@ public class ShowImage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_alert);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'>Palsons Derma Family</font>"));
+        getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'><i><b>MEGA BRAND ON ITS WAY...</b></i></font>"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_black);
         progressDialoge = new ViewDialog(ShowImage.this);
@@ -56,7 +51,8 @@ public class ShowImage extends AppCompatActivity {
         progressDialoge.show();
 
         Call<DefaultResponse> call1 = RetrofitClient
-                .getInstance().getApi().saveImgViewDetls(Global.ecode, Global.netid,Global.audioPopupShow, Global.dbprefix);
+                .getInstance().getApi().saveImgViewDetls(Global.ecode, Global.netid,
+                        Global.audioPopupShow,"NEOLAYR-e", Global.dbprefix);
         call1.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call1, Response<DefaultResponse> response) {
@@ -64,7 +60,7 @@ public class ShowImage extends AppCompatActivity {
                 progressDialoge.dismiss();
                 if(res.isError()){
                     Snackbar snackbar = Snackbar.make(outerLinearLay, res.getErrormsg(), Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Re-try", new View.OnClickListener() {
+                            .setAction("Retry", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     saveRecordInDB();
@@ -77,8 +73,8 @@ public class ShowImage extends AppCompatActivity {
             @Override
             public void onFailure(Call<DefaultResponse> call1, Throwable t) {
                 progressDialoge.dismiss();
-                Snackbar snackbar = Snackbar.make(outerLinearLay, "Failed to save audio view details !", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Re-try", new View.OnClickListener() {
+                Snackbar snackbar = Snackbar.make(outerLinearLay, "Failed to save poster view details !", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 saveRecordInDB();

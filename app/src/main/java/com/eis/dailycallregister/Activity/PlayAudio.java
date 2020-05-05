@@ -30,6 +30,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/*
+* abc_of_life_during_corona_parthapaul_palsonsderma_5thapr2020 -> abc_of_life_during_corona_5thapr2020
+* msg_to_palsons_derma_family_5thmay2020
+* */
 public class PlayAudio extends AppCompatActivity {
 
     private ViewDialog progressDialoge;
@@ -65,7 +69,7 @@ public class PlayAudio extends AppCompatActivity {
         handler = new Handler();
 
         if(player ==  null){
-            player = MediaPlayer.create(this,R.raw.abc_of_life_during_corona_parthapaul_palsonsderma_5thapr2020);
+            player = MediaPlayer.create(this,R.raw.msg_to_palsons_derma_family_5thmay2020);
             ImageViewCompat.setImageTintList(imgPlay, ColorStateList.valueOf(ContextCompat.getColor(this, R.color.textcolorgray)));
             btnPlay.setEnabled(false);
         }
@@ -118,7 +122,8 @@ public class PlayAudio extends AppCompatActivity {
         progressDialoge.show();
 
         retrofit2.Call<DefaultResponse> call1 = RetrofitClient
-                .getInstance().getApi().saveAudioViewDetls(Global.ecode, Global.netid,Global.audioPopupShow, Global.dbprefix);
+                .getInstance().getApi().saveAudioViewDetls(Global.ecode, Global.netid,
+                        Global.audioPopupShow, Global.dbprefix, "msg_to_palsons_derma_family_5thmay2020");
         call1.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(retrofit2.Call<DefaultResponse> call1, Response<DefaultResponse> response) {
@@ -126,7 +131,7 @@ public class PlayAudio extends AppCompatActivity {
                 progressDialoge.dismiss();
                 if(res.isError()){
                     Snackbar snackbar = Snackbar.make(outerLinearLay, res.getErrormsg(), Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Re-try", new View.OnClickListener() {
+                            .setAction("Retry", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     saveRecordInDB();
@@ -140,7 +145,7 @@ public class PlayAudio extends AppCompatActivity {
             public void onFailure(Call<DefaultResponse> call1, Throwable t) {
                 progressDialoge.dismiss();
                 Snackbar snackbar = Snackbar.make(outerLinearLay, "Failed to save audio view details !", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Re-try", new View.OnClickListener() {
+                        .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 saveRecordInDB();
@@ -173,7 +178,7 @@ public class PlayAudio extends AppCompatActivity {
 
     public void play(View v){
 if(player ==  null){
-    player = MediaPlayer.create(this,R.raw.abc_of_life_during_corona_parthapaul_palsonsderma_5thapr2020);
+    player = MediaPlayer.create(this,R.raw.msg_to_palsons_derma_family_5thmay2020);
     player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mp) {

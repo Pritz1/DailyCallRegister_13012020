@@ -52,7 +52,7 @@
             android:layout_height="match_parent"
             android:fontFamily="@font/aladin"
             android:gravity="center|bottom"
-            android:text="2019 © www.effectiveinfo.com"
+            android:text="2020 © www.effectiveinfo.com"
             android:textColor="@color/colorPrimary" />
     </LinearLayout>
 
