@@ -444,7 +444,7 @@ public class DoctorsData extends AppCompatActivity {
         });
 
     }
-
+//doctor search popup
     public void showPopup() {
         final Dialog dialog = new Dialog(DoctorsData.this);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -478,31 +478,29 @@ public class DoctorsData extends AppCompatActivity {
                                      }
 
                                      @Override
-                                     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-                                         final Holder myHolder = (Holder) viewHolder;
-                                         final DocinawItem model = dclstawlist.get(i);
-                                         myHolder.drname.setText(model.getDRCD() + " - " + model.getDRNAME());
-                                         if (seldraw.size() > 0 && seldraw.contains(model.getCNTCD())) {
-                                             myHolder.ckb.setChecked(true);
-                                         }
-                                         if(model.getVstCrdPrsnt() == null || model.getVstCrdPrsnt().equalsIgnoreCase("N")){
-                                             myHolder.ckb.setEnabled(false);
+                     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                         final Holder myHolder = (Holder) viewHolder;
+                         final DocinawItem model = dclstawlist.get(i);
+                         myHolder.drname.setText(model.getDRCD() + " - " + model.getDRNAME());
+                         if (seldraw.size() > 0 && seldraw.contains(model.getCNTCD())) {
+                             myHolder.ckb.setChecked(true);
+                         }
+                         if(model.getVstCrdPrsnt() == null || model.getVstCrdPrsnt().equalsIgnoreCase("N")){
+                             myHolder.ckb.setEnabled(false);
 
-                                         }
-                                         myHolder.ckb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                             @Override
-                                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                                 if (isChecked) {
-                                                     seldraw.add(model.getCNTCD());
-                                                 } else {
-                                                     seldraw.remove(model.getCNTCD());
-                                                 }
+                         }
+                         myHolder.ckb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                             @Override
+                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                 if (isChecked) {
+                                     seldraw.add(model.getCNTCD());
+                                 } else {
+                                     seldraw.remove(model.getCNTCD());
+                                 }
+                             }
+                         });
 
-
-                                             }
-                                         });
-
-                                     }
+                     }
 
                                      @Override
                                      public int getItemCount() {
@@ -571,26 +569,7 @@ public class DoctorsData extends AppCompatActivity {
 
         new DoctorsData.addSelDrsInDB().execute(Global.ecode, Global.netid, Global.tcpid, Global.dcrdate, Global.dcrdatemonth,
                 Global.dcrdateyear, tempdcrno, Global.wrktype, ww0, ww1, ww2, ww3, seldraw.toString(), Global.dbprefix);
-        /*call3.enqueue(new Callback<DefaultResponse>() {
-            @Override
-            public void onResponse(retrofit2.Call<DefaultResponse> call3, Response<DefaultResponse> response) {
-                progressDialoge.dismiss();
-                DefaultResponse res = response.body();
-                //if(!res.isError()) {
-                    Global.dcrno = res.getErrormsg();
-                Snackbar snackbar = Snackbar.make(sv, Global.dcrno, Snackbar.LENGTH_LONG);
-                snackbar.show();
-                //}
-            }
 
-            @Override
-            public void onFailure(Call<DefaultResponse> call3, Throwable t) {
-                Log.d("error ",t.toString());
-                progressDialoge.dismiss();
-                Snackbar snackbar = Snackbar.make(sv, "Retry", Snackbar.LENGTH_LONG);
-                snackbar.show();
-            }
-        });*/
     }
 
     public class addSelDrsInDB extends AsyncTask<String, String, String> {

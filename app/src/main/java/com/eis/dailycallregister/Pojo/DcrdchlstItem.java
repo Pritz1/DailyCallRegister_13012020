@@ -76,6 +76,12 @@ public class DcrdchlstItem{
 	@SerializedName("stname")
 	private String stname;
 
+	@SerializedName("showQPopup")
+	private String showQPopup;
+
+	@SerializedName("isPOBEnt")
+	private String isPOBEnt;
+
 	public void setWwith2(String wwith2){
 		this.wwith2 = wwith2;
 	}
@@ -268,6 +274,22 @@ public class DcrdchlstItem{
 		return stname;
 	}
 
+	public String getShowQPopup() {
+		return showQPopup;
+	}
+
+	public void setShowQPopup(String showQPopup) {
+		this.showQPopup = showQPopup;
+	}
+
+	public String getIsPOBEnt() {
+		return isPOBEnt;
+	}
+
+	public void setIsPOBEnt(String isPOBEnt) {
+		this.isPOBEnt = isPOBEnt;
+	}
+
 	@Override
  	public String toString(){
 		return 
@@ -296,6 +318,8 @@ public class DcrdchlstItem{
 			",fmtcpid = '" + fmtcpid + '\'' + 
 			",sURVEYDONE = '" + sURVEYDONE + '\'' + 
 			",stname = '" + stname + '\'' + 
+			",showQPopup = '" + showQPopup + '\'' +
+			",isPOBEnt = '" + isPOBEnt + '\'' +
 			"}";
 		}
 }

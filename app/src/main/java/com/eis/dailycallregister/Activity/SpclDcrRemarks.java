@@ -72,7 +72,7 @@ public class SpclDcrRemarks extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(SpclDcrRemarks.this);
                 builder.setCancelable(true);
                 builder.setTitle("Save ?");
-                builder.setMessage("Are you sure you want to save remark ?");
+                builder.setMessage("Are you sure you want to save remarks ?");
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -115,8 +115,8 @@ public class SpclDcrRemarks extends AppCompatActivity {
             @Override
             public void onFailure(Call<DefaultResponse> call1, Throwable t) {
                 progressDialoge.dismiss();
-                Snackbar snackbar = Snackbar.make(llt, "Failed to fetch remark !", Snackbar.LENGTH_LONG)
-                        .setAction("Re-try", new View.OnClickListener() {
+                Snackbar snackbar = Snackbar.make(llt, "Failed to fetch remarks !", Snackbar.LENGTH_LONG)
+                        .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 getRemarkFromDB();
@@ -170,7 +170,7 @@ public class SpclDcrRemarks extends AppCompatActivity {
                 public void onFailure(Call<DefaultResponse> call1, Throwable t) {
                     progressDialoge.dismiss();
                     Snackbar snackbar = Snackbar.make(llt, "Failed to fetch data !", Snackbar.LENGTH_LONG)
-                            .setAction("Re-try", new View.OnClickListener() {
+                            .setAction("Retry", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     saveRemarkInDB();

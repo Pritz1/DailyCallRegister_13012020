@@ -127,7 +127,7 @@ public class DocDCRProduct extends AppCompatActivity {
         serial = getIntent().getStringExtra("serial");
         serialwp = getIntent().getStringExtra("oserial");
         cntcd = getIntent().getStringExtra("cntcd");
-        if (Global.hname.contains("(A)")) {
+        /*if (Global.hname.contains("(A)")) {
             d1d2 = "A";
         } else if (Global.hname.contains("(B)")) {
             d1d2 = "B";
@@ -135,6 +135,12 @@ public class DocDCRProduct extends AppCompatActivity {
             d1d2 = "C";
         } else if (Global.hname.contains("(D)")) {
             d1d2 = "D";
+        }*/
+//below changes done by prithvi 31/03/2020
+        if (Global.hname!=null && Global.hname.indexOf("(")!=-1
+                && Global.hname.indexOf(")")!=-1){
+            d1d2 = (Global.hname.split("\\(")[1]).split("\\)")[0];
+            Log.d("d1d2 : ",d1d2);
         }
 
         submitbtn = findViewById(R.id.submit);
@@ -335,9 +341,25 @@ public class DocDCRProduct extends AppCompatActivity {
         String lyr = wrkdate[0];
         String lmth = wrkdate[1];
         progressDialoge.show();
+/*
+Log.d("serial",serial);
+Log.d("Global.netid",Global.netid);
+Log.d("dcrno",Global.dcrno);
+Log.d("ecode",Global.ecode);
+Log.d("dcrdate",Global.dcrdate);
+Log.d("dcrdatemonth",Global.dcrdatemonth);
+Log.d("dcrdateyear",Global.dcrdateyear);
+Log.d("dbprefix",Global.dbprefix);
+Log.d("d1d2",d1d2);
+Log.d("finyr",finyr);
+Log.d("cntcd",cntcd);
+Log.d("lmth",lmth);
+Log.d("lyr",lyr);
+*/
 
         retrofit2.Call<DCRProdListRes> call1 = RetrofitClient
-                .getInstance().getApi().DCRProdApi(serial, Global.netid, Global.dcrno, d1d2, Global.ecode, finyr, Global.dcrdate, Global.dcrdatemonth, Global.dcrdateyear, cntcd, lmth, lyr, Global.dbprefix);
+                .getInstance().getApi().DCRProdApi(serial, Global.netid, Global.dcrno, d1d2, Global.ecode, finyr,
+                        Global.dcrdate, Global.dcrdatemonth, Global.dcrdateyear, cntcd, lmth, lyr, Global.dbprefix);
         call1.enqueue(new Callback<DCRProdListRes>() {
             @Override
             public void onResponse(retrofit2.Call<DCRProdListRes> call1, Response<DCRProdListRes> response) {
@@ -360,7 +382,7 @@ public class DocDCRProduct extends AppCompatActivity {
             public void onFailure(Call<DCRProdListRes> call1, Throwable t) {
                 progressDialoge.dismiss();
                 Snackbar snackbar = Snackbar.make(nsv, "Failed to fetch data !", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Re-try", new View.OnClickListener() {
+                        .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 apicall1();

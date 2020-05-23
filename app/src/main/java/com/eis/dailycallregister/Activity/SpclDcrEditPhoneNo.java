@@ -58,7 +58,7 @@ public class SpclDcrEditPhoneNo extends AppCompatActivity {
         cntcd = getIntent().getStringExtra("cntcd");
         custflg = getIntent().getStringExtra("custflg");
         phnno = getIntent().getStringExtra("phnno");
-        drname = getIntent().getStringExtra("drname");
+        drname = getIntent().getStringExtra("custName");
 
         drnameTxt.setText(drname);
         phonenoTxt.setText(phnno);

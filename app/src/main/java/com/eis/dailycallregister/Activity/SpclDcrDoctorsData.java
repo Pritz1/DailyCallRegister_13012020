@@ -495,6 +495,10 @@ public class SpclDcrDoctorsData extends AppCompatActivity {
                     doctorsListRv.getAdapter().notifyDataSetChanged();
 
                 } else {
+                    selDrList.clear();
+                    doctorsListRv.setVisibility(View.VISIBLE);
+                    doctorsListRv.getAdapter().notifyDataSetChanged();
+
                     Snackbar snackbar = Snackbar.make(sv, "Doctors not selected !", Snackbar.LENGTH_INDEFINITE);
                     snackbar.show();
                 }
@@ -649,14 +653,14 @@ public class SpclDcrDoctorsData extends AppCompatActivity {
         progressDialoge.show();
         retrofit2.Call<DefaultResponse> call1 = RetrofitClient
                 .getInstance().getApi().deleteDrChfromSpclDcr(Global.ecode, Global.netid,
-                        Global.dcrno, Global.currDate, cntcd,"D",Global.dbprefix);
+                        Global.dcrno, Global.currDate, cntcd,"D",Global.dbprefix,"");
         call1.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(retrofit2.Call<DefaultResponse> call1, Response<DefaultResponse> response) {
                 DefaultResponse res = response.body();
                 progressDialoge.dismiss();
                 Toast.makeText(SpclDcrDoctorsData.this, res.getErrormsg(), Toast.LENGTH_LONG).show();
-                if (!res.isError() && res.getErrormsg().equalsIgnoreCase("deleted")) {
+                if (!res.isError() && !res.getErrormsg().equalsIgnoreCase("")) {
                     apicall3();
                 }
             }

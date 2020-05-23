@@ -67,6 +67,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.eis.dailycallregister.Others.Global.menuaccessItemsGlobal;
+
 public class ChemistData extends AppCompatActivity {
 
     public static final int CONNECTION_TIMEOUT = 60000;
@@ -80,7 +82,7 @@ public class ChemistData extends AppCompatActivity {
     ViewDialog progressDialoge;
     NestedScrollView sv;
     NestedScrollView nestedsv;
-    public String field = "", finyear = "";
+    public String field = "", finyear = "", dcrChQPopup="";
     int areanameid = 0;
     public List<JointWRKArrayList> seljntwrklst = new ArrayList<>();
     public List<JointwrkItem> jntwrklist = new ArrayList<>();
@@ -90,6 +92,7 @@ public class ChemistData extends AppCompatActivity {
     public List<CheminawItem> chlstawlist = new ArrayList<>();
     public ArrayList<String> selchaw = new ArrayList();
     public static List<DcrdchlstItem> dcrdlst = new ArrayList<>();
+    private String div="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,7 @@ public class ChemistData extends AppCompatActivity {
         getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'>Chemist Data</font>"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_black);
+
         progressDialoge = new ViewDialog(ChemistData.this);
         indchkbox = findViewById(R.id.indchkbox);
         jointwrkbtn = findViewById(R.id.jointwrkbtn);
@@ -112,6 +116,17 @@ public class ChemistData extends AppCompatActivity {
         sv = findViewById(R.id.sv);
         field = Global.getFieldName(Integer.parseInt(Global.dcrdatemonth));
         finyear = Global.getFinancialYr(Global.dcrdatemonth, Global.dcrdateyear);
+
+        dcrChQPopup = menuaccessItemsGlobal.get(0).getSpclDcrChPopup();
+        if(dcrChQPopup == null)
+            dcrChQPopup="";
+
+        if (Global.hname!=null && Global.hname.indexOf("(")!=-1
+                && Global.hname.indexOf(")")!=-1){
+            div = (Global.hname.split("\\(")[1]).split("\\)")[0];
+            //Log.d("d1d2 : ",d1d2);
+        }
+
         dcrdlst.clear();
         independentCkbCode();
         apicall1();
@@ -358,7 +373,8 @@ public class ChemistData extends AppCompatActivity {
         progressDialoge.show();
 
         retrofit2.Call<DCRDChemListRes> call1 = RetrofitClient
-                .getInstance().getApi().getDCRDChem(Global.dcrno, Global.dbprefix);
+                .getInstance().getApi().getDCRDChem(Global.dcrno, Global.netid, Global.dcrdate,div,
+                        dcrChQPopup,Global.dbprefix);
         call1.enqueue(new Callback<DCRDChemListRes>() {
             @Override
             public void onResponse(retrofit2.Call<DCRDChemListRes> call1, Response<DCRDChemListRes> response) {
@@ -643,6 +659,8 @@ public class ChemistData extends AppCompatActivity {
                                                intent.putExtra("wnetid", model.getWNetID());
                                                intent.putExtra("pob", model.getPOB());
                                                intent.putExtra("position", Integer.toString(i));
+                                               intent.putExtra("showQPopup", model.getShowQPopup());
+                                               intent.putExtra("isPOBEnt", model.getIsPOBEnt());
                                                intent.putExtra("chname", "Name - " + model.getStname());
                                                Bundle bndlanimation = ActivityOptions.makeCustomAnimation(ChemistData.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
                                                startActivity(intent, bndlanimation);
@@ -970,6 +988,7 @@ public class ChemistData extends AppCompatActivity {
                     selchaw.clear();
                     chemistlist.getAdapter().notifyDataSetChanged();
                     Global.dcrno = null;
+                    apicall3();
                     //recreate();
                 } else if (!jobj.getBoolean("error") && jobj.getString("errormsg").equalsIgnoreCase("N")) {
                     Toast.makeText(ChemistData.this, "Chemist deleted successfully", Toast.LENGTH_LONG).show();

@@ -125,9 +125,13 @@ public class DCREntry extends Fragment {
         l1.setVisibility(View.GONE);
         l2.setVisibility(View.GONE);
         l3.setVisibility(View.GONE);
-        getdcrdate();
-        showInactiveDrsAlert(); //added by prithvi 26-11-2019 (As drs whose visiting cards are not uploaded are to be inactivated from the system)
-        //progressDialoge.dismiss();
+
+        if(Global.dcrInactcDrAlrt==0) {
+            showInactiveDrsAlert(); //added by prithvi 26-11-2019 (As drs whose visiting cards are not uploaded are to be inactivated from the system)
+        }else{
+            getdcrdate();
+        }
+            //progressDialoge.dismiss();
 
         dd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,26 +286,30 @@ public class DCREntry extends Fragment {
         progressDialoge.show();
         //Log.d("Global.dcrno : ",Global.dcrno);
         //Log.d("Global.dbprefix : ",Global.dbprefix);
-        Call<IsDCRCorrectRes> call1 = RetrofitClient
-                .getInstance().getApi().isDCRCorrectlyFilled(Global.dcrno, Global.dbprefix);
-        call1.enqueue(new Callback<IsDCRCorrectRes>() {
+        Call<DefaultResponse> call1 = RetrofitClient
+                .getInstance().getApi().isDCRCorrectlyFilled(Global.dcrno, Global.netid, Global.dbprefix  );
+        call1.enqueue(new Callback<DefaultResponse>() {
             @Override
-            public void onResponse(Call<IsDCRCorrectRes> call1, Response<IsDCRCorrectRes> response) {
+            public void onResponse(Call<DefaultResponse> call1, Response<DefaultResponse> response) {
                 progressDialoge.dismiss();
-                IsDCRCorrectRes res = response.body();
-                String stmsg = "";
-                if (!res.isChem()) {
+                //IsDCRCorrectRes res = response.body();
+                DefaultResponse res = response.body();
+                //String stmsg = "";
+                /*if (res.getChem() != null && res.getChem().equalsIgnoreCase("false")) {
                     stmsg = "Please select at least one chemist !";
                     showAlert(stmsg);
-                } else if (!res.isDoc()) {
+                } else if (res.getDoc() != null && res.getDoc().equalsIgnoreCase("false")) {
                     stmsg = "Please select at least one doctor !";
                     showAlert(stmsg);
-                } else if (!res.isDocsmp()) {
+                } else if (res.getDocsmpnames() != null && res.getDocsmpnames().equalsIgnoreCase("false")) {
                     stmsg = "No sample selected for " + res.getDocsmpnames() + ".";
                     showAlert(stmsg);
-                } else if (!res.isDocgift()) {
+                } else if (res.getDocgiftnames() != null && res.getDocgiftnames().equalsIgnoreCase("false")) {
                     stmsg = "No gift selected for " + res.getDocgiftnames() + ".";
-                    showAlert(stmsg);
+                    showAlert(stmsg);*/
+                if(res.isError()){
+                    showAlert(res.getErrormsg());
+
                 } else {
                     Intent intent = new Intent(getActivity(), CheckDCRSummary.class);
                     intent.putExtra("remark", remark.getText().toString());
@@ -312,10 +320,10 @@ public class DCREntry extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<IsDCRCorrectRes> call1, Throwable t) {
+            public void onFailure(Call<DefaultResponse> call1, Throwable t) {
                 progressDialoge.dismiss();
-                Snackbar snackbar = Snackbar.make(sv, "Failed to fetch DCR date !", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Re-try", new View.OnClickListener() {
+                Snackbar snackbar = Snackbar.make(sv, "Failed to validate DCR !", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 checkDCRIsPerfectlyFilledOrNot();
@@ -328,20 +336,7 @@ public class DCREntry extends Fragment {
     }
 
     private void showAlert(String stmsg) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setCancelable(true);
-        builder.setTitle("Alert ?");
-        builder.setMessage(stmsg);
-        builder.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //it stores selected dcrdate in global variables
-
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        Global.alert(getActivity(),stmsg,"Alert!"); //by prithvi 16052020 -- removed alert code and added global alert
     }
 
     public void getdcrdate() {
@@ -385,7 +380,7 @@ public class DCREntry extends Fragment {
             public void onFailure(Call<GetDcrDateRes> call1, Throwable t) {
                 progressDialoge.dismiss();
                 Snackbar snackbar = Snackbar.make(sv, "Failed to fetch DCR date !", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Re-try", new View.OnClickListener() {
+                        .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 getdcrdate();
@@ -397,37 +392,43 @@ public class DCREntry extends Fragment {
     }
 
     public void checkmtp() {
-        Call<DefaultResponse> call1 = RetrofitClient
-                .getInstance().getApi().checkMTP(Global.ecode, Global.netid, Global.dcrdatemonth, Global.dcrdateyear, Global.dbprefix);
-        call1.enqueue(new Callback<DefaultResponse>() {
-            @Override
-            public void onResponse(Call<DefaultResponse> call1, Response<DefaultResponse> response) {
-                DefaultResponse res = response.body();
 
-                //Log.d("progress 5-->",res.toString());
-                if (res.isError()) {
-                    progressDialoge.dismiss();
-                    dialogCloseTypeError(getContext(), res.getErrormsg());
-                } else {
-                    //todo add ckeckblock here
-                    checkblock();
-                }
-            }
+       if(Global.dcrMtpChk == 0) {
 
-            @Override
-            public void onFailure(Call<DefaultResponse> call1, Throwable t) {
-                //Log.d("thrown->",t.toString());
-                progressDialoge.dismiss();
-                Snackbar snackbar = Snackbar.make(sv, "Failed to check MTP !", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Re-try", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getdcrdate();
-                            }
-                        });
-                snackbar.show();
-            }
-        });
+           Call<DefaultResponse> call1 = RetrofitClient
+                   .getInstance().getApi().checkMTP(Global.ecode, Global.netid, Global.dcrdatemonth, Global.dcrdateyear, Global.dbprefix);
+           call1.enqueue(new Callback<DefaultResponse>() {
+               @Override
+               public void onResponse(Call<DefaultResponse> call1, Response<DefaultResponse> response) {
+                   DefaultResponse res = response.body();
+
+                   //Log.d("progress 5-->",res.toString());
+                   if (res.isError()) {
+                       progressDialoge.dismiss();
+                       dialogCloseTypeError(getContext(), res.getErrormsg());
+                   } else {
+                       Global.dcrMtpChk += 1;
+                       checkblock();
+                   }
+               }
+
+               @Override
+               public void onFailure(Call<DefaultResponse> call1, Throwable t) {
+                   //Log.d("thrown->",t.toString());
+                   progressDialoge.dismiss();
+                   Snackbar snackbar = Snackbar.make(sv, "Failed to check MTP !", Snackbar.LENGTH_INDEFINITE)
+                           .setAction("Retry", new View.OnClickListener() {
+                               @Override
+                               public void onClick(View v) {
+                                   getdcrdate();
+                               }
+                           });
+                   snackbar.show();
+               }
+           });
+       }else{
+           checkblock();
+       }
     }
 
     public void checkblock() {
@@ -443,7 +444,8 @@ public class DCREntry extends Fragment {
                     progressDialoge.dismiss();
                     dialogCloseTypeError(getContext(), res.getErrormsg());
                 } else {
-                    checksamplegift();
+
+                        checksamplegift();
                 }
             }
 
@@ -451,7 +453,7 @@ public class DCREntry extends Fragment {
             public void onFailure(Call<DefaultResponse> call1, Throwable t) {
                 progressDialoge.dismiss();
                 Snackbar snackbar = Snackbar.make(sv, "Failed to lock data!", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Re-try", new View.OnClickListener() {
+                        .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 getdcrdate();
@@ -463,132 +465,155 @@ public class DCREntry extends Fragment {
     }
 
     public void checksamplegift() {
-        Call<DefaultResponse> call1 = RetrofitClient
-                .getInstance().getApi().checkSampleGift(Global.ecode, Global.dbprefix);
-        call1.enqueue(new Callback<DefaultResponse>() {
-            @Override
-            public void onResponse(Call<DefaultResponse> call1, Response<DefaultResponse> response) {
-                DefaultResponse res = response.body();
-                //progressDialoge.dismiss();
-                //Log.d("progress 5-->",ecode);
-                if (res.isError()) {
-                    checkholidays();
-                    m3.setVisibility(View.VISIBLE);
-                    l1.setVisibility(View.VISIBLE);
-                    l2.setVisibility(View.VISIBLE);
-                    l3.setVisibility(View.VISIBLE);
-                    dialogYesNoTypeQuestion(getContext(), res.getErrormsg());
-                } else {
-                    m3.setVisibility(View.VISIBLE);
-                    l1.setVisibility(View.VISIBLE);
-                    l2.setVisibility(View.VISIBLE);
-                    l3.setVisibility(View.VISIBLE);
-                    checkholidays();
+        if(Global.dcrSampleAlrt == 0) {
+            Call<DefaultResponse> call1 = RetrofitClient
+                    .getInstance().getApi().checkSampleGift(Global.ecode, Global.dbprefix);
+            call1.enqueue(new Callback<DefaultResponse>() {
+                @Override
+                public void onResponse(Call<DefaultResponse> call1, Response<DefaultResponse> response) {
+                    DefaultResponse res = response.body();
+                    //progressDialoge.dismiss();
+                    //Log.d("progress 5-->",ecode);
+                    Global.dcrSampleAlrt += 1;
+                    if (res.isError()) {
+                        checkholidays();
+                        m3.setVisibility(View.VISIBLE);
+                        l1.setVisibility(View.VISIBLE);
+                        l2.setVisibility(View.VISIBLE);
+                        l3.setVisibility(View.VISIBLE);
+                        dialogYesNoTypeQuestion(getContext(), res.getErrormsg());
+                    } else {
+                        m3.setVisibility(View.VISIBLE);
+                        l1.setVisibility(View.VISIBLE);
+                        l2.setVisibility(View.VISIBLE);
+                        l3.setVisibility(View.VISIBLE);
+                        checkholidays();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<DefaultResponse> call1, Throwable t) {
-                progressDialoge.dismiss();
-                Snackbar snackbar = Snackbar.make(sv, "Failed to check sample !", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Re-try", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getdcrdate();
-                            }
-                        });
-                snackbar.show();
-            }
-        });
+                @Override
+                public void onFailure(Call<DefaultResponse> call1, Throwable t) {
+                    progressDialoge.dismiss();
+                    Snackbar snackbar = Snackbar.make(sv, "Failed to check sample !", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    getdcrdate();
+                                }
+                            });
+                    snackbar.show();
+                }
+            });
+        }else{
+            m3.setVisibility(View.VISIBLE);
+            l1.setVisibility(View.VISIBLE);
+            l2.setVisibility(View.VISIBLE);
+            l3.setVisibility(View.VISIBLE);
+            checkholidays();
+        }
     }
 
     public void checkholidays() {
-        Call<DefaultResponse> call1 = RetrofitClient
-                .getInstance().getApi().getHolidayDcrdates(Global.ecode, Global.netid, Global.dcrdate, Global.dbprefix);
-        call1.enqueue(new Callback<DefaultResponse>() {
-            @Override
-            public void onResponse(Call<DefaultResponse> call1, Response<DefaultResponse> response) {
-                DefaultResponse res = response.body();
-                //progressDialoge.dismiss();
-                //Log.d("progress 5-->",ecode);
-                if (res.isError()) {
-                    arrayList = new ArrayList<>();
-                    if (res.getErrormsg().length() > 10) {
-                        String[] datelist = res.getErrormsg().split(",");
-                        for (String s : datelist) {
 
-                            arrayList.add(s);
+        if(Global.dcrHolChk == 0) {
+            Call<DefaultResponse> call1 = RetrofitClient
+                    .getInstance().getApi().getHolidayDcrdates(Global.ecode, Global.netid, Global.dcrdate, Global.dbprefix);
+            call1.enqueue(new Callback<DefaultResponse>() {
+                @Override
+                public void onResponse(Call<DefaultResponse> call1, Response<DefaultResponse> response) {
+                    DefaultResponse res = response.body();
+                    //progressDialoge.dismiss();
+                    //Log.d("progress 5-->",ecode);
+                    if (res.isError()) {
+                        //Global.dcrHolChk += 1;
+                        arrayList = new ArrayList<>();
+                        if (res.getErrormsg().length() > 10) {
+                            String[] datelist = res.getErrormsg().split(",");
+                            for (String s : datelist) {
+
+                                arrayList.add(s);
+                            }
+                        } else {
+                           // Global.dcrHolChk += 1;
+                            arrayList.add(res.getErrormsg());
                         }
-                    } else {
-                        arrayList.add(res.getErrormsg());
-                    }
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, arrayList);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerHolDates.setAdapter(adapter);
-                    //if(Global.dcrno == null) {
-                    m2.setVisibility(View.VISIBLE);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, arrayList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinnerHolDates.setAdapter(adapter);
+                        //if(Global.dcrno == null) {
+                        m2.setVisibility(View.VISIBLE);
                     /*}else{
                         m2.setVisibility(View.GONE);
                     }*/
+                    }else{
+                        Global.dcrHolChk += 1;
+                    }
+
+                    checkPendingStockandSalesEntry();
                 }
 
-                checkPendingStockandSalesEntry();
-            }
-
-            @Override
-            public void onFailure(Call<DefaultResponse> call1, Throwable t) {
-                progressDialoge.dismiss();
-                Snackbar snackbar = Snackbar.make(sv, "Failed to check holidays !", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Re-try", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getdcrdate();
-                            }
-                        });
-                snackbar.show();
-            }
-        });
+                @Override
+                public void onFailure(Call<DefaultResponse> call1, Throwable t) {
+                    progressDialoge.dismiss();
+                    Snackbar snackbar = Snackbar.make(sv, "Failed to check holidays !", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    getdcrdate();
+                                }
+                            });
+                    snackbar.show();
+                }
+            });
+        }else{
+            checkPendingStockandSalesEntry();
+        }
     }
 
     private void checkPendingStockandSalesEntry() {
-        String d1d2 = "";
-        if (Global.hname.contains("(A)")) {
-            d1d2 = "A";
-        } else if (Global.hname.contains("(B)")) {
-            d1d2 = "B";
-        } else if (Global.hname.contains("(C)")) {
-            d1d2 = "C";
-        } else if (Global.hname.contains("(D)")) {
-            d1d2 = "D";
-        }
-        Call<DefaultResponse> call1 = RetrofitClient
-                .getInstance().getApi().checkSalesEntryNotFilled(Global.netid, d1d2, Global.dbprefix);
-        call1.enqueue(new Callback<DefaultResponse>() {
-            @Override
-            public void onResponse(Call<DefaultResponse> call1, Response<DefaultResponse> response) {
-                DefaultResponse res = response.body();
-                progressDialoge.dismiss();
-                //Log.d("progress 5-->",ecode);
-                if (!res.isError()) {
-                    //Log.d("error msg-->", res.getErrormsg());
-                    salesEntryRemainingAlert(res.getErrormsg());
+        if(Global.dcrSecSalesAlrt == 0) {
+            String d1d2 = "";
+            if (Global.hname.contains("(A)")) {
+                d1d2 = "A";
+            } else if (Global.hname.contains("(B)")) {
+                d1d2 = "B";
+            } else if (Global.hname.contains("(C)")) {
+                d1d2 = "C";
+            } else if (Global.hname.contains("(D)")) {
+                d1d2 = "D";
+            }
+            Call<DefaultResponse> call1 = RetrofitClient
+                    .getInstance().getApi().checkSalesEntryNotFilled(Global.netid, d1d2, Global.dbprefix);
+            call1.enqueue(new Callback<DefaultResponse>() {
+                @Override
+                public void onResponse(Call<DefaultResponse> call1, Response<DefaultResponse> response) {
+                    DefaultResponse res = response.body();
+                    progressDialoge.dismiss();
+                    Global.dcrSecSalesAlrt += 1;
+                    //Log.d("progress 5-->",ecode);
+                    if (!res.isError()) {
+                        //Log.d("error msg-->", res.getErrormsg());
+                        salesEntryRemainingAlert(res.getErrormsg());
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<DefaultResponse> call1, Throwable t) {
-                progressDialoge.dismiss();
-                Snackbar snackbar = Snackbar.make(sv, " pending sales entry Failed to fetch data !", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Re-try", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getdcrdate();
-                            }
-                        });
-                snackbar.show();
-            }
-        });
+                @Override
+                public void onFailure(Call<DefaultResponse> call1, Throwable t) {
+                    progressDialoge.dismiss();
+                    Snackbar snackbar = Snackbar.make(sv, " pending sales entry Failed to fetch data !", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    getdcrdate();
+                                }
+                            });
+                    snackbar.show();
+                }
+            });
+        }else{
+            progressDialoge.dismiss();
+        }
     }
 
     public void dialogCloseTypeError(final Context context, final String errormsg) {
@@ -1033,7 +1058,7 @@ public class DCREntry extends Fragment {
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
                 progressDialoge3.dismiss();
                 Snackbar.make(sv, "Falied to update data !", Snackbar.LENGTH_LONG)
-                        .setAction("Re try", new View.OnClickListener() {
+                        .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 updateSampleGift(myCustomArray);
@@ -1044,41 +1069,55 @@ public class DCREntry extends Fragment {
     }
 
     public void salesEntryRemainingAlert(String response) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setCancelable(true);
-        builder.setTitle("Alert");
-        builder.setMessage(response);
-        builder.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        Global.dcrSecSalesAlrt += 1;
+        Global.alert(getActivity(),response,"Alert");//by prithvi 16052020, removed all alert builders and added content in Global.alert();
 
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
 
     public void showInactiveDrsAlert() {
-
+        String msg="All Drs whose Visiting Card is not uploaded are now inactivated from DCR." +
+                "(i.e. such Drs will not be allowed to be selected for reporting)";
+        Global.dcrInactcDrAlrt += 1;
+        //Global.alert(getActivity(),msg,"Alert"); //by prithvi 16052020, removed all alert builders and added content in Global.alert();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(true);
         builder.setTitle("Alert");
-        builder.setMessage("All Drs whose Visiting Card is not uploaded are now inactivated from DCR.(i.e. such Drs will not be allowed to select for reporting)");
+        builder.setMessage(msg);
         builder.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        dialog.cancel();
+                        //cancelDialog();
+                        getdcrdate();
                     }
                 });
+
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
 
 
+/*
+* final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+        public void onShow(DialogInterface dialog) {
 
+            Button b = mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            b.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    mAlertDialog.dismiss();
+                    //mAlertDialog.cancel();
+                    getdcrdate();
+
+                }
+            });
+        }
+    });
+        mAlertDialog.show();*/
 
 }

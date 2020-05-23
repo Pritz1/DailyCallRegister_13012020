@@ -1,6 +1,7 @@
 package com.eis.dailycallregister.Activity;
 
 import android.app.ActivityOptions;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,17 +15,27 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +46,8 @@ import com.eis.dailycallregister.Pojo.DCRGiftListRes;
 import com.eis.dailycallregister.Pojo.DcrdchlstItem;
 import com.eis.dailycallregister.Pojo.DcrgiftslistItem;
 import com.eis.dailycallregister.Pojo.DefaultResponse;
+import com.eis.dailycallregister.Pojo.GetPopupQuesRes;
+import com.eis.dailycallregister.Pojo.QuestionslistItem;
 import com.eis.dailycallregister.Pojo.SpcldcrdchlstItem;
 import com.eis.dailycallregister.R;
 import com.google.gson.Gson;
@@ -72,12 +85,10 @@ public class SpclDcrChemPob extends AppCompatActivity {
     public AppCompatEditText pob;
     //NestedScrollView nsv;
     int position;
-    String param = "";
     String oldPob = "";
     String cntcd = "";
     String custflg = "";
-
-    public List<DcrgiftslistItem> dcrplst = new ArrayList<>();
+    String yr="",mth="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,11 +110,13 @@ public class SpclDcrChemPob extends AppCompatActivity {
         custflg = getIntent().getStringExtra("custflg");
         oldPob = getIntent().getStringExtra("pob");
         position = Integer.parseInt(getIntent().getStringExtra("position"));
-
         chname.setText(getIntent().getStringExtra("chname"));
 
+         yr = (Global.currDate).split("-")[0];
+         mth = (Global.currDate).split("-")[1];
 
-        if (oldPob!=null && !oldPob.equalsIgnoreCase("null") && !oldPob.equalsIgnoreCase("")
+        if (oldPob!=null && !oldPob.equalsIgnoreCase("null") &&
+                !oldPob.equalsIgnoreCase("")
                 && Integer.parseInt(oldPob) >= 0) {
 
             pob.setText(getIntent().getStringExtra("pob"));
@@ -221,4 +234,7 @@ public class SpclDcrChemPob extends AppCompatActivity {
         finish();
         SpclDcrChemPob.this.overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
     }
+
+
+
 }

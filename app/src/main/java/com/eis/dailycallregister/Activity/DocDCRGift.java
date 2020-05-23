@@ -86,7 +86,7 @@ public class DocDCRGift extends AppCompatActivity {
 
         serial = getIntent().getStringExtra("serial");
         position = Integer.parseInt(getIntent().getStringExtra("position"));
-        if (Global.hname.contains("(A)")) {
+        /*if (Global.hname.contains("(A)")) {
             d1d2 = "A";
         } else if (Global.hname.contains("(B)")) {
             d1d2 = "B";
@@ -94,7 +94,15 @@ public class DocDCRGift extends AppCompatActivity {
             d1d2 = "C";
         } else if (Global.hname.contains("(D)")) {
             d1d2 = "D";
+        }*/
+
+        //below changes done by prithvi 31/03/2020
+        if (Global.hname!=null && Global.hname.indexOf("(")!=-1
+                && Global.hname.indexOf(")")!=-1){
+            d1d2 = (Global.hname.split("\\(")[1]).split("\\)")[0];
+            //Log.d("d1d2 : ",d1d2);
         }
+
         finyr = Global.getFinancialYr(Global.dcrdatemonth, Global.dcrdateyear);
         field = Global.getFieldName(Integer.parseInt(Global.dcrdatemonth));
         //Log.d("finyr ",finyr);
@@ -139,8 +147,6 @@ public class DocDCRGift extends AppCompatActivity {
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
-
                 //Toast.makeText(DocDCRGift.this, myCustomArray.toString(), Toast.LENGTH_LONG).show();
             }
         });
@@ -162,9 +168,7 @@ public class DocDCRGift extends AppCompatActivity {
         });*/
 
         apicall1();
-
     }
-
 
     private void apicall1() {
         String[] wrkdate = Global.date.split("-");
@@ -389,6 +393,7 @@ public class DocDCRGift extends AppCompatActivity {
                 }
 
             } catch (JSONException e) {
+                Toast.makeText(DocDCRGift.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }
@@ -433,7 +438,8 @@ public class DocDCRGift extends AppCompatActivity {
         Gson gson = new GsonBuilder().create();
         JsonArray myCustomArray = gson.toJsonTree(dcrplst).getAsJsonArray();
         //Toast.makeText(DocDCRGift.this, myCustomArray.toString(), Toast.LENGTH_LONG).show();
-        new DocDCRGift.addGiftEntry().execute(Global.ecode, Global.netid, serial, Global.dcrno, finyr, d1d2, field, myCustomArray.toString(), "", Global.dbprefix);
+        new DocDCRGift.addGiftEntry().execute(Global.ecode, Global.netid, serial, Global.dcrno,
+                finyr, d1d2, field, myCustomArray.toString(), "", Global.dbprefix);
     }
 
     private void menuOperation(String mode) {

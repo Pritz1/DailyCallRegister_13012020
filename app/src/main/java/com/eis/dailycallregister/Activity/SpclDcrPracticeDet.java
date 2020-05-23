@@ -1,19 +1,34 @@
 package com.eis.dailycallregister.Activity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +37,16 @@ import com.eis.dailycallregister.Others.Global;
 import com.eis.dailycallregister.Others.ViewDialog;
 import com.eis.dailycallregister.Pojo.ChemistListAWRes;
 import com.eis.dailycallregister.Pojo.DefaultResponse;
+import com.eis.dailycallregister.Pojo.GetPopupQuesRes;
+import com.eis.dailycallregister.Pojo.QuestionslistItem;
+import com.eis.dailycallregister.Pojo.SpcldcrdchlstItem;
 import com.eis.dailycallregister.R;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +62,10 @@ public class SpclDcrPracticeDet extends AppCompatActivity {
     private String cntcd,drname;
     private String custflg;
     private String oldPractFlg;
+    String showQPopup = "",yr="",mth="",d1d2 = "";
+    int position;
+
+    public List<QuestionslistItem> questionslist = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +85,32 @@ public class SpclDcrPracticeDet extends AppCompatActivity {
         cntcd = getIntent().getStringExtra("cntcd");
         custflg = getIntent().getStringExtra("custflg");
         drname = getIntent().getStringExtra("custName");
+        showQPopup = getIntent().getStringExtra("showQPopup");
 
+        if(getIntent().getStringExtra("position")==null){
+            Toast.makeText(this, "Some Problem encountered.Please Restart Reporting!", Toast.LENGTH_SHORT).show();
+        }else {
+            position = Integer.parseInt(getIntent().getStringExtra("position"));
+        }
         prCustnameTxt.setText(drname);
         if(custflg!=null && custflg.equalsIgnoreCase("C"))
         quesTxt.setText("Is Chemist Open?");
 
-        getRecord();
+        if (Global.hname!=null && Global.hname.indexOf("(")!=-1
+                && Global.hname.indexOf(")")!=-1){
+            d1d2 = (Global.hname.split("\\(")[1]).split("\\)")[0];
+            //Log.d("d1d2 : ",d1d2);
+        }
+
+        yr = (Global.currDate).split("-")[0];
+        mth = (Global.currDate).split("-")[1];
+
+        if(showQPopup!=null && showQPopup.equalsIgnoreCase("Y")){
+            getPopupQuestion();
+        }else{
+            getRecord();
+        }
+
         submitbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +134,7 @@ public class SpclDcrPracticeDet extends AppCompatActivity {
         finish();
         SpclDcrPracticeDet.this.overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
     }
-//TODO work on this
+
     private void getRecord() {
         //rdgrp.check(gendd.equals("0") ? R.id.radio0 : R.id.radio1);
         progressDialoge.show();
@@ -198,6 +246,236 @@ public class SpclDcrPracticeDet extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void getPopupQuestion() {
+        progressDialoge.show();
+        //Log.d("drclass//d1d2//cntcd",drclass+"//"+d1d2+"//"+cntcd);
+        questionslist.clear();
+
+        retrofit2.Call<GetPopupQuesRes> call1 = RetrofitClient
+                .getInstance().getApi().getQuestnsForPopup(Global.ecode, Global.netid, custflg, d1d2,
+                        mth, yr, cntcd, Global.dbprefix);
+        call1.enqueue(new Callback<GetPopupQuesRes>() {
+            @Override
+            public void onResponse(retrofit2.Call<GetPopupQuesRes> call1, Response<GetPopupQuesRes> response) {
+                progressDialoge.dismiss();
+                GetPopupQuesRes res = response.body();
+                if (!res.isError()) {
+                    questionslist = res.getQuestionslist();
+                    showQuesPopup();
+                    //Toast.makeText(DocDCRProduct.this, "questions present", Toast.LENGTH_LONG).show();
+                }/*else{
+                    Toast.makeText(DocDCRProduct.this, "No question to ask", Toast.LENGTH_LONG).show();
+                }*/
+
+
+            }
+
+            @Override
+            public void onFailure(Call<GetPopupQuesRes> call1, Throwable t) {
+                progressDialoge.dismiss();
+                Snackbar snackbar = Snackbar.make(outerll, "Failed to get questionnaire !", Snackbar.LENGTH_LONG)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getPopupQuestion();
+                            }
+                        });
+                snackbar.show();
+            }
+        });
+    }
+
+    public void showQuesPopup() {
+        final Dialog dialog = new Dialog(SpclDcrPracticeDet.this);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.jointwrklstpopup);
+        TextView heading = dialog.findViewById(R.id.heading);
+        heading.setText("Below questions are mandatory");
+        CardView cancelbtn = dialog.findViewById(R.id.no);
+        CardView submitbtn = dialog.findViewById(R.id.yes);
+        RecyclerView rv_list_popup = dialog.findViewById(R.id.jointwrkpopuplist);
+        rv_list_popup.setNestedScrollingEnabled(false);
+        rv_list_popup.setLayoutManager(new LinearLayoutManager(SpclDcrPracticeDet.this));
+        rv_list_popup.setAdapter(new RecyclerView.Adapter() {
+                                     @NonNull
+                                     @Override
+                                     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                                         View view = LayoutInflater.from(SpclDcrPracticeDet.this).inflate(R.layout.yes_no_questions_popup_adapter, viewGroup, false);
+                                         Holder holder = new Holder(view);
+                                         return holder;
+                                     }
+
+                                     @Override
+                                     public long getItemId(int position) {
+                                         return position;
+                                     }
+
+                                     @Override
+                                     public int getItemViewType(int position) {
+                                         return position;
+                                     }
+
+                                     @Override
+                                     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                                         final Holder myHolder = (Holder) viewHolder;
+                                         final QuestionslistItem model = questionslist.get(i);
+                                         myHolder.donewith.setVisibility(View.GONE);
+                                         if(model.getAnsdesc()==null ||
+                                                 model.getAnsdesc().equalsIgnoreCase("")) {
+                                             myHolder.qty.setVisibility(View.VISIBLE);
+                                             myHolder.ans.setVisibility(View.GONE);
+                                         }
+                                         myHolder.question.setText(model.getQdescrpn());
+
+                                         /*myHolder.qty.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                             @Override
+                                             public void onFocusChange(View view, boolean hasFocus) {
+                                                 if (!hasFocus) {
+                                                     if (myHolder.qty.getText().toString().equalsIgnoreCase("")) {
+                                                         model.setAns("");
+                                                     } else {
+                                                         if (Integer.parseInt(myHolder.qty.getText().toString()) >= 0) {
+                                                             model.setAns(myHolder.qty.getText().toString());
+                                                         }
+                                                     }
+                                                     //Toast.makeText(DocDCRGift.this, "Focus Lose", Toast.LENGTH_SHORT).show();
+                                                     InputMethodManager imm = (InputMethodManager) getSystemService(SpclDcrChemPob.this.INPUT_METHOD_SERVICE);
+                                                     imm.hideSoftInputFromWindow(nsv.getWindowToken(), 0);
+                                                 }
+
+                                             }
+                                         });*/
+
+                                         myHolder.qty.addTextChangedListener(new TextWatcher() {
+                                             @Override
+                                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                             }
+
+                                             @Override
+                                             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                                             }
+
+                                             @Override
+                                             public void afterTextChanged(Editable s) {
+                                                 /*if (myHolder.qty.getText().toString().equalsIgnoreCase("")) {
+                                                     model.setAns("");
+                                                 } else {*/
+                                                 if(myHolder.qty.getText()!=null)
+                                                     model.setAns(myHolder.qty.getText().toString());
+                                                 else
+                                                     model.setAns("");
+                                                 //}
+                                                 //Toast.makeText(DocDCRGift.this, "Focus Lose", Toast.LENGTH_SHORT).show();
+                                                 InputMethodManager imm = (InputMethodManager) getSystemService(SpclDcrPracticeDet.this.INPUT_METHOD_SERVICE);
+                                                 imm.hideSoftInputFromWindow(outerll.getWindowToken(), 0);
+                                             }
+                                         });
+
+                                     } //onBindViewHolder ends here
+
+                                     @Override
+                                     public int getItemCount() {
+                                         return questionslist.size();
+                                     }
+
+                                     class Holder extends RecyclerView.ViewHolder {
+                                         TextView question;
+                                         Spinner ans, subans;
+                                         LinearLayout donewith;
+                                         EditText qty;
+                                         public Holder(@NonNull View itemView) {
+                                             super(itemView);
+                                             question = itemView.findViewById(R.id.question);
+                                             ans = itemView.findViewById(R.id.ans);
+                                             subans = itemView.findViewById(R.id.subans);
+                                             donewith = itemView.findViewById(R.id.donewith);
+                                             qty = itemView.findViewById(R.id.qty1);
+                                         }
+                                     }
+                                 }
+        );
+
+        rv_list_popup.getAdapter().notifyDataSetChanged();
+        cancelbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //dialog.dismiss();
+                Toast.makeText(SpclDcrPracticeDet.this, "Answer all questions and submit !", Toast.LENGTH_SHORT).show();
+            }
+        });
+        submitbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean isansgiven = true;
+                //boolean issubansgiven = true;
+                for (int m = 0; m < questionslist.size(); m++) {
+                    if (questionslist.get(m).getAns() == null ||
+                            questionslist.get(m).getAns().equalsIgnoreCase("")) {
+                        isansgiven = false;
+                    }
+                }
+
+                if (isansgiven) {
+                    //if (issubansgiven) {
+
+                    Gson gson = new GsonBuilder().create();
+                    JsonArray myCustomArray = gson.toJsonTree(questionslist).getAsJsonArray();
+                    // progressDialoge.dismiss();
+                    //Toast.makeText(DocDCRProduct.this, myCustomArray.toString(), Toast.LENGTH_SHORT).show();
+                    savePopupQAnsInDB(myCustomArray.toString());
+                    dialog.dismiss();
+                    /*} else {
+                        Toast.makeText(SpclDcrChemPob.this, "First answer all sub question !", Toast.LENGTH_SHORT).show();
+                    }*/
+                } else {
+                    Toast.makeText(SpclDcrPracticeDet.this, "Please answer all questions !", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+    }
+
+    private void savePopupQAnsInDB(String json) {
+        progressDialoge.show();
+        retrofit2.Call<DefaultResponse> call1 = RetrofitClient
+                .getInstance().getApi().savePopupQASpclDcr(Global.ecode, Global.netid, Global.currDate,
+                        json, mth, yr, cntcd,"S", Global.dbprefix);//json
+        call1.enqueue(new Callback<DefaultResponse>() {
+            @Override
+            public void onResponse(retrofit2.Call<DefaultResponse> call1, Response<DefaultResponse> response) {
+                progressDialoge.dismiss();
+                DefaultResponse res = response.body();
+                Log.d("res : ",res.toString() + "--"+res.isError());
+                if (!res.isError()) {
+                    Toast.makeText(SpclDcrPracticeDet.this, res.getErrormsg(), Toast.LENGTH_LONG).show();
+                    SpcldcrdchlstItem modelx = SpclDcrChemData.dcrdlst.get(position);
+                    modelx.setShowQPopup("N");
+                    SpclDcrChemData.chemListRv.getAdapter().notifyDataSetChanged();
+                    getRecord();
+                }else{
+                    getRecord();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DefaultResponse> call1, Throwable t) {
+                progressDialoge.dismiss();
+                Snackbar snackbar = Snackbar.make(outerll, "Failed to submit questionnaire !", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                getRecord();
+            }
+        });
     }
 
 }

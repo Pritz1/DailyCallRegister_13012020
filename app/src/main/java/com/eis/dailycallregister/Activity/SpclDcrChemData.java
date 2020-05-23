@@ -71,6 +71,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import static com.eis.dailycallregister.Others.Global.menuaccessItemsGlobal;
 
 public class SpclDcrChemData extends AppCompatActivity {
 
@@ -89,7 +90,7 @@ public class SpclDcrChemData extends AppCompatActivity {
     public static final int READ_TIMEOUT = 90000;
     public static RecyclerView chemListRv;
     RadioGroup rdgrp;
-
+    String spclDcrChPopup = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +108,10 @@ public class SpclDcrChemData extends AppCompatActivity {
         rdgrp = findViewById(R.id.rdgrp);
 
         btnDocSrch.setText("Select Chemist");
+
+        spclDcrChPopup = menuaccessItemsGlobal.get(0).getSpclDcrChPopup();
+        if(spclDcrChPopup == null)
+            spclDcrChPopup = "";
 
         dcrdlst.clear();
         getAreaListApiCall();
@@ -208,18 +213,9 @@ public class SpclDcrChemData extends AppCompatActivity {
                     chlstawlist = res.getCheminaw(); //here, for AW and All both docinaw is used to get data.
                     showPopup();
                 } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SpclDcrChemData.this);
-                    builder.setCancelable(true);
-                    builder.setMessage(res.getErrormsg());
-                    builder.setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
 
-                                }
-                            });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    Global.alert(SpclDcrChemData.this,res.getErrormsg(),"Alert");
+
                 }
             }
 
@@ -384,6 +380,8 @@ public class SpclDcrChemData extends AppCompatActivity {
                                                intent.putExtra("cntcd",model.getCntcd());
                                                intent.putExtra("custflg","C");
                                                intent.putExtra("custName",model.getStname());
+                                               intent.putExtra("showQPopup", model.getShowQPopup());
+                                               intent.putExtra("position", Integer.toString(i));
                                                Bundle bndlanimation = ActivityOptions.makeCustomAnimation(SpclDcrChemData.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
                                                startActivity(intent, bndlanimation);
                                            }
@@ -599,14 +597,14 @@ public class SpclDcrChemData extends AppCompatActivity {
         progressDialoge.show();
         retrofit2.Call<DefaultResponse> call1 = RetrofitClient
                 .getInstance().getApi().deleteDrChfromSpclDcr(Global.ecode, Global.netid,
-                        Global.dcrno, Global.currDate, cntcd,"C",Global.dbprefix);
+                        Global.dcrno, Global.currDate, cntcd,"C",Global.dbprefix,spclDcrChPopup);
         call1.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(retrofit2.Call<DefaultResponse> call1, Response<DefaultResponse> response) {
                 DefaultResponse res = response.body();
                 progressDialoge.dismiss();
                 Toast.makeText(SpclDcrChemData.this, res.getErrormsg(), Toast.LENGTH_LONG).show();
-                if (!res.isError() && res.getErrormsg().equalsIgnoreCase("deleted")) {
+                if (!res.isError() && !res.getErrormsg().equalsIgnoreCase("")) {
                     apicall3();
                 }
             }
@@ -646,9 +644,17 @@ public class SpclDcrChemData extends AppCompatActivity {
     private void apicall3() {
         progressDialoge.show();
 //Global.dcrno
+
+        String div="";
+        if (Global.hname!=null && Global.hname.indexOf("(")!=-1
+                && Global.hname.indexOf(")")!=-1){
+            div = (Global.hname.split("\\(")[1]).split("\\)")[0];
+        }
+
+
         retrofit2.Call<SpclDcrDcrdChLstRes> call1 = RetrofitClient
                 .getInstance().getApi().spclDcrGetDcrdChem(Global.dcrno, Global.dbprefix,
-                        Global.netid, Global.ecode,Global.currDate);
+                        Global.netid, Global.ecode,Global.currDate,spclDcrChPopup,div);
         call1.enqueue(new Callback<SpclDcrDcrdChLstRes>() {
             @Override
             public void onResponse(retrofit2.Call<SpclDcrDcrdChLstRes> call1,
@@ -695,5 +701,6 @@ public class SpclDcrChemData extends AppCompatActivity {
         });
 
     }
+
 
 }

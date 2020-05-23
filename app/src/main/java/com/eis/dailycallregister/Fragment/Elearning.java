@@ -70,7 +70,7 @@ public class Elearning extends Fragment {
         testListAdapter();
         ForthTestListAdapter();
         testResultAdapter();
-        if (Global.hname.contains("(A)")) {
+        /*if (Global.hname.contains("(A)")) {
             d1d2 = "A";
         } else if (Global.hname.contains("(B)")) {
             d1d2 = "B";
@@ -82,7 +82,15 @@ public class Elearning extends Fragment {
             d1d2 = "AB";
         } else if (Global.hname.contains("(CD)")) {
             d1d2 = "CD";
+        }*/
+
+        //below changes done by prithvi 03/04/2020
+        if (Global.hname!=null && Global.hname.indexOf("(")!=-1
+                && Global.hname.indexOf(")")!=-1){
+            d1d2 = (Global.hname.split("\\(")[1]).split("\\)")[0];
+            //Log.d("d1d2 : ",d1d2);
         }
+
         callApi();
         return view;
     }

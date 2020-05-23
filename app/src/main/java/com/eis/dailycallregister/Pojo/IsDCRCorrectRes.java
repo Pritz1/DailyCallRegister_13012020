@@ -5,72 +5,84 @@ import com.google.gson.annotations.SerializedName;
 public class IsDCRCorrectRes{
 
 	@SerializedName("docsmp")
-	private boolean docsmp;
+	private String docsmp;
 
 	@SerializedName("docgiftnames")
 	private String docgiftnames;
 
 	@SerializedName("chem")
-	private boolean chem;
+	private String chem;
 
 	@SerializedName("docgift")
-	private boolean docgift;
+	private String docgift;
 
 	@SerializedName("docsmpnames")
 	private String docsmpnames;
 
 	@SerializedName("doc")
-	private boolean doc;
+	private String doc;
 
-	public void setDocsmp(boolean docsmp){
-		this.docsmp = docsmp;
-	}
+	@SerializedName("chmPobEnt")
+	private String chmPobEnt;
 
-	public boolean isDocsmp(){
-		return docsmp;
-	}
 
-	public void setDocgiftnames(String docgiftnames){
-		this.docgiftnames = docgiftnames;
-	}
+    public String getDocsmp() {
+        return docsmp;
+    }
 
-	public String getDocgiftnames(){
-		return docgiftnames;
-	}
+    public void setDocsmp(String docsmp) {
+        this.docsmp = docsmp;
+    }
 
-	public void setChem(boolean chem){
-		this.chem = chem;
-	}
+    public String getDocgiftnames() {
+        return docgiftnames;
+    }
 
-	public boolean isChem(){
-		return chem;
-	}
+    public void setDocgiftnames(String docgiftnames) {
+        this.docgiftnames = docgiftnames;
+    }
 
-	public void setDocgift(boolean docgift){
-		this.docgift = docgift;
-	}
+    public String getChem() {
+        return chem;
+    }
 
-	public boolean isDocgift(){
-		return docgift;
-	}
+    public void setChem(String chem) {
+        this.chem = chem;
+    }
 
-	public void setDocsmpnames(String docsmpnames){
-		this.docsmpnames = docsmpnames;
-	}
+    public String getDocgift() {
+        return docgift;
+    }
 
-	public String getDocsmpnames(){
-		return docsmpnames;
-	}
+    public void setDocgift(String docgift) {
+        this.docgift = docgift;
+    }
 
-	public void setDoc(boolean doc){
-		this.doc = doc;
-	}
+    public String getDocsmpnames() {
+        return docsmpnames;
+    }
 
-	public boolean isDoc(){
-		return doc;
-	}
+    public void setDocsmpnames(String docsmpnames) {
+        this.docsmpnames = docsmpnames;
+    }
 
-	@Override
+    public String getDoc() {
+        return doc;
+    }
+
+    public void setDoc(String doc) {
+        this.doc = doc;
+    }
+
+    public String getChmPobEnt() {
+        return chmPobEnt;
+    }
+
+    public void setChmPobEnt(String chmPobEnt) {
+        this.chmPobEnt = chmPobEnt;
+    }
+
+    @Override
  	public String toString(){
 		return 
 			"IsDCRCorrectRes{" + 
@@ -80,6 +92,7 @@ public class IsDCRCorrectRes{
 			",docgift = '" + docgift + '\'' + 
 			",docsmpnames = '" + docsmpnames + '\'' + 
 			",doc = '" + doc + '\'' + 
+			",chmPobEnt = '" + chmPobEnt + '\'' +
 			"}";
 		}
 }

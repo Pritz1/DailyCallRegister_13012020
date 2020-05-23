@@ -34,6 +34,9 @@ public class SpcldcrdchlstItem{
 	@SerializedName("pob")
 	private String pob;
 
+	@SerializedName("showQPopup")
+	private String showQPopup;
+
 	public void setCustflg(String custflg){
 		this.custflg = custflg;
 	}
@@ -114,6 +117,14 @@ public class SpcldcrdchlstItem{
 		this.pob = pob;
 	}
 
+	public String getShowQPopup() {
+		return showQPopup;
+	}
+
+	public void setShowQPopup(String showQPopup) {
+		this.showQPopup = showQPopup;
+	}
+
 	@Override
  	public String toString(){
 		return 
@@ -128,6 +139,7 @@ public class SpcldcrdchlstItem{
 			",wnetid = '" + wnetid + '\'' + 
 			",stname = '" + stname + '\'' + 
 			",pob = '" + pob + '\'' +
+			",showQPopup = '" + showQPopup + '\'' +
 			"}";
 		}
 }
