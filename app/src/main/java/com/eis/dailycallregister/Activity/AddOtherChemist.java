@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,20 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.eis.dailycallregister.Api.RetrofitClient;
-import com.eis.dailycallregister.Others.Global;
 import com.eis.dailycallregister.Others.ViewDialog;
-import com.eis.dailycallregister.Pojo.ChemistdataItem;
-import com.eis.dailycallregister.Pojo.DoctornamelistItem;
-import com.eis.dailycallregister.Pojo.SetChemistkeyPerRes;
 import com.eis.dailycallregister.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AddOtherChemist extends AppCompatActivity {
 
@@ -105,7 +95,7 @@ public class AddOtherChemist extends AppCompatActivity {
                 }
             }
         });
-     //  getChemistKeyPer();
+     //  getChemistDetails();
     }
 
     public void sendData(String doctorname,String chemistname, String keycontactper, String phonenumber) {
@@ -121,12 +111,12 @@ public class AddOtherChemist extends AppCompatActivity {
         startActivity(intent, bndlanimation);
     }
 
-    /*public void getChemistKeyPer() {
-        retrofit2.Call<SetChemistkeyPerRes> call = RetrofitClient.getInstance().getApi().getChemistData(cntcd, sttype, Global.dbprefix);
-        call.enqueue(new Callback<SetChemistkeyPerRes>() {
+    /*public void getChemistDetails() {
+        retrofit2.Call<ChemistDetailRes> call = RetrofitClient.getInstance().getApi().getChemistData(cntcd, sttype, Global.dbprefix);
+        call.enqueue(new Callback<ChemistDetailRes>() {
             @Override
-            public void onResponse(Call<SetChemistkeyPerRes> call, Response<SetChemistkeyPerRes> response) {
-                SetChemistkeyPerRes res = response.body();
+            public void onResponse(Call<ChemistDetailRes> call, Response<ChemistDetailRes> response) {
+                ChemistDetailRes res = response.body();
                 Log.d("res", res.toString());
                 if (!res.isError()) {
                     chemistdata = res.getChemistdata();
@@ -142,12 +132,12 @@ public class AddOtherChemist extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<SetChemistkeyPerRes> call, Throwable t) {
+            public void onFailure(Call<ChemistDetailRes> call, Throwable t) {
                 Snackbar snackbar = Snackbar.make(chmscr, "Failed to fetch data !", Snackbar.LENGTH_INDEFINITE)
                         .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                getChemistKeyPer();
+                                getChemistDetails();
                             }
                         });
                 snackbar.show();

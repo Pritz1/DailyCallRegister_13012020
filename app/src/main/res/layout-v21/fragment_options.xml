@@ -48,6 +48,22 @@
             android:textColor="@color/textcolorwhite"
             app:rippleColor="@color/colorPrimaryDark"/>
 
+        <android.support.design.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="HO Minutes of OJT Sent"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="5sp"
+            android:autoSizeMaxTextSize="18sp"
+            android:autoSizeStepGranularity="1sp"
+            android:id="@+id/ho_ojt"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            app:cornerRadius="8dp"
+            android:textColor="@color/textcolorwhite"
+            app:rippleColor="@color/colorPrimaryDark"/>
+
     <android.support.design.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -202,11 +218,29 @@
             android:autoSizeMinTextSize="5sp"
             android:autoSizeStepGranularity="1sp"
             android:autoSizeTextType="uniform"
-            android:text="Special Call Report"
+            android:text="SPECIAL CALL REPORT"
             android:textColor="@color/textcolorwhite"
             app:cornerRadius="8dp"
             app:rippleColor="@color/colorPrimary"
            />                <!--added by Prithvi 15/04/2020-->
+
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/chemAddEdit"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:autoSizeMaxTextSize="18sp"
+            android:autoSizeMinTextSize="5sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:text="CHEMIST ADD/EDIT/DELETE"
+            android:textColor="@color/textcolorwhite"
+            app:cornerRadius="8dp"
+            app:rippleColor="@color/colorPrimary"
+            />                <!--added by Prithvi 06/05/2020-->
 
     </LinearLayout>
 </ScrollView>

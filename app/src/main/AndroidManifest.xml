@@ -21,6 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+	    <receiver android:name=".Others.OJTNotifyReceiver" />
+        <service android:name=".Others.OJTNotificationService"/>
+        <activity android:name=".Activity.ChemistAddEdit" />
         <activity android:name=".Activity.SpclDcrChemPob"></activity>
         <activity android:name=".Activity.SpclDcrChemData"></activity>
         <activity android:name=".Activity.SpclDcrEditPhoneNo"></activity>
@@ -30,7 +34,9 @@
         <activity android:name=".Activity.SpclDcrEntry" />
         <activity android:name=".Activity.ShowImage" />
         <activity android:name=".Activity.PlayAudio" />
-        <activity android:name=".Activity.HOExpenseData" />
+        <activity
+            android:name=".Activity.HOExpenseData"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.HODoctorsData"
             android:screenOrientation="portrait" />
@@ -88,6 +94,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.CheckDCRSummary"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.CheckHODCRSummary"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.VisitPlanSummary"

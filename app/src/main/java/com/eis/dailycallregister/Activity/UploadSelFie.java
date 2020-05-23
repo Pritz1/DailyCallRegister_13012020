@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -61,14 +62,20 @@ public class UploadSelFie extends AppCompatActivity {
     //private VideoView vidPreview;
     private Button btnUpload;
     long totalSize = 0;
-    public String cntcd="",chemistname="",doctorname="",keycontactper="", phonenumber="",doccntcd="",flag="";
+    public String cntcd="",chemistname="",doctorname="",keycontactper="", phonenumber="",doccntcd="",
+            flag="",menu="",sttype,add1,add2,add3,city,state,pincode,chmDetUpdtReq;
     public boolean isimgcropped = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uploade_selfie);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'>Upload Selfie</font>"));
+
+        menu = getIntent().getStringExtra("menu");
+        if(menu !=null && menu.equalsIgnoreCase("chemAddEdit"))
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'>Capture Image</font>"));
+        else
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'>Upload Selfie</font>"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_black);
         progressDialoge = new ViewDialog(UploadSelFie.this);
@@ -82,17 +89,19 @@ public class UploadSelFie extends AppCompatActivity {
         fileUri = getIntent().getStringExtra("fileUri");
         isimgcropped = getIntent().getExtras().getBoolean("isimgcropped");
         flag = getIntent().getStringExtra("flag");
+        menu = getIntent().getStringExtra("menu");
+        sttype = getIntent().getStringExtra("sttype");
+        chmDetUpdtReq = getIntent().getStringExtra("chmDetUpdtReq");
 
-       // Log.d("cntcd",cntcd);
-      //  Log.d("doccntcd",doccntcd);
-      //  Log.d("doctorname",doctorname);
-      //  Log.d("chemistname",chemistname);
-      //  Log.d("keycontactper",keycontactper);
-      //  Log.d("phonenumber",phonenumber);
-      //  Log.d("filePath",filePath);
-      //  Log.d("fileUri",fileUri);
-      //  Log.d("isimgcropped",""+isimgcropped);
-
+        if(menu!=null && menu.equalsIgnoreCase("chemAddEdit")
+                && chmDetUpdtReq!=null && chmDetUpdtReq.equalsIgnoreCase("Y")){
+            add1 = getIntent().getStringExtra("add1");
+            add2 = getIntent().getStringExtra("add2");
+            add3 = getIntent().getStringExtra("add3");
+            city = getIntent().getStringExtra("city");
+            state = getIntent().getStringExtra("state");
+            pincode = getIntent().getStringExtra("pincode");
+        }
 
         txtPercentage = findViewById(R.id.txtPercentage);
         btnUpload = findViewById(R.id.btnUploadselfie);
@@ -213,7 +222,12 @@ public class UploadSelFie extends AppCompatActivity {
             String responseString = null;
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(RetrofitClient.BASE_URL + "uploadSelfie.php");
+
+            HttpPost httppost = null;
+            if(menu!=null && menu.equalsIgnoreCase("chemAddEdit")) //prithvi 08/05/2020
+                httppost = new HttpPost(RetrofitClient.BASE_URL + "uploadChemVstCard.php");
+            else
+                httppost = new HttpPost(RetrofitClient.BASE_URL + "uploadSelfie.php");
 
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                     Locale.getDefault()).format(new Date()); //prithvi 14092019
@@ -238,15 +252,27 @@ public class UploadSelFie extends AppCompatActivity {
                 }
                 // Extra parameters if you want to pass to server
                 entity.addPart("netid", new StringBody(Global.netid));
-                entity.addPart("cntcd", new StringBody(cntcd));
+                entity.addPart("cntcd", new StringBody(cntcd!=null ? cntcd : ""));
                 entity.addPart("DBPrefix", new StringBody(Global.dbprefix));
                 entity.addPart("timeStamp", new StringBody(timeStamp)); //prithvi
                 entity.addPart("chemistname", new StringBody(chemistname)); //aniket
                 entity.addPart("keycontactper", new StringBody(keycontactper)); //aniket
                 entity.addPart("phonenumber", new StringBody(phonenumber)); //aniket
-                entity.addPart("doccntcd", new StringBody(doccntcd)); //aniket
+                entity.addPart("doccntcd", new StringBody(doccntcd!=null ? doccntcd : "")); //aniket
                 entity.addPart("ecode", new StringBody(Global.ecode)); //aniket
                 entity.addPart("flag", new StringBody(flag)); //aniket
+                //prithvi08/05/2020
+                entity.addPart("menu", new StringBody(menu!=null ? menu : ""));
+                entity.addPart("sttype", new StringBody(sttype !=null ? sttype : ""));
+                if(menu!=null && menu.equalsIgnoreCase("chemAddEdit")){
+                    entity.addPart("add1", new StringBody(add1!=null ? add1 : ""));
+                    entity.addPart("add2", new StringBody(add2!=null ? add2 : ""));
+                    entity.addPart("add3", new StringBody(add3!=null ? add3 : ""));
+                    entity.addPart("city", new StringBody(city!=null ? city : ""));
+                    entity.addPart("state",new StringBody(state!=null ? state : ""));
+                    entity.addPart("pincode",new StringBody(pincode!=null ? pincode : ""));
+                    entity.addPart("chmDetUpdtReq",new StringBody(chmDetUpdtReq!=null ? chmDetUpdtReq : ""));
+                }
 
                 totalSize = entity.getContentLength();
                 httppost.setEntity(entity);
@@ -285,12 +311,26 @@ public class UploadSelFie extends AppCompatActivity {
                     showAlert(jsonObject.getString("errormsg"));
 
                 } else {
-                    Snackbar snackbar = Snackbar.make(lin1, jsonObject.getString("errormsg"), Snackbar.LENGTH_INDEFINITE);
+                    Snackbar snackbar = Snackbar.make(lin1, jsonObject.getString("errormsg"), Snackbar.LENGTH_LONG);
                     snackbar.show();
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+
+                            finish();
+                            UploadSelFie.this.overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+                        }
+                    }, 1200);
+
+
+
                 }
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                Snackbar snackbar = Snackbar.make(lin1, e.getMessage(), Snackbar.LENGTH_INDEFINITE);
+                snackbar.show();
             }
             //super.onPostExecute(result);
         }
@@ -312,16 +352,21 @@ public class UploadSelFie extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Intent intent = new Intent(UploadSelFie.this, HomeActivity.class);
-                intent.putExtra("ecode", Global.ecode);
-                intent.putExtra("date", Global.date);
-                intent.putExtra("dbprefix", Global.dbprefix);
-                intent.putExtra("openfrag", "chemistpr");
-                Bundle bndlanimation = ActivityOptions.makeCustomAnimation(UploadSelFie.this, R.anim.trans_right_in, R.anim.trans_right_out).toBundle();
-                startActivity(intent, bndlanimation);
+
+                    Intent intent = new Intent(UploadSelFie.this, HomeActivity.class);
+                    intent.putExtra("ecode", Global.ecode);
+                    intent.putExtra("date", Global.date);
+                    intent.putExtra("dbprefix", Global.dbprefix);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //to finish chemAddEdit activity too, as after logout on backpress it opens up that activity again
+                if(menu!=null && menu.equalsIgnoreCase("chemAddEdit"))
+                    intent.putExtra("openfrag", "chemAddEdit");
+                else
+                    intent.putExtra("openfrag", "chemistpr");
+                    Bundle bndlanimation = ActivityOptions.makeCustomAnimation(UploadSelFie.this, R.anim.trans_right_in, R.anim.trans_right_out).toBundle();
+                    startActivity(intent, bndlanimation);
+
                 finish();
-                /*finish();
-                UploadActivity.this.overridePendingTransition(R.anim.trans_right_in,R.anim.trans_right_out);*/
+
             }
         });
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();

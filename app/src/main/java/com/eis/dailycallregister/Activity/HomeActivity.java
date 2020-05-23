@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.eis.dailycallregister.Fragment.DCREntry;
 import com.eis.dailycallregister.Fragment.Elearning;
 import com.eis.dailycallregister.Fragment.HODCREntry;
+import com.eis.dailycallregister.Fragment.HOMinutesOJTEntry;
 import com.eis.dailycallregister.Fragment.Help;
 import com.eis.dailycallregister.Fragment.MTPConfirmation;
 import com.eis.dailycallregister.Fragment.MgrRcpaFragment;
@@ -32,6 +33,7 @@ import com.eis.dailycallregister.Fragment.VisitPlanDocLst;
 import com.eis.dailycallregister.Others.Global;
 import com.eis.dailycallregister.Pojo.MenuaccessItem;
 import com.eis.dailycallregister.R;
+import com.eis.dailycallregister.Others.ScheduleOJTNotification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,10 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        //Patanjali 26/04/2020
+        if (Integer.parseInt(Global.emplevel) >= 7) {
+            new ScheduleOJTNotification(HomeActivity.this).scheduleAlarm();
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
@@ -138,17 +144,52 @@ public class HomeActivity extends AppCompatActivity
         int size= 0;
         if(menuaccessItems!=null)
             size = menuaccessItems.size();
+if(size>0) {
+    if ((menuaccessItems.get(0).getDcr().equalsIgnoreCase("N"))) {
+        navigationView.getMenu().setGroupVisible(R.id.dcr, false);
+    }
 
-        if(size>0 && (menuaccessItems.get(0).getAudioMsg().equalsIgnoreCase("N")
-        || menuaccessItems.get(0).getImgMsg().equalsIgnoreCase("N"))){
-                navigationView.getMenu().setGroupVisible(R.id.temp,false);
-        }
+    if ((menuaccessItems.get(0).getMgrRcpa().equalsIgnoreCase("N"))) {
+        navigationView.getMenu().setGroupVisible(R.id.mgronly, false);
+    }
+    if ((menuaccessItems.get(0).getVps().equalsIgnoreCase("N")
+            || menuaccessItems.get(0).getReport().equalsIgnoreCase("N"))) {
+        navigationView.getMenu().setGroupVisible(R.id.reports, false);
+    }
+
+    if ((menuaccessItems.get(0).getUploadVisitingCard().equalsIgnoreCase("N")
+            || menuaccessItems.get(0).getElearning().equalsIgnoreCase("N"))) {
+        navigationView.getMenu().setGroupVisible(R.id.essentials, false);
+    }
+
+    if ((menuaccessItems.get(0).getPatientProfile().equalsIgnoreCase("N")
+            && menuaccessItems.get(0).getRetailReachOut().equalsIgnoreCase("N"))) {
+        navigationView.getMenu().setGroupVisible(R.id.others, false);
+    }
+
+    if ((menuaccessItems.get(0).getAudioMsg().equalsIgnoreCase("N"))) {
+        navigationView.getMenu().setGroupVisible(R.id.temp, false);
+    }
+    if ((menuaccessItems.get(0).getImgMsg().equalsIgnoreCase("N"))) {
+        navigationView.getMenu().setGroupVisible(R.id.imgmsg, false);
+    }
+    if ((menuaccessItems.get(0).getSpclRep().equalsIgnoreCase("N"))) {
+        navigationView.getMenu().setGroupVisible(R.id.spclRep, false);
+    }
+    if (menuaccessItems.get(0).getChemAddEdit() != null &&
+            menuaccessItems.get(0).getChemAddEdit().equalsIgnoreCase("N")) {
+        navigationView.getMenu().setGroupVisible(R.id.chmAddEdit, false);
+    }
+}
+
 
         if (getintentval.equalsIgnoreCase("dcr")) {
             displaySelectedScreen(R.id.nav_dcr);
         }else if (getintentval.equalsIgnoreCase("hodcr")) { //added by Patanjali 0103092019
             displaySelectedScreen(R.id.nav_hodcr);
-        }  else if (getintentval.equalsIgnoreCase("visitingcard")) {
+        } else if (getintentval.equalsIgnoreCase("hoojt")) { //added by Patanjali 26042020
+            displaySelectedScreen(R.id.nav_ho_ojt);
+        } else if (getintentval.equalsIgnoreCase("visitingcard")) {
             displaySelectedScreen(R.id.nav_file_upload);
         } else if (getintentval.equalsIgnoreCase("home")) {
             displaySelectedScreen(R.id.nav_home);
@@ -169,11 +210,13 @@ public class HomeActivity extends AppCompatActivity
         }else if (getintentval.equalsIgnoreCase("homtp")){
             displaySelectedScreen(R.id.nav_hoMtp);                  //added by Prithvi 16/03/2020
         }else if (getintentval.equalsIgnoreCase("audioMsg")){
-            displaySelectedScreen(R.id.nav_audioMsg);                  //added by Prithvi 16/03/2020
+            displaySelectedScreen(R.id.nav_audioMsg);                  //added by Prithvi 08/04/2020
         }else if (getintentval.equalsIgnoreCase("imgMsg")){
-            displaySelectedScreen(R.id.nav_imgMsg);                  //added by Prithvi 16/03/2020
+            displaySelectedScreen(R.id.nav_imgMsg);                  //added by Prithvi 10/04/2020
         }else if (getintentval.equalsIgnoreCase("spclDcr")){
-            displaySelectedScreen(R.id.nav_spclRep);                  //added by Prithvi 16/03/2020
+            displaySelectedScreen(R.id.nav_spclRep);                  //added by Prithvi 15/04/2020
+        }else if (getintentval.equalsIgnoreCase("chemAddEdit")){
+            displaySelectedScreen(R.id.nav_chem_addedit);                  //added by Prithvi 15/04/2020
         }else{
             displaySelectedScreen(R.id.nav_home);
         }
@@ -195,6 +238,12 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(DialogInterface dialog, int which) {
 //                    finish();
 //                    HomeActivity.this.overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+
+                    //Patanjali 26/04/2020
+                    if (Integer.parseInt(Global.emplevel) >= 7) {
+                        new ScheduleOJTNotification(HomeActivity.this).scheduleAlarm();
+                    }
+
                     //aniket 30112019
                     Global.password = null;
                     Intent intent = new Intent(HomeActivity.this, LoginScreen.class);
@@ -258,15 +307,18 @@ public class HomeActivity extends AppCompatActivity
                     new Global().afmNotAllowed(HomeActivity.this);
                 }
                 break;
-            case R.id.nav_hodcr:
-                if (Integer.parseInt(Global.emplevel) >= 7 ) {
-                    //if(empacc.contains(Global.ecode)) {
+            case R.id.nav_hodcr: //patanjali 26042020
+                if (Integer.parseInt(Global.emplevel) >= 7) {
                     fragment = new HODCREntry();
-                    /*}else{
-                        new Global().notAllowed(HomeActivity.this);
-                    }*/
                 } else {
-                    new Global().afmNotAllowed(HomeActivity.this);
+                    new Global().hoAllowed(HomeActivity.this);
+                }
+                break;
+            case R.id.nav_ho_ojt:
+                if (Integer.parseInt(Global.emplevel) >= 7) {
+                    fragment = new HOMinutesOJTEntry();
+                } else {
+                    new Global().hoAllowed(HomeActivity.this);
                 }
                 break;
             case R.id.nav_file_upload:
@@ -329,6 +381,7 @@ public class HomeActivity extends AppCompatActivity
                 if (Global.emplevel.equalsIgnoreCase("1") ) {
                     getintentval = "home";
                     Intent intent = new Intent(HomeActivity.this, ChemistProfileList.class);
+                    intent.putExtra("menu","chemistpr");
                     Bundle bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
                     startActivity(intent, bndlanimation);
                 }else{
@@ -370,6 +423,14 @@ public class HomeActivity extends AppCompatActivity
            case R.id.nav_spclRep:
                 getintentval = "home";
                 intent = new Intent(HomeActivity.this, SpclDcrEntry.class);
+                bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                startActivity(intent, bndlanimation);
+                break;
+
+           case R.id.nav_chem_addedit:
+                getintentval = "home";
+                intent = new Intent(HomeActivity.this, ChemistProfileList.class);
+                intent.putExtra("menu","chemAddEdit");
                 bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
                 startActivity(intent, bndlanimation);
                 break;
@@ -430,7 +491,7 @@ public class HomeActivity extends AppCompatActivity
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
         builder.setCancelable(true);
         builder.setTitle("Alert ?");
-        builder.setMessage("Which month of MTP you want to view ?");
+        builder.setMessage("Which month's MTP you want to view ?");
         builder.setPositiveButton("NEXT", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

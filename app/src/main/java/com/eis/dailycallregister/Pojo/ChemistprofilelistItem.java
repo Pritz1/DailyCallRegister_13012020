@@ -1,11 +1,12 @@
 package com.eis.dailycallregister.Pojo;
 
 public class ChemistprofilelistItem{
+
 	private String stcd;
 	private String cntcd;
 	private String sttype;
 	private String stname;
-	private String status;
+	private String status; //checks whether img present or not
 	private String 	approved;
 
 	public String getApproved() {

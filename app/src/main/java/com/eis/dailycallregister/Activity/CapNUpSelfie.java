@@ -44,8 +44,9 @@ public class CapNUpSelfie extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     public LinearLayout ll1, ll2;
     public RelativeLayout rl;
-    public String cntcd="",doctorname="",keycontactper="", phonenumber="",chemistname="",doccntcd="",flag="";
-    public boolean isimgcropped = false;
+    public String cntcd="",doctorname="",keycontactper="", phonenumber="",chemistname="",doccntcd="",
+            flag="",menu="",add1,add2,add3,city,state,sttype,pincode;
+    public boolean isimgcropped = false,chmDetUpdtReq=false;
     // Camera activity request codes
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private Uri picUri;
@@ -70,11 +71,25 @@ public class CapNUpSelfie extends AppCompatActivity {
         phonenumber = getIntent().getStringExtra("phonenumber");
         doccntcd = getIntent().getStringExtra("doccntcd");
         flag = getIntent().getStringExtra("flag");
+        menu = getIntent().getStringExtra("menu");
+
+        add1 = getIntent().getStringExtra("add1");
+        add2 = getIntent().getStringExtra("add2");
+        add3 = getIntent().getStringExtra("add3");
+        city = getIntent().getStringExtra("city");
+        state = getIntent().getStringExtra("state");
+        sttype = getIntent().getStringExtra("sttype");
+        pincode = getIntent().getStringExtra("pincode");
+        chmDetUpdtReq = getIntent().getBooleanExtra("chmDetUpdtReq",false);
+
       //status = getIntent().getStringExtra("status");
         // Changing action bar background color
         // These two lines are not needed
         //getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(getResources().getString(R.color.action_bar))));
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'>Take Selfie</font>"));
+        if(menu != null && menu.equalsIgnoreCase("chemAddEdit"))
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'>Capture Visiting Card</font>"));
+        else
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'>Take Selfie</font>"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_black);
         btnCapturePicture = findViewById(R.id.btnCapturePicture);
@@ -83,7 +98,6 @@ public class CapNUpSelfie extends AppCompatActivity {
         ll1 = findViewById(R.id.ll1);
         ll2 = findViewById(R.id.ll2);
 
-
         btnCapturePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,9 +105,7 @@ public class CapNUpSelfie extends AppCompatActivity {
             }
         });
 
-
            // capture picture
-
 
         if (!isDeviceSupportCamera()) {
             Toast.makeText(getApplicationContext(),
@@ -192,6 +204,22 @@ public class CapNUpSelfie extends AppCompatActivity {
         i.putExtra("keycontactper", keycontactper);
         i.putExtra("phonenumber", phonenumber);
         i.putExtra("flag", flag);
+        i.putExtra("menu", menu);
+        i.putExtra("sttype", sttype);
+
+        if(menu!=null && menu.equalsIgnoreCase("chemAddEdit")
+        && chmDetUpdtReq==true){
+            i.putExtra("add1", add1);
+            i.putExtra("add2", add2);
+            i.putExtra("add3", add3);
+            i.putExtra("city", city);
+            i.putExtra("state", state);
+            i.putExtra("chmDetUpdtReq", "Y");
+            i.putExtra("pincode", pincode);
+        }else{
+            i.putExtra("chmDetUpdtReq","N");
+        }
+
         startActivity(i);
         finish();
     }

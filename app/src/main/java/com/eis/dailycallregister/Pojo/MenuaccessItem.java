@@ -7,6 +7,7 @@ public class MenuaccessItem{
 	@SerializedName("dcr")
 	private String dcr;
 
+
 	@SerializedName("retailerAlert")
 	private String retailerAlert;
 
@@ -39,6 +40,10 @@ public class MenuaccessItem{
 
 	@SerializedName("homtp")
 	private String hoMtp;
+	
+	
+	@SerializedName("hoojt")
+	private String hoojt;
 
 	@SerializedName("audioMsg")
 	private String audioMsg;
@@ -49,12 +54,28 @@ public class MenuaccessItem{
 	@SerializedName("spclDcr") //during lockdown
 	private String spclRep;
 
+	@SerializedName("spclDcrChPopup") //during lockdown -> if pop up questionare required in chemist data or not.
+	private String spclDcrChPopup;
+
+	@SerializedName("dcrChQPopup") //for pop up questionnaire required in chemist data or not.
+	private String dcrChQPopup;
+
+	@SerializedName("chemAddEdit") //06/05/2020 - prithvi
+	private String chemAddEdit;
+
 	public void setDcr(String dcr){
 		this.dcr = dcr;
 	}
 
 	public String getDcr(){
 		return dcr;
+	}
+	public String getHoojt() {
+		return hoojt;
+	}
+
+	public void setHoojt(String hoojt) {
+		this.hoojt = hoojt;
 	}
 
 	public void setRetailerAlert(String retailerAlert){
@@ -169,12 +190,30 @@ public class MenuaccessItem{
 		this.spclRep = spclRep;
 	}
 
+	public String getSpclDcrChPopup() {
+		return spclDcrChPopup;
+	}
+
+	public void setSpclDcrChPopup(String spclDcrChPopup) {
+		this.spclDcrChPopup = spclDcrChPopup;
+	}
+
+	public String getChemAddEdit() {
+		return chemAddEdit;
+	}
+
+	public void setChemAddEdit(String chemAddEdit) {
+		this.chemAddEdit = chemAddEdit;
+	}
+
 	@Override
  	public String toString(){
 		return 
 			"MenuaccessItem{" + 
 			"dcr = '" + dcr + '\'' + 
-			",retailerAlert = '" + retailerAlert + '\'' + 
+			",hodcr = '" + hodcr + '\'' +
+			",hoojt = '" + hoojt + '\'' +
+			",retailerAlert = '" + retailerAlert + '\'' +
 			",elearning = '" + elearning + '\'' + 
 			",retailReachOut = '" + retailReachOut + '\'' + 
 			",mtp = '" + mtp + '\'' + 
@@ -186,6 +225,8 @@ public class MenuaccessItem{
 			",audioMsg = '" + audioMsg + '\'' +
 			",imgMsg = '" + imgMsg + '\'' +
 			",spclRep = '" + spclRep + '\'' +
+			",spclDcrChPopup = '" + spclDcrChPopup + '\'' +
+			",chemAddEdit = '" + chemAddEdit + '\'' +
 			"}";
 		}
 }

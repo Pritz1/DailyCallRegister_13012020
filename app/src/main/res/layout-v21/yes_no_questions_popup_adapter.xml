@@ -51,6 +51,19 @@
                 android:spinnerMode="dialog"
                 android:id="@+id/ans"/>
 
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="QTY"
+                android:textSize="15sp"
+                android:id="@+id/qty1"
+                android:layout_weight="1"
+                android:digits="0123456789"
+                android:inputType="number"
+                android:maxLength="5"
+                android:visibility="gone"
+                android:focusable="true"/>
+
         </LinearLayout>
 
         <LinearLayout

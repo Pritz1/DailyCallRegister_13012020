@@ -4,18 +4,25 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.button.MaterialButton;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.eis.dailycallregister.Pojo.MenuaccessItem;
+import com.eis.dailycallregister.Pojo.PropsItem;
 import com.eis.dailycallregister.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Global {
     public static String ecode = null;
@@ -60,9 +67,20 @@ public class Global {
     public static int audioPopupShow = 0; //added by prithvi to show audio popup omly once - 07/04/2020
     public static int imgPopupShow = 0; //added by prithvi to show audio popup omly once - 07/04/2020
     public static String currDate = null;
+    public static int dcrInactcDrAlrt = 0;
+    public static int dcrSecSalesAlrt = 0;
+    public static int dcrSampleAlrt = 0;
+    public static int dcrMtpChk = 0;
+    public static int dcrHolChk = 0;
 
     public static List<MenuaccessItem> menuaccessItemsGlobal = new ArrayList<>();			//added by aniket 30/11/2019
 
+//patanjali 26042020
+    public static SimpleDateFormat dateDMYFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+    public static SimpleDateFormat dateYMDFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    public static SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
+    public static SimpleDateFormat dateTimeFormatterWOMilliSeconds = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+    public static SimpleDateFormat dateTimeFormatter2 = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
     public void clearGlobal(String mode) {
         if (mode.equalsIgnoreCase("All")) {
@@ -92,13 +110,25 @@ public class Global {
             psr = null;
             wrkwith = null;
             level5 = null;
+            level5Name = null;
             level4 = null;
+            level4Name = null;
             level3 = null;
+            level3Name = null;
             level2 = null;
+            level2Name = null;
             level1 = null;
+			level1Name = null;
+            townName = null;
+            townTownId = null;
             audioPopupShow = 0;
             imgPopupShow = 0;
             currDate = null;
+            dcrInactcDrAlrt = 0;
+            dcrSecSalesAlrt = 0;
+            dcrSampleAlrt = 0;
+            dcrMtpChk = 0;
+            dcrHolChk = 0;
         } else if (mode.equalsIgnoreCase("DCR")) {
             dcrdate = null;
             dcrdateday = null;
@@ -111,6 +141,24 @@ public class Global {
             dcrno = null;
             finyear = null;
             whichmth = null;
+            psr = null;
+            wrkwith = null;
+            level5 = null;
+            level5Name = null;
+            level4 = null;
+            level4Name = null;
+            level3 = null;
+            level3Name = null;
+            level2 = null;
+            level2Name = null;
+            level1 = null;
+            level1Name = null;
+            townName = null;
+            townTownId = null;
+            dcrSecSalesAlrt = 0;
+            dcrSampleAlrt = 0;
+            dcrMtpChk = 0;
+            dcrHolChk = 0;
         }
     }
 
@@ -154,7 +202,21 @@ public class Global {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    public void hoAllowed(final Context context) {//patanjali 26042020
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(true);
+        builder.setMessage("Only HO Manager can access this feature !");
+        builder.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
     public void afmNotAllowed(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(true);
@@ -187,7 +249,7 @@ public class Global {
         dialog.show();
     }
 
-    public void alert(final Context context,String msg,String title) {
+    public static void alert(final Context context,String msg,String title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(true);
         builder.setTitle(title);

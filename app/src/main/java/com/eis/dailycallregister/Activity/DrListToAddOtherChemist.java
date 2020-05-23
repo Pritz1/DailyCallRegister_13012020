@@ -42,7 +42,7 @@ public class DrListToAddOtherChemist extends AppCompatActivity implements Search
     ViewDialog progressDialoge;
     RelativeLayout nsv;
 
-    String sttype="";
+    String sttype="",menu="",addEdit="";
 
     public List<RcpadrListItem> drlist= new ArrayList<>();
     public List<RcpadrListItem> drlistcopy = new ArrayList<>();
@@ -56,6 +56,8 @@ public class DrListToAddOtherChemist extends AppCompatActivity implements Search
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_black);
 
+        addEdit=getIntent().getStringExtra("addEdit");
+        menu=getIntent().getStringExtra("menu");
 
         nsv = findViewById(R.id.nsv);
         drlistrv=findViewById(R.id.drlistrv);
@@ -81,7 +83,7 @@ public class DrListToAddOtherChemist extends AppCompatActivity implements Search
 //                Log.d("response 2",res.toString());
                 drlist =  res.getDrlist();
                 drlistcopy = new ArrayList<>(drlist); //prithvi 10/10/2019 - to include search functionality.
-                //   Log.d("hqpsrlist 1",drlist.toString());
+                //   Log.d("hqpsrlist 1",mgrList.toString());
                 drlistrv.setVisibility(View.VISIBLE);
                 drlistrv.getAdapter().notifyDataSetChanged();
             }
@@ -127,17 +129,28 @@ public class DrListToAddOtherChemist extends AppCompatActivity implements Search
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 final Holder myHolder = (Holder) viewHolder;
                 final RcpadrListItem model = drlist.get(i);
-                myHolder.drcdndrname.setText(model.getDrcd()+". "+model.getDrname());
+                myHolder.drcdndrname.setText((i+1) +". "+ model.getDrcd()+" - "+model.getDrname());
 
-                myHolder.drcdndrname.setOnClickListener(new View.OnClickListener() {
+                myHolder.itemView.setTag(i);
+                myHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(DrListToAddOtherChemist.this,AddOtherChemist.class);
+                        Intent intent = null;
+                        if(menu!=null && menu.equalsIgnoreCase("chemAddEdit"))
+                            intent = new Intent(DrListToAddOtherChemist.this,ChemistAddEdit.class);
+                        else
+                            intent = new Intent(DrListToAddOtherChemist.this,AddOtherChemist.class);
+
                         intent.putExtra("drcd",model.getDrcd() );
                         intent.putExtra("wnetid", model.getNetid());
                         intent.putExtra("drname", model.getDrname());
                         intent.putExtra("doccntcd", model.getCntcd());
-                        Bundle bndlanimation = ActivityOptions.makeCustomAnimation(DrListToAddOtherChemist.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                        intent.putExtra("addEdit", "ADD");
+                        intent.putExtra("menu", menu);
+
+                        Bundle bndlanimation = ActivityOptions.makeCustomAnimation
+                                (DrListToAddOtherChemist.this, R.anim.trans_left_in,
+                                        R.anim.trans_left_out).toBundle();
                         startActivity(intent, bndlanimation);
                     }
                 });

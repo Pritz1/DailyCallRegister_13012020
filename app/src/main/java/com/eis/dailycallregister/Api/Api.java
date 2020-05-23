@@ -1,7 +1,9 @@
 package com.eis.dailycallregister.Api;
 
 
+import com.eis.dailycallregister.Others.Global;
 import com.eis.dailycallregister.Pojo.AreaJntWrkRes;
+import com.eis.dailycallregister.Pojo.ChemistDetailRes;
 import com.eis.dailycallregister.Pojo.ChemistDoctorNameRes;
 import com.eis.dailycallregister.Pojo.ChemistListAWRes;
 import com.eis.dailycallregister.Pojo.ChemistProRes;
@@ -26,7 +28,9 @@ import com.eis.dailycallregister.Pojo.GetRCPACompProdLstRes;
 import com.eis.dailycallregister.Pojo.GetRCPAPulseChemist;
 import com.eis.dailycallregister.Pojo.GetRetailerAlertCnt;
 import com.eis.dailycallregister.Pojo.HOChemistListResponse;
+import com.eis.dailycallregister.Pojo.HOConfirmDCRRes;
 import com.eis.dailycallregister.Pojo.HODCRProductResponse;
+import com.eis.dailycallregister.Pojo.HODCRSummaryMainRes;
 import com.eis.dailycallregister.Pojo.HODcrDateResponse;
 import com.eis.dailycallregister.Pojo.HODcrdChemListResponse;
 import com.eis.dailycallregister.Pojo.HODcrdDocDetResponse;
@@ -38,6 +42,7 @@ import com.eis.dailycallregister.Pojo.HOFrmToTownsDetRes;
 import com.eis.dailycallregister.Pojo.HOHubListResponse;
 import com.eis.dailycallregister.Pojo.HOLevelListResponse;
 import com.eis.dailycallregister.Pojo.HONonFieldWorkListRes;
+import com.eis.dailycallregister.Pojo.HOOJTFlagNotifyRes;
 import com.eis.dailycallregister.Pojo.HOWDListResponse;
 import com.eis.dailycallregister.Pojo.HoDcrdDrListResponse;
 import com.eis.dailycallregister.Pojo.HoMtpMgrListResponse;
@@ -59,9 +64,9 @@ import com.eis.dailycallregister.Pojo.QuizMainRes;
 import com.eis.dailycallregister.Pojo.RedicnePopUpRes;
 import com.eis.dailycallregister.Pojo.RetailerAndOptions;
 import com.eis.dailycallregister.Pojo.SampleAndGiftReceiptRes;
-import com.eis.dailycallregister.Pojo.SetChemistkeyPerRes;
 import com.eis.dailycallregister.Pojo.SpclDcrDcrdChLstRes;
 import com.eis.dailycallregister.Pojo.SpclDcrdDrListRes;
+import com.eis.dailycallregister.Pojo.StateListResponse;
 import com.eis.dailycallregister.Pojo.VstCardDrLstRes;
 import com.eis.dailycallregister.Pojo.VstPlnDocLstRes;
 import com.eis.dailycallregister.Pojo.VstPlnSumRes;
@@ -203,13 +208,18 @@ public interface Api {
     @POST("getdcrdchem.php")
     Call<DCRDChemListRes> getDCRDChem(
             @Field("dcrno") String dcrno,
+            @Field("netid") String netid,
+            @Field("dcrdate") String dcrdate,
+            @Field("div") String div,
+            @Field("dcrChQPopup") String dcrChQPopup,
             @Field("DBPrefix") String DBPrefix
     );
 
     @FormUrlEncoded
-    @POST("accessSummary.php")
-    Call<IsDCRCorrectRes> isDCRCorrectlyFilled(
+    @POST("dcrValidate.php")
+    Call<DefaultResponse> isDCRCorrectlyFilled(
             @Field("dcrno") String dcrno,
+            @Field("netid") String netid,
             @Field("DBPrefix") String DBPrefix
     );
 
@@ -764,7 +774,8 @@ public interface Api {
             @Field("netid") String netid,
             @Field("mth") String mth,
             @Field("yr") String yr,
-            @Field("DBPrefix") String dbprefix
+            @Field("DBPrefix") String dbprefix,
+            @Field("menu") String menu
     );
 
     @FormUrlEncoded
@@ -801,10 +812,20 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("getChemistDataToSet.php")
-    Call<SetChemistkeyPerRes> getChemistData(
+    Call<ChemistDetailRes> getChemistData(
             @Field("cntcd") String cntcd,
             @Field("netid") String netid,
-            @Field("DBPrefix") String dbprefix
+            @Field("DBPrefix") String dbprefix,
+            @Field("menu") String menu
+    );
+
+  @FormUrlEncoded
+    @POST("getChemistDataToSet.php")
+    Call<ChemistDetailRes> updateChemData(
+            @Field("cntcd") String cntcd,
+            @Field("netid") String netid,
+            @Field("DBPrefix") String dbprefix,
+            @Field("menu") String menu
     );
 
 
@@ -1152,13 +1173,63 @@ public interface Api {
             @Field("DBPrefix") String DBPrefix
     );
 
+    @POST("accessHODcrSummary.php")// added on 27/03/2020 by Patanjali
+    Call<IsDCRCorrectRes> isHODCRCorrectlyFilled(
+            @Field("dcrno") String dcrno,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("checkHODCRSummary.php")// added on 31/03/2020 by Patanjali
+    Call<HODCRSummaryMainRes> getHODCRSummary(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("remark") String remark,
+            @Field("dcrno") String dcrno,
+            @Field("DBPrefix") String dbprefix
+    );
+
+    @FormUrlEncoded
+    @POST("confirmHODCREntry.php") // added on 31/03/2020 by Patanjali
+    Call<HOConfirmDCRRes> confirmHODCREntry(
+            @Field("doccalls") String doccalls,
+            @Field("chemcalls") String chemcalls,
+            @Field("wdcalls") String wdcalls,
+            @Field("hubcalls") String hubcalls,
+            @Field("NoPOB") String NoPOB,
+            @Field("TotPOB") String TotPOB,
+            @Field("Deduction") String Deduction,
+            @Field("ecode") String ecode,
+            @Field("DCRDate") String DCRDate,
+            @Field("netid") String netid,
+            @Field("dcrno") String dcrno,
+            @Field("DBPrefix") String dbprefix
+    );
+
+    @FormUrlEncoded
+    @POST("updateHOOJTSent.php")// added on 16/04/2020 by Patanjali
+    Call<DefaultResponse> updateHOOJTSent(
+            @Field("ecode") String ecode,
+            @Field("ojtflag") String ojtflag,
+            @Field("DBPrefix") String dbprefix
+    );
+
+    @FormUrlEncoded
+    @POST("checkHOOJTForNotification.php") // added on 17/04/2020 by Patanjali
+    Call<HOOJTFlagNotifyRes> checkHOOJTForNotification(
+            @Field("ecode") String ecode,
+            @Field("DBPrefix") String dbprefix
+    );
+
+
     //prithvi - audio msg - 07/04/2020 : start
 
     @FormUrlEncoded
     @POST("audioMsgViewDet.php")
     Call<DefaultResponse> getAudioMsgViewDet(
             @Field("ecode") String ecode,
-            @Field("DBPrefix") String DBPrefix
+            @Field("DBPrefix") String DBPrefix,
+            @Field("audioCode") String audioCode
     );
 
     @FormUrlEncoded
@@ -1167,7 +1238,8 @@ public interface Api {
             @Field("ecode") String ecode,
             @Field("netid") String netid,
             @Field("audioPopupShow") int audioPopupShow,
-            @Field("DBPrefix") String DBPrefix
+            @Field("DBPrefix") String DBPrefix,
+            @Field("audioCode") String audioCode
     );
     //prithvi - audio msg - 07/04/2020 : end
 
@@ -1177,6 +1249,7 @@ public interface Api {
     @POST("imgMsgViewDet.php")
     Call<DefaultResponse> getImgMsgViewDet(
             @Field("ecode") String ecode,
+            @Field("imgCode") String imgCode,
             @Field("DBPrefix") String DBPrefix
     );
 
@@ -1186,6 +1259,7 @@ public interface Api {
             @Field("ecode") String ecode,
             @Field("netid") String netid,
             @Field("audioPopupShow") int audioPopupShow,
+            @Field("imgCode") String imgCode,
             @Field("DBPrefix") String DBPrefix
     );
     //prithvi - audio msg - 10/04/2020 : end
@@ -1230,7 +1304,9 @@ public interface Api {
             @Field("DBPrefix") String DBPrefix,
             @Field("netid") String netid,
             @Field("emp") String emp,
-            @Field("cdate") String cdate
+            @Field("cdate") String cdate,
+            @Field("spclDcrChPopup") String spclDcrChPopup,
+            @Field("div") String div
     );
 
     @FormUrlEncoded
@@ -1242,7 +1318,8 @@ public interface Api {
             @Field("cdate") String cdate,
             @Field("cntcd") String cntcd,
             @Field("custflg") String custFlg,
-            @Field("DBPrefix") String DBPrefix
+            @Field("DBPrefix") String DBPrefix,
+            @Field("spclDcrChPopup") String spclDcrChPopup
     );
 
     @FormUrlEncoded
@@ -1341,6 +1418,83 @@ public interface Api {
         @Field("cdate") String cdate,
         @Field("DBPrefix") String DBPrefix
     );
+
+    @FormUrlEncoded
+    @POST("spclDcrQuestnPopup.php")
+    Call<GetPopupQuesRes> getQuestnsForPopup(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("custFlag") String custFlag,
+            @Field("d1d2") String d1d2,
+            @Field("mth") String mth,
+            @Field("yr") String yr,
+            @Field("cntcd") String cntcd,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("SpclDcrSavePopupQA.php")
+    Call<DefaultResponse> savePopupQASpclDcr(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("cdate") String cdate,
+            @Field("jsonstr") String jsonstr,
+            @Field("mth") String mth,
+            @Field("yr") String yr,
+            @Field("cntcd") String cntcd,
+            @Field("optType") String optType,
+            @Field("DBPrefix") String dbprefix
+    );
     //prithvi - Special DCR 16/04/2020 : End
 
+    //prithvi - Chemist Add/Edit/Delete : Start
+
+    @FormUrlEncoded
+    @POST("chemDetlsUpdate.php")
+    Call<DefaultResponse> updateChemDetails(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("keycontactper") String keycontactper,
+            @Field("chemName") String chemName,
+            @Field("phnno") String phnno,
+            @Field("sttype") String sttype,
+            @Field("add1") String add1,
+            @Field("add2") String add2,
+            @Field("add3") String add3,
+            @Field("city") String city,
+            @Field("state") String state,
+            @Field("pincode") String pincode,
+            @Field("DBPrefix") String dbprefix
+    );
+
+
+    @FormUrlEncoded
+    @POST("getStateList.php")
+    Call<StateListResponse> getStateList(
+            @Field("DBPrefix") String dbprefix
+    );
+
+    @FormUrlEncoded
+    @POST("chemDetlsValidate.php")
+    Call<DefaultResponse> chemDetlsValidate(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("chemName") String chemName,
+            @Field("phnno") String phnno,
+            @Field("addEdit") String addEdit,
+            @Field("DBPrefix") String dbprefix
+    );
+
+    @FormUrlEncoded
+    @POST("chemDetlsDelete.php")
+    Call<DefaultResponse> deleteChemData(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("menu") String menu,
+            @Field("DBPrefix") String dbprefix
+    );
+    //prithvi - Chemist Add/Edit/Delete : End
 }

@@ -22,10 +22,10 @@ import com.bumptech.glide.Glide;
 import com.eis.dailycallregister.Api.RetrofitClient;
 import com.eis.dailycallregister.Others.Global;
 import com.eis.dailycallregister.Others.ViewDialog;
+import com.eis.dailycallregister.Pojo.ChemistDetailRes;
 import com.eis.dailycallregister.Pojo.ChemistDoctorNameRes;
 import com.eis.dailycallregister.Pojo.ChemistdataItem;
 import com.eis.dailycallregister.Pojo.DoctornamelistItem;
-import com.eis.dailycallregister.Pojo.SetChemistkeyPerRes;
 import com.eis.dailycallregister.R;
 
 import java.util.ArrayList;
@@ -136,7 +136,8 @@ public class ChemistDetails extends AppCompatActivity {
         Log.d("cntcd",cntcd);*/
 
         progressDialoge.show();
-        retrofit2.Call<ChemistDoctorNameRes> call = RetrofitClient.getInstance().getApi().getChemistDrName(Global.netid,cntcd,sttype ,Global.dbprefix);
+        retrofit2.Call<ChemistDoctorNameRes> call = RetrofitClient.getInstance().getApi().
+                getChemistDrName(Global.netid,cntcd,sttype ,Global.dbprefix);
        // Log.d("call",call.toString());
         call.enqueue(new Callback<ChemistDoctorNameRes>() {
             @Override
@@ -191,16 +192,17 @@ public class ChemistDetails extends AppCompatActivity {
 
    public void getChemistKeyPer()
    {
-       Log.d("getExistingSelfie","getExistingSelfie");
+       /*Log.d("getExistingSelfie","getExistingSelfie");
        Log.d("Global.netid",Global.netid);
-       Log.d("cntcd",cntcd);
+       Log.d("cntcd",cntcd);*/
 
-       retrofit2.Call<SetChemistkeyPerRes> call = RetrofitClient.getInstance().getApi().getChemistData(cntcd,Global.netid ,Global.dbprefix);
-       call.enqueue(new Callback<SetChemistkeyPerRes>() {
+       retrofit2.Call<ChemistDetailRes> call = RetrofitClient.getInstance().getApi()
+               .getChemistData(cntcd,Global.netid ,Global.dbprefix,"");
+       call.enqueue(new Callback<ChemistDetailRes>() {
            @Override
-           public void onResponse(Call<SetChemistkeyPerRes> call, Response<SetChemistkeyPerRes> response) {
-               SetChemistkeyPerRes res=response.body();
-               Log.d("res",res.toString());
+           public void onResponse(Call<ChemistDetailRes> call, Response<ChemistDetailRes> response) {
+               ChemistDetailRes res=response.body();
+               //Log.d("res",res.toString());
                if(!res.isError())
                {
                     chemistdata=res.getChemistdata();
@@ -220,7 +222,7 @@ public class ChemistDetails extends AppCompatActivity {
            }
 
            @Override
-           public void onFailure(Call<SetChemistkeyPerRes> call, Throwable t) {
+           public void onFailure(Call<ChemistDetailRes> call, Throwable t) {
                Snackbar snackbar = Snackbar.make(chmscr, "Failed to fetch data !", Snackbar.LENGTH_INDEFINITE)
                        .setAction("Retry", new View.OnClickListener() {
                            @Override

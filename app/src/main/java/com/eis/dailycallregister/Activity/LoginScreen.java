@@ -42,6 +42,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.eis.dailycallregister.Api.RetrofitClient;
 import com.eis.dailycallregister.Others.Global;
+import com.eis.dailycallregister.Others.SharedPrefManager;
 import com.eis.dailycallregister.Others.ViewDialog;
 import com.eis.dailycallregister.Pojo.DBList;
 import com.eis.dailycallregister.Pojo.DefaultResponse;
@@ -117,7 +118,7 @@ public class LoginScreen extends AppCompatActivity {
         remuserpass=findViewById(R.id.remuserpass);
         preferences=getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
-        getArea();
+        getDbList(); //gets dblist
 
         // initiate the date picker and a button*/
         date = findViewById(R.id.wdate);
@@ -247,11 +248,11 @@ public class LoginScreen extends AppCompatActivity {
                     return;
                 }
 
-                if (lid.length() < 5) {
+               /* if (lid.length() < 5) { //cant be a condition for HO
                     uid.setError("Enter a valid login ID");
                     uid.requestFocus();
                     return;
-                }
+                }*/
 
                 if (password.isEmpty()) {
                     pass.setError("Password is required");
@@ -277,6 +278,10 @@ public class LoginScreen extends AppCompatActivity {
                             progress.dismiss();
                             notEncryptAlert();
                         } else {
+                            Log.d("lid : ",lid);
+                            Log.d("password : ",Global.password);
+                            Log.d("date : ",date.getText().toString().trim());
+                            Log.d("spnArea : ",spnArea.getSelectedItem().toString().trim());
                             Call<LoginResponse> call = RetrofitClient
                                     .getInstance().getApi().login(lid, Global.password, date.getText().toString().trim(), spnArea.getSelectedItem().toString().trim());
                             call.enqueue(new Callback<LoginResponse>() {
@@ -311,6 +316,12 @@ public class LoginScreen extends AppCompatActivity {
                                         getPrefreence();                         //Added by aniket 16/10/2019
                                         startActivity(intent, bndlanimation);
                                         finish();
+
+
+                                        //Patanjali 26/04/2020
+                                        SharedPrefManager shPref = new SharedPrefManager(LoginScreen.this);
+                                        shPref.setECode(Global.ecode);
+                                        shPref.setDBPrefix(Global.dbprefix);
 
                                     } else {
                                 /*if (dResponse.getErrormsg().equalsIgnoreCase("Entered date exceeds current date")) {
@@ -365,7 +376,7 @@ public class LoginScreen extends AppCompatActivity {
 
     }
 
-    private void getArea() {
+    private void getDbList() {
         progress.show();
         Call<DBList> call = RetrofitClient
                 .getInstance().getApi().getdblist();

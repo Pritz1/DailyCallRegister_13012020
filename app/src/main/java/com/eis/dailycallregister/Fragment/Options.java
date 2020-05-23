@@ -71,7 +71,7 @@ import static com.eis.dailycallregister.Others.Global.menuaccessItemsGlobal;
 public class Options extends Fragment {
 
     MaterialButton dcr, mtp, uploadcard, vps, elearn,
-            report, mgrrcpa, patientpr, chemistpr, hodcr, homtp, spclDcr,ho_ojt;//report --> added by aniket 21/09/19 --> dcrrcpa
+            report, mgrrcpa, patientpr, chemistpr, hodcr, homtp, spclDcr,ho_ojt,chemAddEdit;//report --> added by aniket 21/09/19 --> dcrrcpa
     ViewDialog progressDialoge;
     List<MisscalldrsItem> misscall = new ArrayList<>();
     LinearLayout menuoptions;
@@ -110,6 +110,7 @@ public class Options extends Fragment {
         homtp = view.findViewById(R.id.homtp);
 		ho_ojt = view.findViewById(R.id.ho_ojt); // added by patanjali
         spclDcr = view.findViewById(R.id.spclRep);
+        chemAddEdit = view.findViewById(R.id.chemAddEdit);
 
         /*empacc.clear();
         //CD
@@ -250,6 +251,13 @@ public class Options extends Fragment {
                 spclDcr.setVisibility(View.VISIBLE);
             } else {
                 spclDcr.setVisibility(View.GONE);
+            }
+
+            if (menuaccessItems.get(0).getChemAddEdit() != null &&
+                    menuaccessItems.get(0).getChemAddEdit().equalsIgnoreCase("Y")) {
+                chemAddEdit.setVisibility(View.VISIBLE);
+            } else {
+                chemAddEdit.setVisibility(View.GONE);
             }
 
 
@@ -459,6 +467,22 @@ public class Options extends Fragment {
                 intent.putExtra("date", Global.date);
                 intent.putExtra("dbprefix", Global.dbprefix);
                 intent.putExtra("openfrag", "spclDcr");
+                Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                startActivity(intent, bndlanimation);
+                getActivity().finish();
+
+            }
+        });
+
+//added by prithvi - 08/05/2020
+        chemAddEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                intent.putExtra("ecode", Global.ecode);
+                intent.putExtra("date", Global.date);
+                intent.putExtra("dbprefix", Global.dbprefix);
+                intent.putExtra("openfrag", "chemAddEdit");
                 Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
                 startActivity(intent, bndlanimation);
                 getActivity().finish();
@@ -946,7 +970,7 @@ public class Options extends Fragment {
                 dialog2.show();*/
         }
 
-        if (Global.emplevel.equalsIgnoreCase("1")) {
+        if (Global.emplevel.equalsIgnoreCase("1") && Global.misscallpopup!=1) {
             getMissCalls();
         }
     }

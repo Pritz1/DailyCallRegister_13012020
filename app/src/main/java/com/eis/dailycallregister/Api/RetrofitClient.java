@@ -17,7 +17,7 @@ public class RetrofitClient {
 
     public static final String FMS_URL = "http://180.149.242.227:8080/effectiveinfo/servlet/";
     //public static final String BASE_URL = "http://192.168.29.230:8085/dcrapi/";
-    //public static final String BASE_URL = "http://192.168.0.109:8085/dcrapi/";
+    //public static final String BASE_URL = "http://192.168.43.25:8085/dcrapi/";
     //public static final String BASE_URL = "http://192.168.1.16:8085/dcrapi/";
     public static final String BASE_URL = "http://180.149.242.227:8085/dcrapi/";
 

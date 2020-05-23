@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.ChemistAddEdit"
+    android:orientation="vertical"
+    android:id="@+id/chm_addedit_outerlay"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chemist Name*"
+                    android:textColor="#424242"
+                    android:textSize="12sp"/>
+                <EditText
+                    android:id="@+id/chmName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Chemist Name*"
+                    android:padding="15dp"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.()-/ " />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Key Contact Person*"
+                    android:textColor="#424242"
+                    android:textSize="12sp"/>
+
+                <EditText
+                    android:id="@+id/chmkeypername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Key Contact Person*"
+                    android:padding="15dp"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.()[]-/ " />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Phone Number*"
+                    android:textColor="#424242"
+                    android:textSize="12sp"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chmphoneno"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:hint="Phone Number*"
+                    android:padding="15dp"
+                    />
+            </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address : "
+            android:textColor="#424242"
+            android:textSize="18sp"
+            android:layout_marginLeft="15dp"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:orientation="vertical">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/add1"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.()[]-/ "
+                    android:maxLength="50"
+                    android:hint="Address 1"
+                    android:padding="15dp"
+                    />
+
+            <EditText
+                android:id="@+id/add2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Address 2"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.()[]-/ "
+                android:maxLength="50"
+                android:padding="15dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/add3"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.()[]-/ "
+                    android:maxLength="50"
+                    android:hint="Address 3"
+                    android:padding="15dp"
+                    />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pincode*"
+                android:textColor="#424242"
+                android:textSize="12sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pincode"
+                android:inputType="number"
+                android:maxLength="6"
+                android:hint="Pincode*"
+                android:padding="15dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="City*"
+                android:textColor="#424242"
+                android:textSize="12sp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/city"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.()[]-/ "
+                    android:maxLength="25"
+                    android:hint="City"
+                    android:padding="15dp"
+                    />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="State*"
+                android:textColor="#424242"
+                android:textSize="12sp"/>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/state"
+                    android:spinnerMode="dialog"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#808080"
+                    android:autofillHints="Select State"
+                    android:padding="15dp"
+                    />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Patch/Area*"
+            android:textColor="#424242"
+            android:textSize="12sp"/>
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/patch"
+            android:spinnerMode="dialog"
+            android:layout_marginTop="8dp"
+            android:textColor="#808080"
+            android:autofillHints="Select Patch"
+            android:padding="15dp"
+            />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/ll1"
+                android:layout_margin="10dp"
+                android:padding="6dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Doctor(s) Attached :"
+                    android:textColor="#424242"
+                    android:textSize="18sp"/>
+                <android.support.v7.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chemistdoctor"
+                    android:spinnerMode="dialog"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#808080"
+                    android:text="Select Chemist"/>
+            </LinearLayout>
+    </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <!-- Capture picture button -->
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/updtBtn"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="UPDATE"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="2dp"
+            android:padding="10dp"/>
+
+        <ImageView
+            android:id="@+id/imagecard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_photo_not_found_24dp"
+            tools:ignore="ContentDescription"
+            android:layout_margin="2dp"/>
+    </LinearLayout>
+
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/imgBtn"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Attach Visiting Card\n and \nSubmit"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:padding="15dp"
+            android:layout_marginTop="5dp"/>
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
