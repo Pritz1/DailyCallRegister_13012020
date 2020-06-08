@@ -40,6 +40,9 @@ public class ChemistdataItem{
 	@SerializedName("pincode")
 	private String pincode;
 
+	@SerializedName("cls")
+	private String cls;
+
 
 	public void setKeyp(String keyp){
 		this.keyp = keyp;
@@ -137,6 +140,14 @@ public class ChemistdataItem{
 		this.pincode = pincode;
 	}
 
+	public String getCls() {
+		return cls;
+	}
+
+	public void setCls(String cls) {
+		this.cls = cls;
+	}
+
 	@Override
  	public String toString(){
 		return 
@@ -153,6 +164,7 @@ public class ChemistdataItem{
 			",city = '" + city + '\'' +
 			",state = '" + state + '\'' +
 			",pincode = '" + pincode + '\'' +
+			",cls = '" + cls + '\'' +
 			"}";
 		}
 }

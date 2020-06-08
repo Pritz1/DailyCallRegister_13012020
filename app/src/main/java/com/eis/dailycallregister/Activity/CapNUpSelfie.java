@@ -45,10 +45,11 @@ public class CapNUpSelfie extends AppCompatActivity {
     public LinearLayout ll1, ll2;
     public RelativeLayout rl;
     public String cntcd="",doctorname="",keycontactper="", phonenumber="",chemistname="",doccntcd="",
-            flag="",menu="",add1,add2,add3,city,state,sttype,pincode;
-    public boolean isimgcropped = false,chmDetUpdtReq=false;
+            flag="",menu="",add1,add2,add3,city,state,sttype,pincode,camMode,noVst,cls,selTcpJson;
+    public boolean isimgcropped = false,chmDetUpdtReq=false,isPatchUpdtd=false;
     // Camera activity request codes
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
+    private static final int GALLERY_ATTACH_IMAGE_REQUEST_CODE = 99;
     private Uri picUri;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -80,7 +81,12 @@ public class CapNUpSelfie extends AppCompatActivity {
         state = getIntent().getStringExtra("state");
         sttype = getIntent().getStringExtra("sttype");
         pincode = getIntent().getStringExtra("pincode");
+        camMode = getIntent().getStringExtra("camMode");
+        noVst = getIntent().getStringExtra("noVst");
+        cls = getIntent().getStringExtra("cls");
+        selTcpJson = getIntent().getStringExtra("selTcpJson");
         chmDetUpdtReq = getIntent().getBooleanExtra("chmDetUpdtReq",false);
+        isPatchUpdtd = getIntent().getBooleanExtra("isPatchUpdtd",false);
 
       //status = getIntent().getStringExtra("status");
         // Changing action bar background color
@@ -113,6 +119,8 @@ public class CapNUpSelfie extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             // will close the app if the device does't have camera
             finish();
+        }else if(camMode != null && camMode.equalsIgnoreCase("gallery")){
+            getImageFromGallery();
         }else{
             captureImage();
         }
@@ -187,6 +195,29 @@ public class CapNUpSelfie extends AppCompatActivity {
                     finish();
                     Toast.makeText(CapNUpSelfie.this,"User cancelled image capture operation" ,Toast.LENGTH_LONG).show();
             }
+        }else if (requestCode == GALLERY_ATTACH_IMAGE_REQUEST_CODE) {
+            //picUri = data.getExtras();
+            //Log.d("pic uri 2",picUri.toString());
+            if (resultCode == RESULT_OK) {
+
+                fileUri = data.getData();
+                fileUri = Uri.parse(getRealPathFromURI(fileUri));
+                isimgcropped = false;
+                picUri = fileUri;
+                //Log.d("gallery pic path",fileUri.toString());
+                launchUploadActivity(true);
+                Toast.makeText(getApplicationContext(),
+                        "Image Attached !", Toast.LENGTH_SHORT)
+                        .show();
+            } else if (requestCode == RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(),
+                        "User cancelled image selection !", Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Sorry! Failed to get image !", Toast.LENGTH_SHORT)
+                        .show();
+            }
         }
     }
 
@@ -206,7 +237,10 @@ public class CapNUpSelfie extends AppCompatActivity {
         i.putExtra("flag", flag);
         i.putExtra("menu", menu);
         i.putExtra("sttype", sttype);
-
+        if(camMode != null && camMode.equalsIgnoreCase("gallery"))
+            i.putExtra("camMode", camMode);
+        else
+            i.putExtra("camMode", "");
         if(menu!=null && menu.equalsIgnoreCase("chemAddEdit")
         && chmDetUpdtReq==true){
             i.putExtra("add1", add1);
@@ -216,8 +250,17 @@ public class CapNUpSelfie extends AppCompatActivity {
             i.putExtra("state", state);
             i.putExtra("chmDetUpdtReq", "Y");
             i.putExtra("pincode", pincode);
+            i.putExtra("cls", cls);
+            i.putExtra("noVst", noVst);
         }else{
             i.putExtra("chmDetUpdtReq","N");
+        }
+
+        if(isPatchUpdtd){
+            i.putExtra("selTcpJson", selTcpJson);
+            i.putExtra("isPatchUpdtd","Y");
+        }else{
+            i.putExtra("isPatchUpdtd","N");
         }
 
         startActivity(i);
@@ -286,5 +329,55 @@ public class CapNUpSelfie extends AppCompatActivity {
         CapNUpSelfie.this.overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
     }
 
+    private void getImageFromGallery() {
+        Dexter.withActivity(this)
+                .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(pickPhoto, GALLERY_ATTACH_IMAGE_REQUEST_CODE);
+                        }
+                    }
 
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // save file url in bundle as it will be null on screen orientation
+        // changes
+        outState.putParcelable("file_uri", fileUri);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // get the file url
+        fileUri = savedInstanceState.getParcelable("file_uri");
+    }
+
+    public String getRealPathFromURI(Uri contentUri) {
+
+        // can post image
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(contentUri,
+                proj, // Which columns to return
+                null,       // WHERE clause; which rows to return (all rows)
+                null,       // WHERE clause selection arguments (none)
+                null); // Order-by clause (ascending by name)
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+
+        return cursor.getString(column_index);
+    }
 }

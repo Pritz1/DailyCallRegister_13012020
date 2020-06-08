@@ -63,7 +63,8 @@ public class UploadSelFie extends AppCompatActivity {
     private Button btnUpload;
     long totalSize = 0;
     public String cntcd="",chemistname="",doctorname="",keycontactper="", phonenumber="",doccntcd="",
-            flag="",menu="",sttype,add1,add2,add3,city,state,pincode,chmDetUpdtReq;
+            flag="",menu="",sttype,add1,add2,add3,city,state,pincode,chmDetUpdtReq,camMode,noVst,cls,
+            selTcpJson,isPatchUpdtd;
     public boolean isimgcropped = false;
 
     @Override
@@ -92,6 +93,9 @@ public class UploadSelFie extends AppCompatActivity {
         menu = getIntent().getStringExtra("menu");
         sttype = getIntent().getStringExtra("sttype");
         chmDetUpdtReq = getIntent().getStringExtra("chmDetUpdtReq");
+        camMode = getIntent().getStringExtra("camMode");
+        selTcpJson = getIntent().getStringExtra("selTcpJson");
+        isPatchUpdtd = getIntent().getStringExtra("isPatchUpdtd");
 
         if(menu!=null && menu.equalsIgnoreCase("chemAddEdit")
                 && chmDetUpdtReq!=null && chmDetUpdtReq.equalsIgnoreCase("Y")){
@@ -101,6 +105,8 @@ public class UploadSelFie extends AppCompatActivity {
             city = getIntent().getStringExtra("city");
             state = getIntent().getStringExtra("state");
             pincode = getIntent().getStringExtra("pincode");
+            noVst = getIntent().getStringExtra("noVst");
+            cls = getIntent().getStringExtra("cls");
         }
 
         txtPercentage = findViewById(R.id.txtPercentage);
@@ -122,7 +128,7 @@ public class UploadSelFie extends AppCompatActivity {
         filePath = i.getStringExtra("filePath");
         fileUri = i.getStringExtra("fileUri");
         isimgcropped = i.getExtras().getBoolean("isimgcropped");
-//Log.d("isimgcropped : ",isimgcropped+"");
+        //Log.d("isimgcropped : ",isimgcropped+"");
         // boolean flag to identify the media type, image or video
         boolean isImage = i.getBooleanExtra("isImage", true);
 
@@ -184,7 +190,7 @@ public class UploadSelFie extends AppCompatActivity {
             filePath = fileUri;
             isimgcropped = false;
             Glide.with(this).load(fileUri).into(imgPreview);
-            Toast.makeText(UploadSelFie.this, "Croped Image not saved !", Toast.LENGTH_LONG).show();
+            Toast.makeText(UploadSelFie.this, "Image not saved !", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -272,6 +278,14 @@ public class UploadSelFie extends AppCompatActivity {
                     entity.addPart("state",new StringBody(state!=null ? state : ""));
                     entity.addPart("pincode",new StringBody(pincode!=null ? pincode : ""));
                     entity.addPart("chmDetUpdtReq",new StringBody(chmDetUpdtReq!=null ? chmDetUpdtReq : ""));
+                    entity.addPart("camMode",new StringBody(camMode!=null ? camMode : ""));
+                    entity.addPart("noVst",new StringBody(noVst!=null ? noVst : ""));
+                    entity.addPart("cls",new StringBody(cls!=null ? cls : ""));
+                    entity.addPart("isPatchUpdtd",new StringBody(isPatchUpdtd!=null ? isPatchUpdtd : ""));
+                    if(isPatchUpdtd!=null && isPatchUpdtd.equalsIgnoreCase("Y"))
+                        entity.addPart("selTcpJson",new StringBody(selTcpJson!=null ? selTcpJson : ""));
+                    else
+                        entity.addPart("selTcpJson",new StringBody(""));
                 }
 
                 totalSize = entity.getContentLength();

@@ -12,6 +12,15 @@ public class ChemistDetailRes {
 	@SerializedName("statelist")
 	private List<String> statelist;
 
+	@SerializedName("clsList")
+	private List<String> clsList;
+
+	@SerializedName("clsVstList")
+	private List<String> clsVstList;
+
+	@SerializedName("patchlist")
+	private List<PatchlistItem> patchlist;
+
 	@SerializedName("errormsg")
 	private String errormsg;
 
@@ -50,13 +59,40 @@ public class ChemistDetailRes {
 		this.statelist = statelist;
 	}
 
+	public List<String> getClsList() {
+		return clsList;
+	}
+
+	public void setClsList(List<String> clsList) {
+		this.clsList = clsList;
+	}
+
+	public List<String> getClsVstList() {
+		return clsVstList;
+	}
+
+	public void setClsVstList(List<String> clsVstList) {
+		this.clsVstList = clsVstList;
+	}
+
+	public List<PatchlistItem> getPatchlist() {
+		return patchlist;
+	}
+
+	public void setPatchlist(List<PatchlistItem> patchlist) {
+		this.patchlist = patchlist;
+	}
+
 	@Override
  	public String toString(){
 		return 
 			"ChemistDetailRes{" +
 			"chemistdata = '" + chemistdata + '\'' +
 			",statelist = '" + statelist + '\'' +
-			",error = '" + error + '\'' + 
+			",clsList = '" + clsList + '\'' +
+			",clsVstList = '" + clsVstList + '\'' +
+			",patchlist = '" + patchlist + '\'' +
+			",error = '" + error + '\'' +
 			",errormsg = '" + errormsg + '\'' +
 
 			"}";

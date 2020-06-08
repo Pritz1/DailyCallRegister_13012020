@@ -17,6 +17,7 @@ import android.support.v7.widget.AppCompatSpinner;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,8 +36,13 @@ import com.eis.dailycallregister.Pojo.ChemistdataItem;
 import com.eis.dailycallregister.Pojo.DefaultResponse;
 import com.eis.dailycallregister.Pojo.DoctornamelistItem;
 import com.eis.dailycallregister.Pojo.ChemistDetailRes;
+import com.eis.dailycallregister.Pojo.PatchListResponse;
+import com.eis.dailycallregister.Pojo.PatchlistItem;
 import com.eis.dailycallregister.Pojo.StateListResponse;
 import com.eis.dailycallregister.R;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,22 +55,34 @@ public class ChemistAddEdit extends AppCompatActivity {
 
 
     EditText chmkeypername,chmphoneno,add1,add2,add3,city,chmName,pincode;
-    String oldKeyPerNm,oldPhnno,oldAdd1,oldAdd2,oldAdd3,oldCity,oldState,oldChmnm,oldPincode,oldImgUrl;
-    String newKeyPerNm,newPhnno,newAdd1,newAdd2,newAdd3,newCity,newState,newChmnm,newPincode;
-    Button imgBtn,updtBtn;
-    AppCompatSpinner chemistdoctor,state;
-    LinearLayout ll1,ll2;
+    String oldKeyPerNm,oldPhnno,oldAdd1,oldAdd2,oldAdd3,oldCity,oldState,oldChmnm,oldPincode,oldImgUrl,oldCls;
+    String newKeyPerNm,newPhnno,newAdd1,newAdd2,newAdd3,newCity,newState,newChmnm,newPincode,newCls,newNoVst,
+    newTcpid1,newTcpid2,newTcpid3,newTcpid4,newTcpid5,newTcpid6,newTcpid7,newTcpid8;
+    Button imgBtn,updtBtn,attachBtn;
+    AppCompatSpinner chemistdoctor,state,clsSpinr,patchSpn1,patchSpn2,patchSpn3,patchSpn4,
+            patchSpn5,patchSpn6,patchSpn7,patchSpn8;
+    TextView patchTxt1,patchTxt2,patchTxt3,patchTxt4,patchTxt5,patchTxt6,patchTxt7,patchTxt8;
+    LinearLayout ll1,ll2,patchLayout;
     NestedScrollView chm_addedit_outerlay;
     String cntcd="",chemistname="",doccntcd="",sttype="",menu,addEdit="",drcd,drname,drcntcd;
     ViewDialog progressDialoge;
     ImageView imgcard;
     //TextView chemname;
     boolean validateFlag=false;
+    ArrayAdapter<PatchlistItem> patchSpnAdapter;
 
     List<DoctornamelistItem> doctornamelistItemList = new ArrayList();
     public List<String> arrayList = new ArrayList<>();
     public List<String> stateList = new ArrayList<>();
+    public List<String> tcpidList = new ArrayList<>();
+    public List<String> selTcpidList = new ArrayList<>();
+    public List<PatchlistItem> patchList = new ArrayList<>();
+    public List<PatchlistItem> existPatchLst = new ArrayList<>();
+    public List<String> clsList = new ArrayList<>();
+    public List<String> clsVstList = new ArrayList<>();
     List<ChemistdataItem> chemistdata=new ArrayList<>();
+    private int existPtchLstSize = 0;
+    private boolean isPatchUpdtd = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +111,26 @@ public class ChemistAddEdit extends AppCompatActivity {
         state=findViewById(R.id.state);
         imgBtn=findViewById(R.id.imgBtn);
         pincode=findViewById(R.id.pincode);
+        attachBtn=findViewById(R.id.attachBtn);
+        clsSpinr=findViewById(R.id.clsSpinr);
+        patchSpn1=findViewById(R.id.patchSpn1);
+        patchSpn2=findViewById(R.id.patchSpn2);
+        patchSpn3=findViewById(R.id.patchSpn3);
+        patchSpn4=findViewById(R.id.patchSpn4);
+        patchSpn5=findViewById(R.id.patchSpn5);
+        patchSpn6=findViewById(R.id.patchSpn6);
+        patchSpn7=findViewById(R.id.patchSpn7);
+        patchSpn8=findViewById(R.id.patchSpn8);
+
+        patchTxt1=findViewById(R.id.patchTxt1);
+        patchTxt2=findViewById(R.id.patchTxt2);
+        patchTxt3=findViewById(R.id.patchTxt3);
+        patchTxt4=findViewById(R.id.patchTxt4);
+        patchTxt5=findViewById(R.id.patchTxt5);
+        patchTxt6=findViewById(R.id.patchTxt6);
+        patchTxt7=findViewById(R.id.patchTxt7);
+        patchTxt8=findViewById(R.id.patchTxt8);
+        patchLayout=findViewById(R.id.patchLayout);
 
         chm_addedit_outerlay=findViewById(R.id.chm_addedit_outerlay);
         chemistdoctor=findViewById(R.id.chemistdoctor);
@@ -118,7 +156,35 @@ public class ChemistAddEdit extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                sendData();
+                                sendData("camera");
+                            }
+                        });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do nothing
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+
+            }
+        });
+        attachBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // checkDate(docname);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ChemistAddEdit.this);
+                builder.setCancelable(true);
+                builder.setTitle("CONFIRM");
+                builder.setMessage("Are you sure you want to attach image from gallery & submit? ");
+                builder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                sendData("gallery");
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -183,11 +249,12 @@ public class ChemistAddEdit extends AppCompatActivity {
             sttype="O";
 
             getStates();
-
         }
+
+        setPatchSpinner();
     }
-//todo doubt -> is it required to check for duplicate phn no & name on update?
-    public void sendData()
+
+    public void sendData(String camMode)
     {
         progressDialoge.show();
         setNewValues(); //set all values from fields in variables
@@ -198,7 +265,7 @@ public class ChemistAddEdit extends AppCompatActivity {
             snackbar.show();
         }else {
             progressDialoge.dismiss();
-            validateChemistAndSendData();
+            validateChemistAndSendData(camMode);
 
         }
     }
@@ -282,6 +349,9 @@ public class ChemistAddEdit extends AppCompatActivity {
                    progressDialoge.dismiss();
                     chemistdata=res.getChemistdata();
                     stateList = res.getStatelist();
+                    clsList = res.getClsList();
+                    clsVstList = res.getClsVstList();
+                    existPatchLst = res.getPatchlist();
                     int size = stateList.size();
                     ChemistdataItem cd=chemistdata.get(0);
                     if(chemistdata.size()>0)
@@ -328,7 +398,9 @@ public class ChemistAddEdit extends AppCompatActivity {
                         //state.setText(null);
 
                     }
-
+            if(existPatchLst != null && !existPatchLst.isEmpty()){
+                existPtchLstSize = existPatchLst.size();
+            }
                    if(size > 0) {
 /*
                    for (int i = 0; i < size; i++) {
@@ -341,9 +413,22 @@ public class ChemistAddEdit extends AppCompatActivity {
                        state.setAdapter(adapter);
                        //state.setPrompt("Select State");
                        oldState = cd.getState();
-                       if(oldState != null)
+                       if(oldState != null && !oldState.equals(""))
                             state.setSelection(adapter.getPosition(oldState.toUpperCase()));
+                       else{
+                           state.setSelection(0);
+                       }
+
+                       oldCls = cd.getCls();
+
+                       ArrayAdapter<String> clsAdapter = new ArrayAdapter<String>(ChemistAddEdit.this,
+                           android.R.layout.simple_spinner_item, clsList);
+                       clsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                       clsSpinr.setAdapter(clsAdapter);
+                       //state.setPrompt("Select State");
+
                }
+                   getPatchAndClsList();
 
                }
            }
@@ -351,7 +436,8 @@ public class ChemistAddEdit extends AppCompatActivity {
            @Override
            public void onFailure(Call<ChemistDetailRes> call, Throwable t) {
                progressDialoge.dismiss();
-               Snackbar snackbar = Snackbar.make(chm_addedit_outerlay, "Failed to fetch data !", Snackbar.LENGTH_INDEFINITE)
+               Snackbar snackbar = Snackbar.make(chm_addedit_outerlay, "Failed to fetch data !",
+                       Snackbar.LENGTH_INDEFINITE)
                        .setAction("Retry", new View.OnClickListener() {
                            @Override
                            public void onClick(View v) {
@@ -386,6 +472,7 @@ public class ChemistAddEdit extends AppCompatActivity {
                        state.setAdapter(adapter);
                        //state.setPrompt("Select State");
                    }
+                   getPatchAndClsList();
 
                }else{
                    Toast.makeText(ChemistAddEdit.this, "Could Not Get State List", Toast.LENGTH_LONG).show();
@@ -396,6 +483,73 @@ public class ChemistAddEdit extends AppCompatActivity {
            public void onFailure(Call<StateListResponse> call, Throwable t) {
                progressDialoge.dismiss();
                Snackbar snackbar = Snackbar.make(chm_addedit_outerlay, "Failed to fetch data !", Snackbar.LENGTH_INDEFINITE)
+                       .setAction("Retry", new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               getChemistDetails();
+                           }
+                       });
+               snackbar.show();
+
+           }
+       });
+   }
+
+public void getPatchAndClsList()
+   {
+       progressDialoge.show();
+       Call<PatchListResponse> call = RetrofitClient.getInstance().getApi().getPatchAndClsList(Global.netid,Global.dbprefix);
+       call.enqueue(new Callback<PatchListResponse>() {
+           @Override
+           public void onResponse(Call<PatchListResponse> call, Response<PatchListResponse> response) {
+               PatchListResponse res=response.body();
+               //Log.d("res",res.toString());
+               if(!res.isError())
+               {
+                   progressDialoge.dismiss();
+                   patchList = res.getPatchlist();
+                   int size = patchList.size();
+
+                   if(addEdit!=null && addEdit.equalsIgnoreCase("ADD")) {
+                       clsList = res.getClsList();
+                       clsVstList = res.getClsVstList();
+                       if(clsList.size() > 0){
+                           ArrayAdapter<String> clsAdapter = new ArrayAdapter<String>(ChemistAddEdit.this,
+                                   android.R.layout.simple_spinner_item, clsList);
+                           clsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                           clsSpinr.setAdapter(clsAdapter);
+                       }else{
+                           Toast.makeText(ChemistAddEdit.this, "Could Not Get Class List", Toast.LENGTH_LONG).show();
+                       }
+               }
+                   if(size > 0) {
+                       patchSpnAdapter = new ArrayAdapter<PatchlistItem>(ChemistAddEdit.this,
+                               android.R.layout.simple_spinner_item, patchList);
+                       patchSpnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                       //setPatchSpinner();
+                       //state.setPrompt("Select State");
+
+                       for(PatchlistItem obj : patchList){
+                           tcpidList.add(obj.getTcpid());
+                       }
+
+                       if(oldCls != null && !oldCls.equalsIgnoreCase("")){
+                           int pos = clsList.indexOf(oldCls);
+                           clsSpinr.setSelection(pos);
+                       }
+                       else
+                           clsSpinr.setSelection(0);
+                   }
+
+               }else{
+                   Toast.makeText(ChemistAddEdit.this, "Could Not Get Patch List", Toast.LENGTH_LONG).show();
+               }
+           }
+
+           @Override
+           public void onFailure(Call<PatchListResponse> call, Throwable t) {
+               progressDialoge.dismiss();
+               Snackbar snackbar = Snackbar.make(chm_addedit_outerlay, "Failed to fetch patch list !", Snackbar.LENGTH_INDEFINITE)
                        .setAction("Retry", new View.OnClickListener() {
                            @Override
                            public void onClick(View v) {
@@ -427,13 +581,27 @@ public class ChemistAddEdit extends AppCompatActivity {
            }else {
                progressDialoge.show();
                boolean flag = isUpdateRequired(); //if all old and new data are same for all fields then save only img
-               if(flag) {
+               if(flag || isPatchUpdtd) {
                    //uploadChemVstCard.php
+                   String selTcpJson = "";
+                   if(isPatchUpdtd) {
+                       Gson gson = new GsonBuilder().create();
+                       selTcpJson = (gson.toJsonTree(selTcpidList).getAsJsonArray()).toString();
+                   }
+                   String toUpdt=null;
+                    if(flag && isPatchUpdtd){
+                        toUpdt = "all";
+                    }else if(flag){
+                        toUpdt = "basic";
+                    }else if(isPatchUpdtd){
+                        toUpdt="patch";
+                    }
 
                    Call<DefaultResponse> call = RetrofitClient.getInstance().getApi().
                            updateChemDetails(Global.ecode,Global.netid,cntcd,newKeyPerNm,
                                    newChmnm,newPhnno,sttype,newAdd1,newAdd2,newAdd3,
-                                   newCity,newState,newPincode,Global.dbprefix);
+                                   newCity,newState,newPincode,newCls,newNoVst,selTcpJson,toUpdt,
+                                   Global.dbprefix);
                    call.enqueue(new Callback<DefaultResponse>() {
                        @Override
                        public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
@@ -515,7 +683,17 @@ public class ChemistAddEdit extends AppCompatActivity {
         newAdd3 = add3.getText().toString().trim();
         newCity = city.getText().toString().trim();
         newState = state.getSelectedItem().toString().trim();
+        newCls = clsSpinr.getSelectedItem().toString().trim();
+        int pos = clsList.indexOf(newCls);
+        newNoVst = clsVstList.get(pos);
         newPincode = pincode.getText().toString().trim();
+        selTcpidList.clear();
+        for(int i=1;i<=Integer.parseInt(newNoVst);i++){
+            addToSelPatchList(i);
+        }
+        if(selTcpidList.size() != existPtchLstSize){
+            isPatchUpdtd = true;
+        }
     }
 
     private boolean isUpdateRequired(){
@@ -539,6 +717,10 @@ public class ChemistAddEdit extends AppCompatActivity {
         }else if(oldPincode == null || oldPincode.equalsIgnoreCase("") ||
                 (oldPincode!=null && !oldPincode.equals(newPincode))){
             flag = true;
+        }else if((oldCls == null && newCls != null) || (oldCls.equalsIgnoreCase("") &&
+                newCls!=null && !newCls.equalsIgnoreCase("")) ||
+                (oldCls!=null && !oldCls.equals(newCls))){
+            flag = true;
         }else{
             if(oldAdd1==null) oldAdd1="";
             if(oldAdd2==null) oldAdd2="";
@@ -554,6 +736,13 @@ public class ChemistAddEdit extends AppCompatActivity {
                 flag = true;
             if(!oldAdd3.equalsIgnoreCase(newAdd3))
                 flag = true;
+        }
+        if(isPatchUpdtd == false){
+            for(int i=0; i< selTcpidList.size() ; i++){
+                if(!selTcpidList.get(i).equalsIgnoreCase(existPatchLst.get(i).getTcpid())){
+                    isPatchUpdtd = true;
+                }
+            }
         }
         return flag;
     }
@@ -595,7 +784,7 @@ public class ChemistAddEdit extends AppCompatActivity {
             return "N~"+"";
     }
 
-    private void validateChemistAndSendData(){ //validates if phnno entered and chem name entered already exists or not.
+    private void validateChemistAndSendData(final String camMode){ //validates if phnno entered and chem name entered already exists or not.
 
         validateFlag = false;
         progressDialoge.show();
@@ -614,6 +803,12 @@ public class ChemistAddEdit extends AppCompatActivity {
                 }else{
                     validateFlag=true;
                     if(validateFlag){
+
+                        String selTcpJson = "";
+                        if(isPatchUpdtd) {
+                            Gson gson = new GsonBuilder().create();
+                            selTcpJson = (gson.toJsonTree(selTcpidList).getAsJsonArray()).toString();
+                        }
 
                         Intent intent = new Intent(ChemistAddEdit.this, CapNUpSelfie.class);
 
@@ -638,10 +833,15 @@ public class ChemistAddEdit extends AppCompatActivity {
                         intent.putExtra("state", newState);
                         intent.putExtra("pincode", newPincode);
                         intent.putExtra("doccntcd", drcntcd);
+                        intent.putExtra("cls", newCls);
+                        intent.putExtra("noVst", newNoVst);
                         // }
                         intent.putExtra("cntcd", cntcd);
                         intent.putExtra("sttype", sttype);
                         intent.putExtra("menu", menu);
+                        intent.putExtra("camMode", camMode);
+                        intent.putExtra("isPatchUpdtd", isPatchUpdtd);
+                        intent.putExtra("selTcpJson", selTcpJson);
 
                         Bundle bndlanimation = ActivityOptions.makeCustomAnimation(ChemistAddEdit.this,
                                 R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
@@ -657,7 +857,7 @@ public class ChemistAddEdit extends AppCompatActivity {
                         .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                validateChemistAndSendData();
+                                validateChemistAndSendData(camMode);
                             }
                         });
                 snackbar.show();
@@ -671,6 +871,258 @@ public class ChemistAddEdit extends AppCompatActivity {
         updtBtn.setEnabled(false);
         imgBtn.setBackgroundColor(getResources().getColor(R.color.textcolorgray));
         imgBtn.setEnabled(false);
+        attachBtn.setBackgroundColor(getResources().getColor(R.color.textcolorgray));
+        attachBtn.setEnabled(false);
     }
 
+    private void setPatchSpinner(){
+        clsSpinr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0){
+                    patchLayout.setVisibility(View.GONE);
+                }else{
+                    if(patchList!=null && !patchList.isEmpty() && patchSpnAdapter != null) {
+                        int noVst = Integer.parseInt(clsVstList.get(position));
+                        patchLayout.setVisibility(View.VISIBLE);
+                        for (int i = 1; i <= noVst; i++) {
+                            patchVisibilitySwitch(i);
+                        }
+
+                        for(int i = noVst+1; i<=8 ; i++){
+                            patchVisibleGoneSwitch(i);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                String selCls = clsSpinr.getSelectedItem().toString();
+                int pos = clsList.indexOf(selCls);
+                if(pos>0) {
+                    int noVst = Integer.parseInt(clsVstList.get(pos));
+                    patchLayout.setVisibility(View.VISIBLE);
+                    for (int i = 1; i <= noVst; i++) {
+                        patchVisibilitySwitch(i);
+                    }
+
+                    for(int i = noVst+1; i<=8 ; i++){
+                        patchVisibleGoneSwitch(i);
+                    }
+                }
+            }
+        });
+    }
+
+    private void patchVisibilitySwitch(int choice){
+        int indx = 0;
+        switch(choice){
+            case 1 :
+                patchSpn1.setVisibility(View.VISIBLE);
+                patchTxt1.setVisibility(View.VISIBLE);
+                if(patchSpn1.getAdapter() == null)
+                    patchSpn1.setAdapter(patchSpnAdapter);
+                indx = setPatchSpnVal( choice, indx);
+                patchSpn1.setSelection(indx);
+                break;
+
+            case 2 :
+                patchSpn2.setVisibility(View.VISIBLE);
+                patchTxt2.setVisibility(View.VISIBLE);
+                if(patchSpn2.getAdapter() == null)
+                    patchSpn2.setAdapter(patchSpnAdapter);
+                indx = setPatchSpnVal( choice, indx);
+                patchSpn2.setSelection(indx);
+                break;
+
+            case 3 :
+                patchSpn3.setVisibility(View.VISIBLE);
+                patchTxt3.setVisibility(View.VISIBLE);
+                if(patchSpn3.getAdapter() == null)
+                    patchSpn3.setAdapter(patchSpnAdapter);
+                indx = setPatchSpnVal( choice, indx);
+                patchSpn3.setSelection(indx);
+                break;
+
+            case 4 :
+                patchSpn4.setVisibility(View.VISIBLE);
+                patchTxt4.setVisibility(View.VISIBLE);
+                if(patchSpn4.getAdapter() == null)
+                    patchSpn4.setAdapter(patchSpnAdapter);
+                indx = setPatchSpnVal( choice, indx);
+                patchSpn4.setSelection(indx);
+                break;
+
+            case 5 :
+                patchSpn5.setVisibility(View.VISIBLE);
+                patchTxt5.setVisibility(View.VISIBLE);
+                if(patchSpn5.getAdapter() == null)
+                    patchSpn5.setAdapter(patchSpnAdapter);
+                indx = setPatchSpnVal( choice, indx);
+                patchSpn5.setSelection(indx);
+                break;
+
+            case 6 :
+                patchSpn6.setVisibility(View.VISIBLE);
+                patchTxt6.setVisibility(View.VISIBLE);
+                if(patchSpn6.getAdapter() == null)
+                    patchSpn6.setAdapter(patchSpnAdapter);
+                indx = setPatchSpnVal( choice, indx);
+                patchSpn6.setSelection(indx);
+                break;
+
+            case 7 :
+                patchSpn7.setVisibility(View.VISIBLE);
+                patchTxt7.setVisibility(View.VISIBLE);
+                if(patchSpn7.getAdapter() == null)
+                    patchSpn7.setAdapter(patchSpnAdapter);
+                indx = setPatchSpnVal( choice, indx);
+                patchSpn7.setSelection(indx);
+                break;
+
+            case 8 :
+                patchSpn8.setVisibility(View.VISIBLE);
+                patchTxt8.setVisibility(View.VISIBLE);
+                if(patchSpn8.getAdapter() == null)
+                    patchSpn8.setAdapter(patchSpnAdapter);
+                indx = setPatchSpnVal( choice, indx);
+                patchSpn8.setSelection(indx);
+                break;
+
+            default:
+                break;
+
+        }
+    }
+
+    private void patchVisibleGoneSwitch(int choice){
+        switch(choice){
+            case 1 :
+
+                if (patchSpn1.getVisibility() == View.VISIBLE) {
+                    patchSpn1.setVisibility(View.GONE);
+                    patchTxt1.setVisibility(View.GONE);
+                }
+                break;
+
+            case 2 :
+                if (patchSpn2.getVisibility() == View.VISIBLE) {
+                    patchSpn2.setVisibility(View.GONE);
+                    patchTxt2.setVisibility(View.GONE);
+                }
+                break;
+
+            case 3 :
+                if (patchSpn3.getVisibility() == View.VISIBLE) {
+                    patchSpn3.setVisibility(View.GONE);
+                    patchTxt3.setVisibility(View.GONE);
+                }
+                break;
+
+            case 4 :
+                if (patchSpn4.getVisibility() == View.VISIBLE) {
+                    patchSpn4.setVisibility(View.GONE);
+                    patchTxt4.setVisibility(View.GONE);
+                }
+                break;
+
+            case 5 :
+                if (patchSpn5.getVisibility() == View.VISIBLE) {
+                    patchSpn5.setVisibility(View.GONE);
+                    patchTxt5.setVisibility(View.GONE);
+                }
+                break;
+
+            case 6 :
+                if (patchSpn6.getVisibility() == View.VISIBLE) {
+                    patchSpn6.setVisibility(View.GONE);
+                    patchTxt6.setVisibility(View.GONE);
+                }
+                break;
+
+            case 7 :
+                if (patchSpn7.getVisibility() == View.VISIBLE) {
+                    patchSpn7.setVisibility(View.GONE);
+                    patchTxt7.setVisibility(View.GONE);
+                }
+                break;
+
+            case 8 :
+                if (patchSpn8.getVisibility() == View.VISIBLE) {
+                    patchSpn8.setVisibility(View.GONE);
+                    patchTxt8.setVisibility(View.GONE);
+                }
+                break;
+
+            default:
+                break;
+
+        }
+    }
+
+    private void addToSelPatchList(int choice){
+        switch(choice){
+            case 1 :
+
+                if (patchSpn1.getVisibility() == View.VISIBLE) {
+                    selTcpidList.add(patchList.get(patchSpn1.getSelectedItemPosition()).getTcpid());
+                }
+                break;
+
+            case 2 :
+                if (patchSpn2.getVisibility() == View.VISIBLE) {
+                    selTcpidList.add(patchList.get(patchSpn2.getSelectedItemPosition()).getTcpid());
+                }
+                break;
+
+            case 3 :
+                if (patchSpn3.getVisibility() == View.VISIBLE) {
+                    selTcpidList.add(patchList.get(patchSpn3.getSelectedItemPosition()).getTcpid());
+                }
+                break;
+
+            case 4 :
+                if (patchSpn4.getVisibility() == View.VISIBLE) {
+                    selTcpidList.add(patchList.get(patchSpn4.getSelectedItemPosition()).getTcpid());
+                }
+                break;
+
+            case 5 :
+                if (patchSpn5.getVisibility() == View.VISIBLE) {
+                    selTcpidList.add(patchList.get(patchSpn5.getSelectedItemPosition()).getTcpid());
+                }
+                break;
+
+            case 6 :
+                if (patchSpn6.getVisibility() == View.VISIBLE) {
+                    selTcpidList.add(patchList.get(patchSpn6.getSelectedItemPosition()).getTcpid());
+                }
+                break;
+
+            case 7 :
+                if (patchSpn7.getVisibility() == View.VISIBLE) {
+                    selTcpidList.add(patchList.get(patchSpn7.getSelectedItemPosition()).getTcpid());
+                }
+                break;
+
+            case 8 :
+                if (patchSpn8.getVisibility() == View.VISIBLE) {
+                    selTcpidList.add(patchList.get(patchSpn8.getSelectedItemPosition()).getTcpid());
+                }
+                break;
+
+            default:
+                break;
+
+        }
+    }
+    private int setPatchSpnVal(int choice,int indx){
+        if(existPtchLstSize >= choice) {
+            indx = tcpidList.indexOf((existPatchLst.get(choice - 1)).getTcpid());
+        }else{
+        indx = 0;
+    }
+        return indx;
+    }
 }

@@ -161,7 +161,7 @@ public class UploadActivity extends AppCompatActivity {
             filePath = fileUri;
             isimgcropped = false;
             Glide.with(this).load(fileUri).into(imgPreview);
-            Toast.makeText(UploadActivity.this, "Croped Image not saved !", Toast.LENGTH_LONG).show();
+            Toast.makeText(UploadActivity.this, "Cropped Image not saved !", Toast.LENGTH_LONG).show();
         }
 
     }
