@@ -58,6 +58,7 @@
         <activity
             android:name=".Activity.HOWDDCRRemarkEntry"
             android:screenOrientation="portrait" />
+        <activity android:name=".Activity.DocDcrCallTypDet" />
         <activity android:name=".Activity.HoMtpPatchSelection" />
         <activity android:name=".Activity.HoMtpSelectedPsr" />
         <activity android:name=".Activity.HoMtpPSRSelection" />

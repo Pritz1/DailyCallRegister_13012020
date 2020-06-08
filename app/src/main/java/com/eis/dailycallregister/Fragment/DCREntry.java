@@ -1074,7 +1074,6 @@ public class DCREntry extends Fragment {
 
     }
 
-
     public void showInactiveDrsAlert() {
         String msg="All Drs whose Visiting Card is not uploaded are now inactivated from DCR." +
                 "(i.e. such Drs will not be allowed to be selected for reporting)";

@@ -204,7 +204,7 @@ public class SpclDcrChemPob extends AppCompatActivity {
                     public void onFailure(Call<DefaultResponse> call1, Throwable t) {
                         progressDialoge.dismiss();
                         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Failed to save data !", Snackbar.LENGTH_INDEFINITE)
-                                .setAction("Re-try", new View.OnClickListener() {
+                                .setAction("Retry", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         saveRecord();

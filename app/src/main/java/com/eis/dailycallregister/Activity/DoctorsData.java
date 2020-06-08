@@ -796,6 +796,23 @@ public class DoctorsData extends AppCompatActivity {
                                                startActivity(intent, bndlanimation);
                                            }
                                        });
+
+                                       myHolder.callType.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View v) {
+                                               Intent intent = new Intent(DoctorsData.this, DocDcrCallTypDet.class);
+                                               intent.putExtra("serial", "DR" + model.getSerial());
+                                               intent.putExtra("oserial", model.getSerial());
+                                               intent.putExtra("cntcd", model.getCntCD());
+                                               intent.putExtra("wnetid", model.getWNetID());
+                                               intent.putExtra("drname", "Doctor Name - " + model.getDrname());
+                                               intent.putExtra("callType", model.getCallType());
+                                               intent.putExtra("position", Integer.toString(i));
+                                               //intent.putExtra("drclass", model.getJsonMemberClass());
+                                               Bundle bndlanimation = ActivityOptions.makeCustomAnimation(DoctorsData.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                                               startActivity(intent, bndlanimation);
+                                           }
+                                       });
                                    }
 
                                    @Override
@@ -805,7 +822,7 @@ public class DoctorsData extends AppCompatActivity {
 
                                    class Holder extends RecyclerView.ViewHolder {
                                        TextView drname;
-                                       ImageButton productentry, giftentry, remarks, deletedoc, rcpa;
+                                       ImageButton productentry, giftentry, remarks, deletedoc, rcpa, callType;
 
                                        public Holder(@NonNull View itemView) {
                                            super(itemView);
@@ -815,6 +832,7 @@ public class DoctorsData extends AppCompatActivity {
                                            remarks = itemView.findViewById(R.id.remarks);
                                            deletedoc = itemView.findViewById(R.id.deletedoc);
                                            rcpa = itemView.findViewById(R.id.rcpa);
+                                           callType = itemView.findViewById(R.id.callType);
                                            /*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                                            try {
                                                Date loggedin = sdf.parse(Global.date);

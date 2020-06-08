@@ -58,6 +58,7 @@ import com.eis.dailycallregister.Pojo.NewMTPListOfMTHRes;
 import com.eis.dailycallregister.Pojo.NewNonFliedWrkRes;
 import com.eis.dailycallregister.Pojo.NextMTPListRes;
 import com.eis.dailycallregister.Pojo.NonFieldWrkRes;
+import com.eis.dailycallregister.Pojo.PatchListResponse;
 import com.eis.dailycallregister.Pojo.PatientListRes;
 import com.eis.dailycallregister.Pojo.QseraPopUpRes;
 import com.eis.dailycallregister.Pojo.QuizMainRes;
@@ -1465,6 +1466,10 @@ public interface Api {
             @Field("city") String city,
             @Field("state") String state,
             @Field("pincode") String pincode,
+            @Field("newCls") String newCls,
+            @Field("newNoVst") String newNoVst,
+            @Field("selTcpJson") String selTcpJson,
+            @Field("toUpdt") String toUpdt,
             @Field("DBPrefix") String dbprefix
     );
 
@@ -1496,5 +1501,26 @@ public interface Api {
             @Field("menu") String menu,
             @Field("DBPrefix") String dbprefix
     );
+
+
+    @FormUrlEncoded
+    @POST("getPatchList.php")
+    Call<PatchListResponse> getPatchAndClsList(
+            @Field("netid") String netid,
+            @Field("DBPrefix") String dbprefix
+    );
+
+
     //prithvi - Chemist Add/Edit/Delete : End
+
+    @FormUrlEncoded
+    @POST("DocDcrSaveCallType.php")
+    Call<DefaultResponse> saveCallTypDet(
+            @Field("dcrno") String dcrno,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("sel") String sel,
+            @Field("DBPrefix") String DBPrefix
+    );
+
 }

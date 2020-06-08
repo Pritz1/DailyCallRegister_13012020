@@ -91,6 +91,11 @@ public class DcrddrlstItem{
 	@SerializedName("ww4")
 	private String ww4;
 
+
+	@SerializedName("callType")
+	private String callType; // added on 08/06/2020 as asked by rajeev sir to identify whether the call is i-clinic call ot tele call.
+
+
 	public String getWw1() {
 		return ww1;
 	}
@@ -323,6 +328,14 @@ public class DcrddrlstItem{
 		return serial;
 	}
 
+	public String getCallType() {
+		return callType;
+	}
+
+	public void setCallType(String callType) {
+		this.callType = callType;
+	}
+
 	@Override
 	public String toString(){
 		return
@@ -352,6 +365,7 @@ public class DcrddrlstItem{
 						",novisit = '" + novisit + '\'' +
 						",wWITH = '" + wWITH + '\'' +
 						",serial = '" + serial + '\'' +
+						",callType = '" + callType + '\'' +
 						"}";
 	}
 }

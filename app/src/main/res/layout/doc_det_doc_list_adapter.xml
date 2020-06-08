@@ -63,6 +63,16 @@
             android:layout_marginRight="5dp"
             android:src="@drawable/ic_rcpa"/>
 
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:id="@+id/callType"
+            android:background="@color/transparentcolor"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_phone_msg_black_24dp"/>
+
         <ImageButton
             android:layout_width="35dp"
             android:layout_height="35dp"

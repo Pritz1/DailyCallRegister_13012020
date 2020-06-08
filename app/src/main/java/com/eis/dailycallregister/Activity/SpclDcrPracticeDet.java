@@ -456,7 +456,7 @@ public class SpclDcrPracticeDet extends AppCompatActivity {
             public void onResponse(retrofit2.Call<DefaultResponse> call1, Response<DefaultResponse> response) {
                 progressDialoge.dismiss();
                 DefaultResponse res = response.body();
-                Log.d("res : ",res.toString() + "--"+res.isError());
+                //Log.d("res : ",res.toString() + "--"+res.isError());
                 if (!res.isError()) {
                     Toast.makeText(SpclDcrPracticeDet.this, res.getErrormsg(), Toast.LENGTH_LONG).show();
                     SpcldcrdchlstItem modelx = SpclDcrChemData.dcrdlst.get(position);
