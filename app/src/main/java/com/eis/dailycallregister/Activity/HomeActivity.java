@@ -25,7 +25,7 @@ import com.eis.dailycallregister.Fragment.HODCREntry;
 import com.eis.dailycallregister.Fragment.HOMinutesOJTEntry;
 import com.eis.dailycallregister.Fragment.Help;
 import com.eis.dailycallregister.Fragment.MTPConfirmation;
-import com.eis.dailycallregister.Fragment.MgrRcpaFragment;
+import com.eis.dailycallregister.Fragment.PsrListUnderMgr;
 import com.eis.dailycallregister.Fragment.Options;
 import com.eis.dailycallregister.Fragment.ReportFragment;
 import com.eis.dailycallregister.Fragment.UploadVisitingCard;
@@ -180,6 +180,10 @@ if(size>0) {
             menuaccessItems.get(0).getChemAddEdit().equalsIgnoreCase("N")) {
         navigationView.getMenu().setGroupVisible(R.id.chmAddEdit, false);
     }
+    if (menuaccessItems.get(0).getSodPhn() != null &&
+            menuaccessItems.get(0).getSodPhn().equalsIgnoreCase("N")) {
+        navigationView.getMenu().setGroupVisible(R.id.sodPhn, false);
+    }
 }
 
 
@@ -217,6 +221,10 @@ if(size>0) {
             displaySelectedScreen(R.id.nav_spclRep);                  //added by Prithvi 15/04/2020
         }else if (getintentval.equalsIgnoreCase("chemAddEdit")){
             displaySelectedScreen(R.id.nav_chem_addedit);                  //added by Prithvi 15/04/2020
+        }else if (getintentval.equalsIgnoreCase("sodPhn")){
+            displaySelectedScreen(R.id.nav_sodPhn);                  //added by Prithvi 15/04/2020
+        }else if (getintentval.equalsIgnoreCase("otherCust")){
+            displaySelectedScreen(R.id.nav_otherCust);                  //added by Prithvi 15/04/2020
         }else{
             displaySelectedScreen(R.id.nav_home);
         }
@@ -359,7 +367,11 @@ if(size>0) {
 
                     new Global().psrNotAllowed(HomeActivity.this);
                 }else{
-                    fragment = new MgrRcpaFragment();
+                    Bundle data = new Bundle();
+                    data.putString("title","RCPA");
+                    data.putString("menu","mgrRcpa");
+                    fragment = new PsrListUnderMgr();
+                    fragment.setArguments(data);
                 }
                 break;
 
@@ -434,6 +446,29 @@ if(size>0) {
                 bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
                 startActivity(intent, bndlanimation);
                 break;
+
+           case R.id.nav_sodPhn:
+               if (Global.emplevel.equalsIgnoreCase("1") ) { //if lvl is 1 then show Drs List
+                   getintentval = "home";
+                   intent = new Intent(HomeActivity.this, PatientDrList.class);
+                   intent.putExtra("menu","sodPhn");
+                   bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                   startActivity(intent, bndlanimation);
+               }else{ //if lvl is greater than 1 then show PSR list
+                   Bundle data = new Bundle();
+                   data.putString("title","Select HQ/PSR");
+                   data.putString("menu","sodPhn");
+                   fragment = new PsrListUnderMgr();
+                   fragment.setArguments(data);
+               }
+               break;
+               case R.id.nav_otherCust:
+                   getintentval = "home";
+                   intent = new Intent(HomeActivity.this, PatientDrList.class);
+                   intent.putExtra("menu","sodPhn");
+                   bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                   startActivity(intent, bndlanimation);
+               break;
 
             case R.id.nav_logout:
                 logoutAlert();

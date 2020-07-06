@@ -71,7 +71,8 @@ import static com.eis.dailycallregister.Others.Global.menuaccessItemsGlobal;
 public class Options extends Fragment {
 
     MaterialButton dcr, mtp, uploadcard, vps, elearn,
-            report, mgrrcpa, patientpr, chemistpr, hodcr, homtp, spclDcr,ho_ojt,chemAddEdit;//report --> added by aniket 21/09/19 --> dcrrcpa
+            report, mgrrcpa, patientpr, chemistpr, hodcr, homtp, spclDcr,ho_ojt,chemAddEdit,sodPhn,
+            otherCust;//report --> added by aniket 21/09/19 --> dcrrcpa
     ViewDialog progressDialoge;
     List<MisscalldrsItem> misscall = new ArrayList<>();
     LinearLayout menuoptions;
@@ -111,6 +112,8 @@ public class Options extends Fragment {
 		ho_ojt = view.findViewById(R.id.ho_ojt); // added by patanjali
         spclDcr = view.findViewById(R.id.spclRep);
         chemAddEdit = view.findViewById(R.id.chemAddEdit);
+        sodPhn = view.findViewById(R.id.sodPhn);
+        otherCust = view.findViewById(R.id.otherCust);
 
         /*empacc.clear();
         //CD
@@ -258,6 +261,20 @@ public class Options extends Fragment {
                 chemAddEdit.setVisibility(View.VISIBLE);
             } else {
                 chemAddEdit.setVisibility(View.GONE);
+            }
+
+            if (menuaccessItems.get(0).getSodPhn() != null &&
+                    menuaccessItems.get(0).getSodPhn().equalsIgnoreCase("Y")) {
+                sodPhn.setVisibility(View.VISIBLE);
+            } else {
+                sodPhn.setVisibility(View.GONE);
+            }
+
+if (menuaccessItems.get(0).getSodPhn() != null &&
+                    menuaccessItems.get(0).getSodPhn().equalsIgnoreCase("Y")) {
+                sodPhn.setVisibility(View.VISIBLE);
+            } else {
+                sodPhn.setVisibility(View.GONE);
             }
 
 
@@ -545,6 +562,35 @@ public class Options extends Fragment {
                 } else {
                     new Global().afmNotAllowed(getActivity());
                 }
+            }
+        });
+
+        sodPhn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                intent.putExtra("ecode", Global.ecode);
+                intent.putExtra("date", Global.date);
+                intent.putExtra("dbprefix", Global.dbprefix);
+                intent.putExtra("openfrag", "sodPhn");
+                Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                startActivity(intent, bndlanimation);
+                getActivity().finish();
+            }
+        });
+
+
+        otherCust.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                intent.putExtra("ecode", Global.ecode);
+                intent.putExtra("date", Global.date);
+                intent.putExtra("dbprefix", Global.dbprefix);
+                intent.putExtra("openfrag", "otherCust");
+                Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                startActivity(intent, bndlanimation);
+                getActivity().finish();
             }
         });
 

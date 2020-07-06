@@ -63,6 +63,12 @@ public class MenuaccessItem{
 	@SerializedName("chemAddEdit") //06/05/2020 - prithvi
 	private String chemAddEdit;
 
+	@SerializedName("sodPhn") //06/05/2020 - prithvi
+	private String sodPhn;
+
+	@SerializedName("otherCust") //06/05/2020 - prithvi
+	private String otherCust;
+
 	public void setDcr(String dcr){
 		this.dcr = dcr;
 	}
@@ -206,6 +212,18 @@ public class MenuaccessItem{
 		this.chemAddEdit = chemAddEdit;
 	}
 
+	public String getSodPhn() {
+		return sodPhn;
+	}
+
+	public String getOtherCust() {
+		return otherCust;
+	}
+
+	public void setOtherCust(String otherCust) {
+		this.otherCust = otherCust;
+	}
+
 	@Override
  	public String toString(){
 		return 
@@ -227,6 +245,8 @@ public class MenuaccessItem{
 			",spclRep = '" + spclRep + '\'' +
 			",spclDcrChPopup = '" + spclDcrChPopup + '\'' +
 			",chemAddEdit = '" + chemAddEdit + '\'' +
+			",sodPhn = '" + sodPhn + '\'' +
+			",otherCust = '" + otherCust + '\'' +
 			"}";
 		}
 }

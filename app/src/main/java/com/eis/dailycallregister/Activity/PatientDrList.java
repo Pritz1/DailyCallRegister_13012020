@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +43,7 @@ public class PatientDrList extends AppCompatActivity implements SearchView.OnQue
     RecyclerView drlistrv;
     ViewDialog progressDialoge;
     RelativeLayout nsv;
-
+    private String menu,netid,ismgr,hname;
 
 
     public List<RcpadrListItem> drlist= new ArrayList<>();
@@ -54,15 +53,29 @@ public class PatientDrList extends AppCompatActivity implements SearchView.OnQue
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_dr_list);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'>Doctor List</font>"));
+
+        menu = getIntent().getStringExtra("menu");
+        ismgr = getIntent().getStringExtra("mgr");
+        if(menu!=null && ismgr!=null && menu.equalsIgnoreCase("sodPhn")
+                && ismgr.equals("Y")){
+            hname = getIntent().getStringExtra("hname");
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'>Doctor List of "+hname+"</font>"));
+        }else
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='#00E0C6'>Doctor List</font>"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_black);
 
         nsv = findViewById(R.id.nsv);
         drlistrv=findViewById(R.id.drlistrv);
         progressDialoge=new ViewDialog(this);
-        drListAdapter();
 
+        if(Global.emplevel!=null && Global.emplevel.equalsIgnoreCase("1"))
+            netid=Global.netid;
+        else
+            netid=getIntent().getStringExtra("netid");
+
+
+        drListAdapter();
         callApi();
     }
 
@@ -71,7 +84,8 @@ public class PatientDrList extends AppCompatActivity implements SearchView.OnQue
         // Log.d("netid",netid);
         progressDialoge.show();
 
-        retrofit2.Call<MgrRcpaDrRes> call1= RetrofitClient.getInstance().getApi().getDrList(Global.netid, Global.dbprefix);
+        retrofit2.Call<MgrRcpaDrRes> call1= RetrofitClient.getInstance().getApi().getDrList(netid,
+                Global.dbprefix);
 
         call1.enqueue(new Callback<MgrRcpaDrRes>() {
             @Override
@@ -131,10 +145,14 @@ public class PatientDrList extends AppCompatActivity implements SearchView.OnQue
                 final RcpadrListItem model = drlist.get(i);
                 myHolder.drcdndrname.setText(model.getDrcd()+". "+model.getDrname());
 
-                myHolder.drcdndrname.setOnClickListener(new View.OnClickListener() {
+                myHolder.adaptrLl.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(PatientDrList.this, PatientProfile.class);
+                        Intent intent = null;
+                        if(menu!=null && menu.equalsIgnoreCase("sodPhn")) {
+                            intent = new Intent(PatientDrList.this, SodUpdatePhnNo.class);
+                        }else
+                         intent = new Intent(PatientDrList.this, PatientProfile.class);
                         intent.putExtra("drcd",model.getDrcd() );
                         intent.putExtra("wnetid", model.getNetid());
                         intent.putExtra("drname", model.getDrname());
@@ -151,10 +169,12 @@ public class PatientDrList extends AppCompatActivity implements SearchView.OnQue
 
             class Holder extends RecyclerView.ViewHolder {
                 TextView drcdndrname;
+                LinearLayout adaptrLl;
 
                 public Holder(@NonNull View itemView) {
                     super(itemView);
                     drcdndrname = itemView.findViewById(R.id.drcdndrname);
+                    adaptrLl = itemView.findViewById(R.id.adaptrLl);
                 }
             }
         });

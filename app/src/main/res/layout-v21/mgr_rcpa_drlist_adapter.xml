@@ -16,6 +16,7 @@
         android:padding="8dp"
         android:weightSum="10"
         android:orientation="horizontal"
+        android:id="@+id/adaptrLl"
         >
 
 

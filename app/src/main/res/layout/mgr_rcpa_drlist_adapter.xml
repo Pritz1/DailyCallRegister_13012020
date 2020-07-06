@@ -15,9 +15,8 @@
         android:padding="8dp"
         android:weightSum="10"
         android:orientation="horizontal"
+        android:id="@+id/adaptrLl"
         >
-
-
         <TextView
             android:id="@+id/drcdndrname"
             android:layout_width="match_parent"

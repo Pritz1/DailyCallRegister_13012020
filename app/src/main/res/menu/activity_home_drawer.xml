@@ -93,6 +93,27 @@
 
     </group>
 
+<group android:checkableBehavior="single"
+        android:id="@+id/sodPhn">
+
+        <item
+            android:id="@+id/nav_sodPhn"
+            android:icon="@drawable/ic_phone_msg_black_24dp"
+            android:title="Dr's SamPal Phn no." />
+
+    </group>
+
+
+<group android:checkableBehavior="single"
+        android:id="@+id/otherCust">
+
+        <item
+            android:id="@+id/nav_otherCust"
+            android:icon="@drawable/ic_phone_msg_black_24dp"
+            android:title="Other Customers" />
+
+    </group>
+
     <group android:checkableBehavior="single"
         android:id="@+id/others">
 

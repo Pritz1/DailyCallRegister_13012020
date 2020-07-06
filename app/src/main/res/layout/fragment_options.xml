@@ -244,4 +244,39 @@
             app:cornerRadius="8dp"
             app:rippleColor="@color/colorPrimary"
            />                <!--added by Prithvi 06/05/2020-->
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/sodPhn"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeMinTextSize="5sp"
+        android:autoSizeStepGranularity="1sp"
+        android:autoSizeTextType="uniform"
+        android:text="DR'S SamPal PHN NO."
+        android:textColor="@color/textcolorwhite"
+        app:cornerRadius="8dp"
+        app:rippleColor="@color/colorPrimary"
+        />                <!--added by Prithvi 03/07/2020-->
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/otherCust"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeMinTextSize="5sp"
+        android:autoSizeStepGranularity="1sp"
+        android:autoSizeTextType="uniform"
+        android:text="OTHER CUSTOMER"
+        android:textColor="@color/textcolorwhite"
+        app:cornerRadius="8dp"
+        app:rippleColor="@color/colorPrimary"
+        />                <!--added by Prithvi 03/07/2020-->
+
 </LinearLayout>
