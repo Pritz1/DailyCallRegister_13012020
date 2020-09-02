@@ -109,8 +109,8 @@
 
         <item
             android:id="@+id/nav_otherCust"
-            android:icon="@drawable/ic_phone_msg_black_24dp"
-            android:title="Other Customers" />
+            android:icon="@drawable/ic_person_add_black_24dp"
+            android:title="New Customer Add/Edit/Delete" />
 
     </group>
 
@@ -153,6 +153,15 @@
             android:id="@+id/nav_imgMsg"
             android:icon="@drawable/ic_mms_black_24dp"
             android:title="Neolayr-e Details"/>   <!--added by Prithvi 06/04/2020-->
+
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/p1p2p3">
+        <item
+            android:id="@+id/nav_p1p2p3"
+            android:icon="@drawable/ic_mms_black_24dp"
+            android:title="P1 to P5 Selection"/>   <!--added by Prithvi 06/04/2020-->
 
     </group>
 

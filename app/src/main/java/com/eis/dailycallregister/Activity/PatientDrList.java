@@ -76,17 +76,22 @@ public class PatientDrList extends AppCompatActivity implements SearchView.OnQue
 
 
         drListAdapter();
-        callApi();
+        callApi(menu);
     }
 
-    public void callApi()
+    public void callApi(final String menu)
     {
         // Log.d("netid",netid);
         progressDialoge.show();
 
-        retrofit2.Call<MgrRcpaDrRes> call1= RetrofitClient.getInstance().getApi().getDrList(netid,
-                Global.dbprefix);
-
+        retrofit2.Call<MgrRcpaDrRes> call1=null;
+        if(menu!=null && menu.equalsIgnoreCase("sodPhn")){
+            call1 = RetrofitClient.getInstance().getApi().getSodAllowedDrList(netid,
+                    Global.dbprefix);
+        }else {
+            call1 = RetrofitClient.getInstance().getApi().getDrList(netid,
+                    Global.dbprefix);
+        }
         call1.enqueue(new Callback<MgrRcpaDrRes>() {
             @Override
             public void onResponse(Call<MgrRcpaDrRes> call, Response<MgrRcpaDrRes> response) {
@@ -109,7 +114,7 @@ public class PatientDrList extends AppCompatActivity implements SearchView.OnQue
                         .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                callApi();
+                                callApi(menu);
                             }
                         });
                 snackbar.show();
@@ -143,7 +148,7 @@ public class PatientDrList extends AppCompatActivity implements SearchView.OnQue
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 final Holder myHolder = (Holder) viewHolder;
                 final RcpadrListItem model = drlist.get(i);
-                myHolder.drcdndrname.setText(model.getDrcd()+". "+model.getDrname());
+                myHolder.drcdndrname.setText(model.getDrcd()+" - "+model.getDrname());
 
                 myHolder.adaptrLl.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -151,6 +156,8 @@ public class PatientDrList extends AppCompatActivity implements SearchView.OnQue
                         Intent intent = null;
                         if(menu!=null && menu.equalsIgnoreCase("sodPhn")) {
                             intent = new Intent(PatientDrList.this, SodUpdatePhnNo.class);
+                        }else if(menu!=null && menu.equalsIgnoreCase("p1p2p3")) {
+                            intent = new Intent(PatientDrList.this, P1P2P3.class);
                         }else
                          intent = new Intent(PatientDrList.this, PatientProfile.class);
                         intent.putExtra("drcd",model.getDrcd() );

@@ -151,9 +151,9 @@ private String menu ="";
                     @Override
                     public void onClick(View v) {
                         Intent intent = null;
-                        if(menu!=null && menu.equalsIgnoreCase("sodPhn")) {
+                        if(menu!=null && (menu.equalsIgnoreCase("sodPhn") || menu.equalsIgnoreCase("p1p2p3"))) {
                             intent = new Intent(getActivity(), PatientDrList.class);
-                            intent.putExtra("menu","sodPhn");
+                            intent.putExtra("menu",menu);
                             intent.putExtra("mgr","Y");
                         }else
                          intent = new Intent(getActivity(),MgrRcpaDrList.class);

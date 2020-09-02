@@ -69,6 +69,9 @@ public class MenuaccessItem{
 	@SerializedName("otherCust") //06/05/2020 - prithvi
 	private String otherCust;
 
+	@SerializedName("p1p2p3") //06/05/2020 - prithvi
+	private String p1p2p3;
+
 	public void setDcr(String dcr){
 		this.dcr = dcr;
 	}
@@ -224,6 +227,14 @@ public class MenuaccessItem{
 		this.otherCust = otherCust;
 	}
 
+	public String getP1p2p3() {
+		return p1p2p3;
+	}
+
+	public void setP1p2p3(String p1p2p3) {
+		this.p1p2p3 = p1p2p3;
+	}
+
 	@Override
  	public String toString(){
 		return 
@@ -247,6 +258,7 @@ public class MenuaccessItem{
 			",chemAddEdit = '" + chemAddEdit + '\'' +
 			",sodPhn = '" + sodPhn + '\'' +
 			",otherCust = '" + otherCust + '\'' +
+			",p1p2p3 = '" + p1p2p3 + '\'' +
 			"}";
 		}
 }

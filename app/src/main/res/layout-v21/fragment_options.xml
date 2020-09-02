@@ -270,11 +270,26 @@
             android:autoSizeMinTextSize="5sp"
             android:autoSizeStepGranularity="1sp"
             android:autoSizeTextType="uniform"
-            android:text="OTHER CUSTOMER"
+            android:text="NEW CUSTOMER ADD/EDIT/DELETE"
             android:textColor="@color/textcolorwhite"
             app:cornerRadius="8dp"
             app:rippleColor="@color/colorPrimary"
             />                <!--added by Prithvi 03/07/2020-->
-
+        <android.support.design.button.MaterialButton
+            android:id="@+id/p1p2p3"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:autoSizeMaxTextSize="18sp"
+            android:autoSizeMinTextSize="5sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:text="P1 to P5"
+            android:textColor="@color/textcolorwhite"
+            app:cornerRadius="8dp"
+            app:rippleColor="@color/colorPrimary"
+            /><!--added by Prithvi 28/08/2020-->
     </LinearLayout>
 </ScrollView>

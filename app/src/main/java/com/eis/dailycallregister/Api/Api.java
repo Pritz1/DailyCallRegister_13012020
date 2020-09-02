@@ -8,6 +8,9 @@ import com.eis.dailycallregister.Pojo.ChemistDoctorNameRes;
 import com.eis.dailycallregister.Pojo.ChemistListAWRes;
 import com.eis.dailycallregister.Pojo.ChemistProRes;
 import com.eis.dailycallregister.Pojo.ConfirmDCRRes;
+import com.eis.dailycallregister.Pojo.CustCatTypPatchListRes;
+import com.eis.dailycallregister.Pojo.CustDetailsRes;
+import com.eis.dailycallregister.Pojo.CustListResponse;
 import com.eis.dailycallregister.Pojo.DBList;
 import com.eis.dailycallregister.Pojo.DCRDChemListRes;
 import com.eis.dailycallregister.Pojo.DCRDDocListRes;
@@ -58,8 +61,10 @@ import com.eis.dailycallregister.Pojo.NewMTPListOfMTHRes;
 import com.eis.dailycallregister.Pojo.NewNonFliedWrkRes;
 import com.eis.dailycallregister.Pojo.NextMTPListRes;
 import com.eis.dailycallregister.Pojo.NonFieldWrkRes;
+import com.eis.dailycallregister.Pojo.P1P2P3DrProdRes;
 import com.eis.dailycallregister.Pojo.PatchListResponse;
 import com.eis.dailycallregister.Pojo.PatientListRes;
+import com.eis.dailycallregister.Pojo.ProductListRes;
 import com.eis.dailycallregister.Pojo.QseraPopUpRes;
 import com.eis.dailycallregister.Pojo.QuizMainRes;
 import com.eis.dailycallregister.Pojo.RedicnePopUpRes;
@@ -71,6 +76,9 @@ import com.eis.dailycallregister.Pojo.StateListResponse;
 import com.eis.dailycallregister.Pojo.VstCardDrLstRes;
 import com.eis.dailycallregister.Pojo.VstPlnDocLstRes;
 import com.eis.dailycallregister.Pojo.VstPlnSumRes;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -213,6 +221,16 @@ public interface Api {
             @Field("dcrdate") String dcrdate,
             @Field("div") String div,
             @Field("dcrChQPopup") String dcrChQPopup,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("getdcrdothcust.php")
+    Call<DCRDChemListRes> getDCRDOthCust(
+            @Field("dcrno") String dcrno,
+            @Field("netid") String netid,
+            @Field("dcrdate") String dcrdate,
+            @Field("div") String div,
             @Field("DBPrefix") String DBPrefix
     );
 
@@ -767,7 +785,6 @@ public interface Api {
             @Field("netid") String netid,
             @Field("DBPrefix") String dbprefix
     );
-
 
     @FormUrlEncoded
     @POST("chemistProfileList.php")                     //added by aniket 20/11/2019
@@ -1522,5 +1539,136 @@ public interface Api {
             @Field("sel") String sel,
             @Field("DBPrefix") String DBPrefix
     );
+
+    @FormUrlEncoded
+    @POST("sodUpdatePhnNo.php")
+    Call<DefaultResponse> saveSodPhnNo(
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("phno") String phonenumber,
+            @Field("ecode") String ecode,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+@FormUrlEncoded
+    @POST("sodGetPhnNo.php")
+    Call<DefaultResponse> getSodPhnnoFromDb(
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+
+    @FormUrlEncoded
+    @POST("sodAllowedDrList.php")
+    Call<MgrRcpaDrRes> getSodAllowedDrList(
+            @Field("netid") String netid,
+            @Field("DBPrefix") String dbprefix
+    );
+
+    /*Customer Add/Edit : Start */
+    @FormUrlEncoded
+    @POST("CustList.php")
+    Call<CustListResponse> getOtherCustList(
+            @Field("netid") String netid,
+            @Field("DBPrefix") String DBPrefix
+    );
+
+    @FormUrlEncoded
+    @POST("custTypeCatPatchList.php")
+    Call<CustCatTypPatchListRes> getCatTypnPatchLst(
+            @Field("netid") String netid,
+            @Field("DBPrefix") String dbprefix
+    );
+
+    @FormUrlEncoded
+    @POST("custDetlsValidate.php")
+    Call<DefaultResponse> custDetlsValidate(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("custName") String chemName,
+            @Field("phnno") String phnno,
+            @Field("addEdit") String addEdit,
+            @Field("DBPrefix") String dbprefix
+    );
+
+@FormUrlEncoded
+    @POST("custDetails.php")
+    Call<CustDetailsRes> getCustData(
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("DBPrefix") String dbprefix
+    );
+
+    @FormUrlEncoded
+    @POST("custDetlsUpdate.php")
+    Call<DefaultResponse> updateCustDetails(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("keycontactper") String keycontactper,
+            @Field("custNm") String custNm,
+            @Field("phnno") String phnno,
+            @Field("custtype") String custtype,
+            @Field("custcat") String custcat,
+            @Field("add1") String add1,
+            @Field("add2") String add2,
+            @Field("add3") String add3,
+            @Field("city") String city,
+            @Field("state") String state,
+            @Field("pincode") String pincode,
+            @Field("tcpid") String tcpid,
+            @Field("toUpdt") String toUpdt,
+            @Field("DBPrefix") String dbprefix
+    );
+
+
+    @FormUrlEncoded
+    @POST("custDetlsDelete.php")
+    Call<DefaultResponse> deleteCustData(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("menu") String menu,
+            @Field("DBPrefix") String dbprefix
+    );
+
+    /*31-08-2020 p1 to p5 product exposure selection*/
+    @FormUrlEncoded
+    @POST("p1p2p3OfDr.php")
+    Call<P1P2P3DrProdRes> getDrPrdFromDB(
+            @Field("ecode") String ecode,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("menu") String menu,
+            @Field("DBPrefix") String dbprefix
+    );
+
+@FormUrlEncoded
+    @POST("getProdList.php")
+    Call<ProductListRes> getProducts(
+            @Field("div") String div,
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("menu") String menu,
+            @Field("DBPrefix") String dbprefix
+    );
+
+@FormUrlEncoded
+    @POST("p1p2p3Save.php")
+    Call<DefaultResponse> saveDrsP1toP5(
+            @Field("netid") String netid,
+            @Field("cntcd") String cntcd,
+            @Field("ecode") String ecode,
+            @Field("DBPrefix") String dbprefix,
+            @Field("p1") String p1,
+            @Field("p2") String p2,
+            @Field("p3") String p3,
+            @Field("p4") String p4,
+            @Field("p5") String p5
+    );
+
+
 
 }

@@ -184,6 +184,14 @@ if(size>0) {
             menuaccessItems.get(0).getSodPhn().equalsIgnoreCase("N")) {
         navigationView.getMenu().setGroupVisible(R.id.sodPhn, false);
     }
+    if (menuaccessItems.get(0).getOtherCust() != null &&
+            menuaccessItems.get(0).getOtherCust().equalsIgnoreCase("N")) {
+        navigationView.getMenu().setGroupVisible(R.id.otherCust, false);
+    }
+    if (menuaccessItems.get(0).getP1p2p3() != null &&
+            menuaccessItems.get(0).getP1p2p3().equalsIgnoreCase("N")) {
+        navigationView.getMenu().setGroupVisible(R.id.p1p2p3, false);
+    }
 }
 
 
@@ -225,6 +233,8 @@ if(size>0) {
             displaySelectedScreen(R.id.nav_sodPhn);                  //added by Prithvi 15/04/2020
         }else if (getintentval.equalsIgnoreCase("otherCust")){
             displaySelectedScreen(R.id.nav_otherCust);                  //added by Prithvi 15/04/2020
+        }else if (getintentval.equalsIgnoreCase("p1p2p3")){
+            displaySelectedScreen(R.id.nav_p1p2p3);                  //added by Prithvi 15/04/2020
         }else{
             displaySelectedScreen(R.id.nav_home);
         }
@@ -464,12 +474,26 @@ if(size>0) {
                break;
                case R.id.nav_otherCust:
                    getintentval = "home";
-                   intent = new Intent(HomeActivity.this, PatientDrList.class);
-                   intent.putExtra("menu","sodPhn");
+                   intent = new Intent(HomeActivity.this, OtherCustomersList.class);
+                   intent.putExtra("menu","otherCust");
                    bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
                    startActivity(intent, bndlanimation);
                break;
-
+            case R.id.nav_p1p2p3:
+                if (Global.emplevel.equalsIgnoreCase("1") ) { //if lvl is 1 then show Drs List
+                    getintentval = "home";
+                    intent = new Intent(HomeActivity.this, PatientDrList.class);
+                    intent.putExtra("menu","p1p2p3");
+                    bndlanimation = ActivityOptions.makeCustomAnimation(HomeActivity.this, R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                    startActivity(intent, bndlanimation);
+                }else{ //if lvl is greater than 1 then show PSR list
+                    Bundle data = new Bundle();
+                    data.putString("title","Select HQ/PSR");
+                    data.putString("menu","p1p2p3");
+                    fragment = new PsrListUnderMgr();
+                    fragment.setArguments(data);
+                }
+                break;
             case R.id.nav_logout:
                 logoutAlert();
                 break;

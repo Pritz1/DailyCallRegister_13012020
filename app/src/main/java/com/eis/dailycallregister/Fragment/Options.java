@@ -72,7 +72,7 @@ public class Options extends Fragment {
 
     MaterialButton dcr, mtp, uploadcard, vps, elearn,
             report, mgrrcpa, patientpr, chemistpr, hodcr, homtp, spclDcr,ho_ojt,chemAddEdit,sodPhn,
-            otherCust;//report --> added by aniket 21/09/19 --> dcrrcpa
+            otherCust,p1p2p3;//report --> added by aniket 21/09/19 --> dcrrcpa
     ViewDialog progressDialoge;
     List<MisscalldrsItem> misscall = new ArrayList<>();
     LinearLayout menuoptions;
@@ -114,6 +114,7 @@ public class Options extends Fragment {
         chemAddEdit = view.findViewById(R.id.chemAddEdit);
         sodPhn = view.findViewById(R.id.sodPhn);
         otherCust = view.findViewById(R.id.otherCust);
+        p1p2p3 = view.findViewById(R.id.p1p2p3);
 
         /*empacc.clear();
         //CD
@@ -270,13 +271,19 @@ public class Options extends Fragment {
                 sodPhn.setVisibility(View.GONE);
             }
 
-if (menuaccessItems.get(0).getSodPhn() != null &&
-                    menuaccessItems.get(0).getSodPhn().equalsIgnoreCase("Y")) {
-                sodPhn.setVisibility(View.VISIBLE);
+            if (menuaccessItems.get(0).getOtherCust() != null &&
+                    menuaccessItems.get(0).getOtherCust().equalsIgnoreCase("Y")) {
+                otherCust.setVisibility(View.VISIBLE);
             } else {
-                sodPhn.setVisibility(View.GONE);
+                otherCust.setVisibility(View.GONE);
             }
 
+            if (menuaccessItems.get(0).getP1p2p3() != null &&
+                    menuaccessItems.get(0).getP1p2p3().equalsIgnoreCase("Y")) {
+                p1p2p3.setVisibility(View.VISIBLE);
+            } else {
+                p1p2p3.setVisibility(View.GONE);
+            }
 
         }
 
@@ -591,6 +598,21 @@ if (menuaccessItems.get(0).getSodPhn() != null &&
                 Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
                 startActivity(intent, bndlanimation);
                 getActivity().finish();
+            }
+        });
+
+        p1p2p3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                intent.putExtra("ecode", Global.ecode);
+                intent.putExtra("date", Global.date);
+                intent.putExtra("dbprefix", Global.dbprefix);
+                intent.putExtra("openfrag", "p1p2p3");
+                Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getActivity(), R.anim.trans_left_in, R.anim.trans_left_out).toBundle();
+                startActivity(intent, bndlanimation);
+                getActivity().finish();
+
             }
         });
 
